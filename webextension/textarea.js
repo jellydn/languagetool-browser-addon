@@ -17,17 +17,18 @@
  * USA
  */
 "use strict";
-const port = chrome.runtime.connect();
 const REMIND_BTN_CLASS = "lt-btn";
+const REMIND_WRAPPER_CLASS = "lt-text-wrapper";
 const PREFIX_REMIND = "remind-btn-";
 const PREFIX_CHECK = "check-lt-err-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
 const MARGIN_TO_CORNER = 8;
 const toggleState = {};
 let textareaCounter = 0;
+let activeTextarea;
 
 function insertLanguageToolIcon(element) {
-  console.warn("textarea", element);
+  console.warn("insertLanguageToolIcon", element);
   const { offsetLeft, offsetTop, offsetHeight, offsetWidth } = element;
   const btns = [
     remindLanguageToolButton(showRemindMenu, {
@@ -84,12 +85,11 @@ function checkErrorMenu(evt) {
 }
 
 function disableMenu() {
-  const btns = document.getElementsByClassName(REMIND_BTN_CLASS);
+  const btns = document.getElementsByClassName(REMIND_WRAPPER_CLASS);
   console.warn("disableMenu btns", btns);
   for (let counter = 0; counter < btns.length; counter += 1) {
     const btn = btns[counter];
-    btn.style.display = "none";
-    // TODO: send msg to bg for disable extension or open the extension tab for manual disable
+    btn.parentNode.removeChild(btn);
   }
 }
 
@@ -117,6 +117,8 @@ function remindLanguageToolButton(clickHandler, position) {
   btn.style.cursor = "pointer";
   btn.style.backgroundColor = "#afafed";
   btn.style.borderRadius = "50%";
+  btn.style.color = "#fff";
+  btn.style.fontSize = "1rem";
   return btn;
 }
 
@@ -135,12 +137,15 @@ function checkLanguageErrorButton(clickHandler, counter, position) {
   btn.style.textAlign = "center";
   btn.style.position = "absolute";
   btn.style.top = offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER - 55 + "px";
+  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER - 65 + "px";
   btn.style.zIndex = 1000;
   btn.style.cursor = "pointer";
   btn.style.paddingLeft = "5px";
   btn.style.paddingRight = "5px";
   btn.style.backgroundColor = "#afafed";
+  btn.style.color = "#fff";
+  btn.style.width = "50px";
+  btn.style.fontSize = "1rem";
   return btn;
 }
 
@@ -159,18 +164,22 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.style.textAlign = "center";
   btn.style.position = "absolute";
   btn.style.top = offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER - 120 + "px";
+  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER - 140 + "px";
   btn.style.zIndex = 1000;
   btn.style.cursor = "pointer";
   btn.style.paddingLeft = "5px";
   btn.style.paddingRight = "5px";
   btn.style.backgroundColor = "#afafed";
+  btn.style.color = "#fff";
+  btn.style.width = "60px";
+  btn.style.fontSize = "1rem";
   return btn;
 }
 
 function textAreaWrapper(textElement, btnElements) {
   const wrapper = document.createElement("div");
   const parent = textElement.parentNode;
+  wrapper.className = REMIND_WRAPPER_CLASS;
   wrapper.id =
     "textarea-wrapper-" +
     (textElement.name || textElement.id) +
@@ -183,12 +192,25 @@ function textAreaWrapper(textElement, btnElements) {
   parent.insertBefore(wrapper, textElement);
 }
 
+function triggerMarker() {
+  if (activeTextarea) {
+    // turn off marker
+    disableMenu();
+  }
+  activeTextarea = document.activeElement;
+  if (activeTextarea) {
+    insertLanguageToolIcon(activeTextarea);
+  }
+}
+
 function attachEventListenersForTextarea() {
   console.log("attachEventListenersForTextarea");
   const textareaElements = document.getElementsByTagName("textarea");
   console.log("insertLanguageToolIcon", textareaElements);
   for (let counter = 0; counter < textareaElements.length; counter += 1) {
-    insertLanguageToolIcon(textareaElements[counter]);
+    // insertLanguageToolIcon(textareaElements[counter]);
+    const textElement = textareaElements[counter];
+    textElement.addEventListener("mouseup", triggerMarker, false);
   }
 }
 
