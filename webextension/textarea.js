@@ -118,7 +118,7 @@ function remindLanguageToolButton(clickHandler, position) {
   btn.style.backgroundColor = "#afafed";
   btn.style.borderRadius = "50%";
   btn.style.color = "#fff";
-  btn.style.fontSize = "1rem";
+  btn.style.fontSize = "13px";
   return btn;
 }
 
@@ -145,7 +145,7 @@ function checkLanguageErrorButton(clickHandler, counter, position) {
   btn.style.backgroundColor = "#afafed";
   btn.style.color = "#fff";
   btn.style.width = "50px";
-  btn.style.fontSize = "1rem";
+  btn.style.fontSize = "13px";
   return btn;
 }
 
@@ -172,7 +172,7 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.style.backgroundColor = "#afafed";
   btn.style.color = "#fff";
   btn.style.width = "60px";
-  btn.style.fontSize = "1rem";
+  btn.style.fontSize = "13px";
   return btn;
 }
 
@@ -198,9 +198,14 @@ function triggerMarker() {
     disableMenu();
   }
   activeTextarea = document.activeElement;
-  if (activeTextarea) {
+  if (activeTextarea && !isHiddenElement(activeTextarea)) {
     insertLanguageToolIcon(activeTextarea);
   }
+}
+
+function isHiddenElement(el) {
+  const style = window.getComputedStyle(el);
+  return style.display === "none";
 }
 
 function attachEventListenersForTextarea() {
