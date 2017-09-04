@@ -1,19 +1,24 @@
 <!doctype html>
 <html>
+
 <head>
     <title>Tests for LanguageTool WebExtension</title>
 </head>
+
 <body>
 
-<h1>Tests</h1>
+    <h1>Tests</h1>
 
-<p>This is a semi-automatic test of the LanguageTool WebExtension.
-Put this file into your webroot so it's reachable as http://localhost/languagetool-for-chrome-tests.html,
-then open it in Chrome and click the LanguageTool extension's button. Test mode will run.</p>
+    <p>This is a semi-automatic test of the LanguageTool WebExtension. Put this file into your webroot so it's reachable as
+        http://localhost/languagetool-for-chrome-tests.html, then open it in Chrome and click the LanguageTool extension's
+        button. Test mode will run.</p>
 
-<form>
-    <textarea style="width:400px;height:300px" name="text" autofocus>This is an test.</textarea>
-</form>
-
+    <form>
+        <h1> First textarea </h1>
+        <textarea style="width:400px;height:300px" name="text" autofocus>This is an test.</textarea>
+        <h3>Small one</h3>
+        <textarea name="text2" cols="30" rows="10">Small textarea</textarea>
+    </form>
 </body>
+
 </html>

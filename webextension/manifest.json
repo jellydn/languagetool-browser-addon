@@ -5,11 +5,12 @@
   "version": "1.0.20",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
-  
-  "icons": { "16": "images/icon16.png",
-             "48": "images/icon48.png",
-             "64": "images/icon64.png",
-             "128": "images/icon128.png" },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "64": "images/icon64.png",
+    "128": "images/icon128.png"
+  },
   "author": "Daniel Naber",
   "homepage_url": "https://languagetool.org",
   "offline_enabled": false,
@@ -20,21 +21,26 @@
     "default_title": "__MSG_tooltip__",
     "browser_style": false
   },
-  "permissions": [
-    "activeTab",
-    "storage",
-    "contextMenus"
-  ],
+  "permissions": ["activeTab", "storage", "contextMenus"],
   "background": {
     "scripts": ["background.js"]
   },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "file:///*"],
-      "js": ["contentscript.js", "markup.js", "tools.js", "purify.min.js"]
+      "js": [
+        "contentscript.js",
+        "markup.js",
+        "textarea.js",
+        "tools.js",
+        "purify.min.js"
+      ]
     },
     {
-      "matches": ["https://languagetool.org/*", "https://www.languagetool.org/*"],
+      "matches": [
+        "https://languagetool.org/*",
+        "https://www.languagetool.org/*"
+      ],
       "js": ["contentscript-lt.js"]
     }
   ],
