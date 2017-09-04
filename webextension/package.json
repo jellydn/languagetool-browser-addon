@@ -1,10 +1,16 @@
 {
-    "scripts": {
-        "test": "./node_modules/mocha/bin/mocha"
-    },
-    "devDependencies": {
-        "assert": "^1.4.1",
-        "mocha": "^3.1.2",
-        "mock-browser": "^0.92.12"
-    }
+  "name": "language-tool-extension",
+  "version": "0.0.1",
+  "description": "LanguageTool style and grammar checking",
+  "main": "index.js",
+  "author": "Daniel Naber",
+  "license": "MIT",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^3.1.2",
+    "mock-browser": "^0.92.12"
+  }
 }

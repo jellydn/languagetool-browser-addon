@@ -17,35 +17,107 @@
  * USA
  */
 "use strict";
+const port = chrome.runtime.connect();
+const REMIND_BTN_CLASS = "lt-btn";
+const PREFIX_REMIND = "remind-btn-";
+const PREFIX_CHECK = "check-lt-err-btn-";
+const PREFIX_DISABLE = "disable-lt-btn-";
+const MARGIN_TO_CORNER = 8;
+const toggleState = {};
+let textareaCounter = 0;
 
 function insertLanguageToolIcon() {
-  console.log("insertLanguageToolIcon");
   const textareaElements = document.getElementsByTagName("textarea");
+  console.log("insertLanguageToolIcon", textareaElements);
   for (let counter = 0; counter < textareaElements.length; counter += 1) {
     const element = textareaElements[counter];
     console.warn("textarea", element, element.parentNode);
-    const btn = remindLanguageToolButton(showRemindMenu);
-    textAreaWrapper(element, btn);
+    const { offsetLeft, offsetTop, offsetHeight, offsetWidth } = element;
+    const btns = [
+      remindLanguageToolButton(showRemindMenu, {
+        offsetLeft,
+        offsetTop,
+        offsetHeight,
+        offsetWidth
+      }),
+      checkLanguageErrorButton(checkErrorMenu, textareaCounter, {
+        offsetLeft,
+        offsetTop,
+        offsetHeight,
+        offsetWidth
+      }),
+      disableLanguageToolButton(disableMenu, textareaCounter, {
+        offsetLeft,
+        offsetTop,
+        offsetHeight,
+        offsetWidth
+      })
+    ];
+    textAreaWrapper(element, btns);
   }
 }
 
-function showRemindMenu() {
-  alert("ok - show remind menu");
+/** event hanlders */
+
+function showRemindMenu(evt) {
+  const targetId = evt.target.id;
+  console.log("ok - show remind menu", targetId);
+  const counter = Number(targetId.substr(PREFIX_REMIND.length));
+  toggleState[counter] = !toggleState[counter];
+  console.log("ok - counter", counter, toggleState);
+  const checkBtn = document.getElementById(PREFIX_CHECK + counter);
+  const disableBtn = document.getElementById(PREFIX_DISABLE + counter);
+  if (toggleState[counter]) {
+    if (checkBtn) {
+      checkBtn.style.display = "block";
+    }
+    if (disableBtn) {
+      disableBtn.style.display = "block";
+    }
+  } else {
+    if (checkBtn) {
+      checkBtn.style.display = "none";
+    }
+    if (disableBtn) {
+      disableBtn.style.display = "none";
+    }
+  }
 }
 
-function remindLanguageToolButton(clickHandler) {
+function checkErrorMenu(evt) {
+  console.warn("checkErrorMenu", evt);
+}
+
+function disableMenu() {
+  const btns = document.getElementsByClassName(REMIND_BTN_CLASS);
+  console.warn("disableMenu btns", btns);
+  for (let counter = 0; counter < btns.length; counter += 1) {
+    const btn = btns[counter];
+    btn.style.display = "none";
+    // TODO: send msg to bg for disable extension or open the extension tab for manual disable
+  }
+}
+
+/** DOM manupulate */
+
+function remindLanguageToolButton(clickHandler, position) {
+  console.warn("remindLanguageToolButton position", position);
+  const { offsetHeight, offsetWidth } = position;
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
-  btn.className = "lt-remind-btn";
+  textareaCounter += 1;
+  btn.id = PREFIX_REMIND + textareaCounter;
+  btn.className = REMIND_BTN_CLASS;
   btn.innerText = "LT";
   // style
-  btn.style.width = "25px";
-  btn.style.height = "25px";
-  btn.style.lineHeight = "25px";
+  const btnSize = 25;
+  btn.style.width = btnSize + "px";
+  btn.style.height = btnSize + "px";
+  btn.style.lineHeight = btnSize + "px";
   btn.style.textAlign = "center";
   btn.style.position = "absolute";
-  btn.style.bottom = "10px";
-  btn.style.right = "10px";
+  btn.style.top = offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
+  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER + "px";
   btn.style.zIndex = 1000;
   btn.style.cursor = "pointer";
   btn.style.backgroundColor = "#afafed";
@@ -53,7 +125,55 @@ function remindLanguageToolButton(clickHandler) {
   return btn;
 }
 
-function textAreaWrapper(textElement, btnElement) {
+function checkLanguageErrorButton(clickHandler, counter, position) {
+  const { offsetHeight, offsetWidth } = position;
+  const btn = document.createElement("A");
+  btn.onclick = clickHandler;
+  btn.id = PREFIX_CHECK + counter;
+  btn.className = REMIND_BTN_CLASS;
+  btn.innerText = "Check";
+  // style
+  const btnSize = 25;
+  btn.style.display = "none";
+  btn.style.height = btnSize + "px";
+  btn.style.lineHeight = btnSize + "px";
+  btn.style.textAlign = "center";
+  btn.style.position = "absolute";
+  btn.style.top = offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
+  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER - 55 + "px";
+  btn.style.zIndex = 1000;
+  btn.style.cursor = "pointer";
+  btn.style.paddingLeft = "5px";
+  btn.style.paddingRight = "5px";
+  btn.style.backgroundColor = "#afafed";
+  return btn;
+}
+
+function disableLanguageToolButton(clickHandler, counter, position) {
+  const { offsetHeight, offsetWidth } = position;
+  const btn = document.createElement("A");
+  btn.onclick = clickHandler;
+  btn.id = PREFIX_DISABLE + counter;
+  btn.className = REMIND_BTN_CLASS;
+  btn.innerText = "Disable";
+  // style
+  const btnSize = 25;
+  btn.style.display = "none";
+  btn.style.height = btnSize + "px";
+  btn.style.lineHeight = btnSize + "px";
+  btn.style.textAlign = "center";
+  btn.style.position = "absolute";
+  btn.style.top = offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
+  btn.style.left = offsetWidth - btnSize - MARGIN_TO_CORNER - 120 + "px";
+  btn.style.zIndex = 1000;
+  btn.style.cursor = "pointer";
+  btn.style.paddingLeft = "5px";
+  btn.style.paddingRight = "5px";
+  btn.style.backgroundColor = "#afafed";
+  return btn;
+}
+
+function textAreaWrapper(textElement, btnElements) {
   const wrapper = document.createElement("div");
   const parent = textElement.parentNode;
   wrapper.id =
@@ -62,9 +182,12 @@ function textAreaWrapper(textElement, btnElement) {
     "-" +
     Date.now();
   wrapper.style.position = "relative";
-  parent.replaceChild(wrapper, textElement);
-  wrapper.appendChild(textElement);
-  wrapper.insertBefore(btnElement, textElement);
+  for (const btnElement of btnElements) {
+    wrapper.appendChild(btnElement);
+  }
+  parent.insertBefore(wrapper, textElement);
 }
 
-insertLanguageToolIcon();
+document.addEventListener("DOMContentLoaded", function(event) {
+  insertLanguageToolIcon();
+});
