@@ -26,35 +26,30 @@ const MARGIN_TO_CORNER = 8;
 const toggleState = {};
 let textareaCounter = 0;
 
-function insertLanguageToolIcon() {
-  const textareaElements = document.getElementsByTagName("textarea");
-  console.log("insertLanguageToolIcon", textareaElements);
-  for (let counter = 0; counter < textareaElements.length; counter += 1) {
-    const element = textareaElements[counter];
-    console.warn("textarea", element, element.parentNode);
-    const { offsetLeft, offsetTop, offsetHeight, offsetWidth } = element;
-    const btns = [
-      remindLanguageToolButton(showRemindMenu, {
-        offsetLeft,
-        offsetTop,
-        offsetHeight,
-        offsetWidth
-      }),
-      checkLanguageErrorButton(checkErrorMenu, textareaCounter, {
-        offsetLeft,
-        offsetTop,
-        offsetHeight,
-        offsetWidth
-      }),
-      disableLanguageToolButton(disableMenu, textareaCounter, {
-        offsetLeft,
-        offsetTop,
-        offsetHeight,
-        offsetWidth
-      })
-    ];
-    textAreaWrapper(element, btns);
-  }
+function insertLanguageToolIcon(element) {
+  console.warn("textarea", element);
+  const { offsetLeft, offsetTop, offsetHeight, offsetWidth } = element;
+  const btns = [
+    remindLanguageToolButton(showRemindMenu, {
+      offsetLeft,
+      offsetTop,
+      offsetHeight,
+      offsetWidth
+    }),
+    checkLanguageErrorButton(checkErrorMenu, textareaCounter, {
+      offsetLeft,
+      offsetTop,
+      offsetHeight,
+      offsetWidth
+    }),
+    disableLanguageToolButton(disableMenu, textareaCounter, {
+      offsetLeft,
+      offsetTop,
+      offsetHeight,
+      offsetWidth
+    })
+  ];
+  textAreaWrapper(element, btns);
 }
 
 /** event hanlders */
@@ -188,6 +183,23 @@ function textAreaWrapper(textElement, btnElements) {
   parent.insertBefore(wrapper, textElement);
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  insertLanguageToolIcon();
-});
+function attachEventListenersForTextarea() {
+  console.log("attachEventListenersForTextarea");
+  const textareaElements = document.getElementsByTagName("textarea");
+  console.log("insertLanguageToolIcon", textareaElements);
+  for (let counter = 0; counter < textareaElements.length; counter += 1) {
+    insertLanguageToolIcon(textareaElements[counter]);
+  }
+}
+
+if (
+  document.readyState === "complete" ||
+  (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  attachEventListenersForTextarea();
+} else {
+  document.addEventListener(
+    "DOMContentLoaded",
+    attachEventListenersForTextarea
+  );
+}
