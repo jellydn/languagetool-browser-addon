@@ -19,179 +19,248 @@
 "use strict";
 
 chrome.runtime.onMessage.addListener(handleRequest);
+const logLevel = "info"; // error, warn, debug, info
+log.setLevel(logLevel);
 
 let toolbarUI;
-let lastUseDate = new Date().getTime();  // TODO: should actually be saved in prefs
-let lastReminderDate = new Date().getTime();  // TODO: should actually be saved in prefs
+let lastUseDate = new Date().getTime(); // TODO: should actually be saved in prefs
+let lastReminderDate = new Date().getTime(); // TODO: should actually be saved in prefs
 let unusedMinutesShowReminder = 0.5;
-    
+
 function handleRequest(request, sender, callback) {
-    if (request.action === 'checkText') {
-        checkText(callback, request);
-    } else if (request.action === 'getCurrentText') {
-        callback(getCurrentText());
-    } else if (request.action === 'applyCorrection') {
-        applyCorrection(request);
-        callback();
-    } else if (request === 'toggle-in-page-toolbar') {
-        if (toolbarUI) {
-            toggleToolbar(toolbarUI);
-        } else {
-            toolbarUI = initToolbar();
-        }
+  log.info("handleRequest", request, sender);
+  if (request.action === "checkText") {
+    checkText(callback, request);
+  } else if (request.action === "getCurrentText") {
+    callback(getCurrentText());
+  } else if (request.action === "applyCorrection") {
+    applyCorrection(request);
+    callback();
+  } else if (request === "toggle-in-page-toolbar") {
+    if (toolbarUI) {
+      toggleToolbar(toolbarUI);
     } else {
-        alert("Unknown action: " + request.action);
+      toolbarUI = initToolbar();
     }
+  } else {
+    alert("Unknown action: " + request.action);
+  }
 }
 
 function checkText(callback, request) {
-    lastUseDate = new Date().getTime();
-    const metaData = getMetaData(request);
-    if (document.activeElement.tagName === "IFRAME") {
-        // this case happens e.g. in roundcube when selecting text in an email one is reading:
-        if (document.activeElement
-            && document.activeElement.contentWindow
-            && document.activeElement.contentWindow.document.getSelection()
-            && document.activeElement.contentWindow.document.getSelection().toString() !== "") {
-            // TODO: actually the text might be editable, e.g. on wordpress.com:
-            const text = document.activeElement.contentWindow.document.getSelection().toString();
-            callback({markupList: [{text: text}], metaData: metaData, isEditableText: false, url: request.pageUrl});
-            return;
-        }
+  log.info("checkText", request);
+  lastUseDate = new Date().getTime();
+  const metaData = getMetaData(request);
+  if (document.activeElement.tagName === "IFRAME") {
+    // this case happens e.g. in roundcube when selecting text in an email one is reading:
+    if (
+      document.activeElement &&
+      document.activeElement.contentWindow &&
+      document.activeElement.contentWindow.document.getSelection() &&
+      document.activeElement.contentWindow.document
+        .getSelection()
+        .toString() !== ""
+    ) {
+      // TODO: actually the text might be editable, e.g. on wordpress.com:
+      const text = document.activeElement.contentWindow.document
+        .getSelection()
+        .toString();
+      callback({
+        markupList: [{ text: text }],
+        metaData: metaData,
+        isEditableText: false,
+        url: request.pageUrl
+      });
+      return;
     }
-    const selection = window.getSelection();
-    if (selection && selection.toString() !== "") {
-        // TODO: because of this, a selection in a textarea will not offer clickable suggestions:
-        callback({markupList: [{text: selection.toString()}], metaData: metaData, isEditableText: false, url: request.pageUrl});
-    } else {
+  }
+  const selection = window.getSelection();
+  if (selection && selection.toString() !== "") {
+    // TODO: because of this, a selection in a textarea will not offer clickable suggestions:
+    callback({
+      markupList: [{ text: selection.toString() }],
+      metaData: metaData,
+      isEditableText: false,
+      url: request.pageUrl
+    });
+  } else {
+    try {
+      if (activeElement()) {
+        callback({
+          markupList: getMarkupListOfActiveElement(activeElement()),
+          metaData: metaData,
+          isEditableText: true,
+          url: request.pageUrl
+        });
+      } else {
+        const markupList = getMarkupListOfActiveElement(document.activeElement);
+        callback({
+          markupList: markupList,
+          metaData: metaData,
+          isEditableText: true,
+          url: request.pageUrl
+        });
+      }
+    } catch (e) {
+      //console.log("LanguageTool extension got error (document.activeElement: " + document.activeElement + "), will try iframes:");
+      //console.log(e);
+      // Fallback e.g. for tinyMCE as used on languagetool.org - document.activeElement simply doesn't
+      // seem to work if focus is inside the iframe.
+      const iframes = document.getElementsByTagName("iframe");
+      let found = false;
+      for (let i = 0; i < iframes.length; i++) {
         try {
-            const markupList = getMarkupListOfActiveElement(document.activeElement);
-            callback({markupList: markupList, metaData: metaData, isEditableText: true, url: request.pageUrl});
-        } catch(e) {
-            //console.log("LanguageTool extension got error (document.activeElement: " + document.activeElement + "), will try iframes:");
-            //console.log(e);
-            // Fallback e.g. for tinyMCE as used on languagetool.org - document.activeElement simply doesn't
-            // seem to work if focus is inside the iframe.
-            const iframes = document.getElementsByTagName("iframe");
-            let found = false;
-            for (let i = 0; i < iframes.length; i++) {
-                try {
-                    const markupList = getMarkupListOfActiveElement(iframes[i].contentWindow.document.activeElement);
-                    found = true;
-                    callback({markupList: markupList, metaData: metaData, isEditableText: true, url: request.pageUrl});
-                } catch(e) {
-                    // ignore - what else could we do here? We just iterate the frames until
-                    // we find one with text in its activeElement
-                    //console.log("LanguageTool extension got error (iframes " + i + "):");
-                    //console.log(e);
-                }
-            }
-            if (!found) {
-                callback({message: e.toString()});
-                Tools.logOnServer("Exception and failing fallback in checkText: " + e.toString() + " on " + request.pageUrl, request.serverUrl);
-            }
+          const markupList = getMarkupListOfActiveElement(
+            iframes[i].contentWindow.document.activeElement
+          );
+          found = true;
+          callback({
+            markupList: markupList,
+            metaData: metaData,
+            isEditableText: true,
+            url: request.pageUrl
+          });
+        } catch (e) {
+          // ignore - what else could we do here? We just iterate the frames until
+          // we find one with text in its activeElement
+          //console.log("LanguageTool extension got error (iframes " + i + "):");
+          //console.log(e);
         }
+      }
+      if (!found) {
+        callback({ message: e.toString() });
+        Tools.logOnServer(
+          "Exception and failing fallback in checkText: " +
+            e.toString() +
+            " on " +
+            request.pageUrl,
+          request.serverUrl
+        );
+      }
     }
+  }
 }
 
 function getMetaData(request) {
-    const metaData = {};
-    if (document.getElementById("_to") && document.getElementById("compose-subject")) {   // Roundcube (tested only with 1.0.1)
-        metaData['EmailToAddress'] = document.getElementById("_to").value;
+  const metaData = {};
+  if (
+    document.getElementById("_to") &&
+    document.getElementById("compose-subject")
+  ) {
+    // Roundcube (tested only with 1.0.1)
+    metaData["EmailToAddress"] = document.getElementById("_to").value;
+  }
+  if (request.pageUrl.indexOf("://mail.google.com")) {
+    // GMail
+    const elems = document.getElementsByName("to");
+    for (let obj of elems) {
+      if (obj.nodeName === "INPUT") {
+        metaData["EmailToAddress"] = obj.value;
+      }
     }
-    if (request.pageUrl.indexOf("://mail.google.com")) {  // GMail
-        const elems = document.getElementsByName("to");
-        for (let obj of elems) {
-            if (obj.nodeName === 'INPUT') {
-                metaData['EmailToAddress'] = obj.value;
-            }
-        }
-    }
-    return metaData;
+  }
+  return metaData;
 }
 
 function getCurrentText() {
-    return getMarkupListOfActiveElement(document.activeElement);
+  return getMarkupListOfActiveElement(document.activeElement);
 }
 
 // Note: document.activeElement sometimes seems to be wrong, e.g. on languagetool.org
 // it sometimes points to the language selection drop down even when the cursor
 // is inside the text field - probably related to the iframe...
 function getMarkupListOfActiveElement(elem) {
-    if (isSimpleInput(elem)) {
-        return [{ text: elem.value }];
-    } else if (elem.hasAttribute("contenteditable")) {
-        return Markup.html2markupList(elem.innerHTML, document);
-    } else if (elem.tagName === "IFRAME") {
-        const activeElem = elem.contentWindow.document.activeElement;
-        if (activeElem.innerHTML) {
-            return Markup.html2markupList(activeElem.innerHTML, document);
-        } else if (activeElem.textContent) {
-            // not sure if this case ever happens?
-            return [{ text: activeElem.textContent.toString() }];
-        } else {
-            throw chrome.i18n.getMessage("placeCursor1");
-        }
+  if (isSimpleInput(elem)) {
+    return [{ text: elem.value }];
+  } else if (elem.hasAttribute("contenteditable")) {
+    return Markup.html2markupList(elem.innerHTML, document);
+  } else if (elem.tagName === "IFRAME") {
+    const activeElem = elem.contentWindow.document.activeElement;
+    if (activeElem.innerHTML) {
+      return Markup.html2markupList(activeElem.innerHTML, document);
+    } else if (activeElem.textContent) {
+      // not sure if this case ever happens?
+      return [{ text: activeElem.textContent.toString() }];
     } else {
-        if (elem) {
-            throw chrome.i18n.getMessage("placeCursor2", elem.tagName);
-        } else {
-            throw chrome.i18n.getMessage("placeCursor3");
-        }
+      throw chrome.i18n.getMessage("placeCursor1");
     }
+  } else {
+    if (elem) {
+      throw chrome.i18n.getMessage("placeCursor2", elem.tagName);
+    } else {
+      throw chrome.i18n.getMessage("placeCursor3");
+    }
+  }
 }
 
 function applyCorrection(request) {
-    let newMarkupList;
-    try {
-        newMarkupList = Markup.replace(request.markupList, request.errorOffset, request.errorText.length, request.replacement);
-    } catch (e) {
-        // e.g. when replacement fails because of complicated HTML
-        alert(e.toString());
-        Tools.logOnServer("Exception in applyCorrection: " + e.toString() + " on " + request.pageUrl, request.serverUrl);
-        return;
+  let newMarkupList;
+  try {
+    newMarkupList = Markup.replace(
+      request.markupList,
+      request.errorOffset,
+      request.errorText.length,
+      request.replacement
+    );
+  } catch (e) {
+    // e.g. when replacement fails because of complicated HTML
+    alert(e.toString());
+    Tools.logOnServer(
+      "Exception in applyCorrection: " +
+        e.toString() +
+        " on " +
+        request.pageUrl,
+      request.serverUrl
+    );
+    return;
+  }
+  // TODO: active element might have changed in between?!
+  const activeElem = document.activeElement;
+  // Note: this duplicates the logic from getTextOfActiveElement():
+  let found = false;
+  if (isSimpleInput(activeElem)) {
+    found = replaceIn(activeElem, "value", newMarkupList);
+  } else if (activeElem.hasAttribute("contenteditable")) {
+    found = replaceIn(activeElem, "innerHTML", newMarkupList); // contentEditable=true
+  } else if (activeElem.tagName === "IFRAME") {
+    const activeElem2 = activeElem.contentWindow.document.activeElement;
+    if (activeElem2 && activeElem2.innerHTML) {
+      found = replaceIn(activeElem2, "innerHTML", newMarkupList); // e.g. on wordpress.com
+    } else if (isSimpleInput(activeElem2)) {
+      found = replaceIn(activeElem2, "value", newMarkupList); // e.g. sending messages on upwork.com (https://www.upwork.com/e/.../contracts/v2/.../)
+    } else {
+      found = replaceIn(activeElem2, "textContent", newMarkupList); // tinyMCE as used on languagetool.org
     }
-    // TODO: active element might have changed in between?!
-    const activeElem = document.activeElement;
-    // Note: this duplicates the logic from getTextOfActiveElement():
-    let found = false;
-    if (isSimpleInput(activeElem)) {
-        found = replaceIn(activeElem, "value", newMarkupList);
-    } else if (activeElem.hasAttribute("contenteditable")) {
-        found = replaceIn(activeElem, "innerHTML", newMarkupList);  // contentEditable=true
-    } else if (activeElem.tagName === "IFRAME") {
-        const activeElem2 = activeElem.contentWindow.document.activeElement;
-        if (activeElem2 && activeElem2.innerHTML) {
-            found = replaceIn(activeElem2, "innerHTML", newMarkupList);  // e.g. on wordpress.com
-        } else if (isSimpleInput(activeElem2)) {
-            found = replaceIn(activeElem2, "value", newMarkupList);  // e.g. sending messages on upwork.com (https://www.upwork.com/e/.../contracts/v2/.../)
-        } else {
-            found = replaceIn(activeElem2, "textContent", newMarkupList);  // tinyMCE as used on languagetool.org
-        }
-    }
-    if (!found) {
-        alert(chrome.i18n.getMessage("noReplacementPossible"));
-        Tools.logOnServer("Problem in applyCorrection: noReplacementPossible on " + request.pageUrl, request.serverUrl);
-    }
+  }
+  if (!found) {
+    alert(chrome.i18n.getMessage("noReplacementPossible"));
+    Tools.logOnServer(
+      "Problem in applyCorrection: noReplacementPossible on " + request.pageUrl,
+      request.serverUrl
+    );
+  }
 }
 
 function isSimpleInput(elem) {
-    //console.log("elem.tagName: " + elem.tagName + ", elem.type: " + elem.type);
-    if (elem.tagName === "TEXTAREA") {
-        return true;
-    } else if (elem.tagName === "INPUT" && (elem.type === "text" || elem.type == "search")) {
-        return true;
-    }
-    return false;
+  //console.log("elem.tagName: " + elem.tagName + ", elem.type: " + elem.type);
+  if (elem.tagName === "TEXTAREA") {
+    return true;
+  } else if (
+    elem.tagName === "INPUT" &&
+    (elem.type === "text" || elem.type == "search")
+  ) {
+    return true;
+  }
+  return false;
 }
-    
+
 function replaceIn(elem, elemValue, markupList) {
-    if (elem && elem[elemValue]) {
-        // Note for reviewer: elemValue can be 'innerHTML', but markupList always comes from
-        // Markup.replace() (see applyCorrection()), which makes sure the replacement coming
-        // from the server is sanitized:
-        elem[elemValue] = Markup.markupList2html(markupList);
-        return true;
-    }
-    return false;
+  if (elem && elem[elemValue]) {
+    // Note for reviewer: elemValue can be 'innerHTML', but markupList always comes from
+    // Markup.replace() (see applyCorrection()), which makes sure the replacement coming
+    // from the server is sanitized:
+    elem[elemValue] = Markup.markupList2html(markupList);
+    return true;
+  }
+  return false;
 }

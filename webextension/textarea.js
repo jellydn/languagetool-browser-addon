@@ -25,10 +25,10 @@ const PREFIX_DISABLE = "disable-lt-btn-";
 const MARGIN_TO_CORNER = 8;
 const toggleState = {};
 let textareaCounter = 0;
-let activeTextarea;
+let disableOnPage = false;
 
 function insertLanguageToolIcon(element) {
-  console.warn("insertLanguageToolIcon", element);
+  log.warn("insertLanguageToolIcon", element);
   const { offsetLeft, offsetTop, offsetHeight, offsetWidth } = element;
   const btns = [
     remindLanguageToolButton(showRemindMenu, {
@@ -81,12 +81,39 @@ function showRemindMenu(evt) {
 }
 
 function checkErrorMenu(evt) {
-  console.warn("checkErrorMenu", evt);
+  log.warn("checkErrorMenu", evt);
+  const textAreaElement = activeElement();
+  if (textAreaElement) {
+    log.info("active textarea", textAreaElement);
+    if (textAreaElement.setActive) {
+      textAreaElement.setActive();
+    } else {
+      textAreaElement.focus();
+    }
+  }
+  $.fancybox.open({
+    type: "iframe",
+    src:
+      chrome.runtime.getURL("popup.html") + "?pageUrl=" + window.location.href,
+    opts: {
+      iframe: {
+        css: {
+          width: "420px",
+          height: "500px"
+        }
+      }
+    }
+  });
 }
 
 function disableMenu() {
+  log.warn("disableMenu");
+  disableOnPage = true;
+  removeAllButtons();
+}
+
+function removeAllButtons() {
   const btns = document.getElementsByClassName(REMIND_WRAPPER_CLASS);
-  console.warn("disableMenu btns", btns);
   for (let counter = 0; counter < btns.length; counter += 1) {
     const btn = btns[counter];
     btn.parentNode.removeChild(btn);
@@ -96,7 +123,7 @@ function disableMenu() {
 /** DOM manupulate */
 
 function remindLanguageToolButton(clickHandler, position) {
-  console.warn("remindLanguageToolButton position", position);
+  log.warn("remindLanguageToolButton position", position);
   const { offsetHeight, offsetWidth } = position;
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
@@ -193,13 +220,13 @@ function textAreaWrapper(textElement, btnElements) {
 }
 
 function triggerMarker() {
-  if (activeTextarea) {
+  if (activeElement()) {
     // turn off marker
-    disableMenu();
+    removeAllButtons();
   }
-  activeTextarea = document.activeElement;
-  if (activeTextarea && !isHiddenElement(activeTextarea)) {
-    insertLanguageToolIcon(activeTextarea);
+  setActiveElement(document.activeElement);
+  if (activeElement() && !isHiddenElement(activeElement()) && !disableOnPage) {
+    insertLanguageToolIcon(activeElement());
   }
 }
 

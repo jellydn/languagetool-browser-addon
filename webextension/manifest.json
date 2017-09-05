@@ -14,7 +14,6 @@
   "author": "Daniel Naber",
   "homepage_url": "https://languagetool.org",
   "offline_enabled": false,
-
   "browser_action": {
     "default_icon": "images/icon48.png",
     "default_popup": "popup.html",
@@ -25,16 +24,22 @@
   "background": {
     "scripts": ["background.js"]
   },
+  "web_accessible_resources": ["images/*", "*.js", "vendors/*", "popup.html"],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "file:///*"],
       "js": [
+        "vendors/purify.min.js",
+        "vendors/jquery.min.js",
+        "vendors/loglevel.min.js",
+        "vendors/fancybox/jquery.fancybox.min.js",
+        "helpers.js",
         "contentscript.js",
         "markup.js",
         "textarea.js",
-        "tools.js",
-        "purify.min.js"
-      ]
+        "tools.js"
+      ],
+      "css": ["vendors/fancybox/jquery.fancybox.min.css"]
     },
     {
       "matches": [
