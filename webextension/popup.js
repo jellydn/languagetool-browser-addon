@@ -39,12 +39,12 @@ let minUsageForReviewRequest = 30;
 
 const logLevel = "info"; // error, warn, debug, info
 log.setLevel(logLevel);
-log.warn("url", window.location.href);
+log.info("url", window.location.href);
 let pageUrlParam = "";
 const pageUrlPosition = window.location.href.indexOf("?pageUrl=");
 if (pageUrlPosition !== -1) {
   pageUrlParam = window.location.href.substr(pageUrlPosition + 9);
-  log.warn("pageUrlParam", pageUrlParam);
+  log.info("pageUrlParam", pageUrlParam);
 }
 
 var testMode = false;
@@ -56,7 +56,7 @@ var preferredVariants = [];
 var manuallySelectedLanguage = "";
 
 function getCheckResult(markupList, metaData, callback, errorCallback) {
-  log.warn("getCheckResult", markupList, metaData);
+  log.info("getCheckResult", markupList, metaData);
   const req = new XMLHttpRequest();
   req.timeout = 60 * 1000; // milliseconds
   const url = serverUrl + (serverUrl.endsWith("/") ? "check" : "/check");
@@ -177,7 +177,7 @@ function isSuggestion(match) {
 }
 
 function renderMatchesToHtml(resultJson, response, tabs, callback) {
-  log.warn("renderMatchesToHtml", resultJson, response, tabs);
+  log.info("renderMatchesToHtml", resultJson, response, tabs);
   const createLinks =
     response.isEditableText &&
     !response.url.match(unsupportedReplacementSitesRegex);
@@ -194,7 +194,11 @@ function renderMatchesToHtml(resultJson, response, tabs, callback) {
   if (!translatedLanguage) {
     translatedLanguage = language;
   }
-  let html = '<a id="closeLink" href="#"></a>';
+  // hide close button for opening popup from fancybox
+  let html =
+    pageUrlParam.length > 0
+      ? '<a style="display:none;" id="closeLink" href="#"></a>'
+      : '<a id="closeLink" href="#"></a>';
   html += DOMPurify.sanitize(getLanguageSelector(languageCode));
   html += '<div id="outerShortcutHint"></div>';
   html += "<hr>";
@@ -683,10 +687,14 @@ function addListenerActions(elements, tabs, response) {
 }
 
 function reCheck(tabs, causeOfCheck) {
-  log.warn("reCheck", causeOfCheck, serverUrl, tabs);
+  log.info("reCheck", causeOfCheck, serverUrl, tabs);
   chrome.tabs.sendMessage(
     tabs[0].id,
-    { action: "checkText", serverUrl: serverUrl, pageUrl: tabs[0].url },
+    {
+      action: "checkText",
+      serverUrl: serverUrl,
+      pageUrl: tabs[0].url || pageUrlParam
+    },
     function(response) {
       doCheck(tabs, causeOfCheck);
     }
@@ -694,7 +702,7 @@ function reCheck(tabs, causeOfCheck) {
 }
 
 function handleCheckResult(response, tabs, callback) {
-  log.warn("handleCheckResult", response, tabs);
+  log.info("handleCheckResult", response, tabs);
   if (!response) {
     // not sure *why* this happens...
     renderStatus(chrome.i18n.getMessage("freshInstallReload"));
@@ -831,7 +839,7 @@ function startCheckMaybeWithWarning(tabs) {
 }
 
 function doCheck(tabs, causeOfCheck, optionalTrackDetails) {
-  log.warn("doCheck", tabs, causeOfCheck);
+  log.info("doCheck", tabs, causeOfCheck);
   renderStatus(
     '<img src="images/throbber_28.gif"> ' +
       chrome.i18n.getMessage("checkingProgress")

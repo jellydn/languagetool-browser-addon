@@ -28,7 +28,7 @@ let textareaCounter = 0;
 let disableOnPage = false;
 
 function insertLanguageToolIcon(element) {
-  log.warn("insertLanguageToolIcon", element);
+  log.info("insertLanguageToolIcon", element);
   const { offsetLeft, offsetTop, offsetHeight, offsetWidth } = element;
   const btns = [
     remindLanguageToolButton(showRemindMenu, {
@@ -81,7 +81,7 @@ function showRemindMenu(evt) {
 }
 
 function checkErrorMenu(evt) {
-  log.warn("checkErrorMenu", evt);
+  log.info("checkErrorMenu", evt);
   const textAreaElement = activeElement();
   if (textAreaElement) {
     log.info("active textarea", textAreaElement);
@@ -107,7 +107,7 @@ function checkErrorMenu(evt) {
 }
 
 function disableMenu() {
-  log.warn("disableMenu");
+  log.info("disableMenu");
   disableOnPage = true;
   removeAllButtons();
 }
@@ -123,7 +123,7 @@ function removeAllButtons() {
 /** DOM manupulate */
 
 function remindLanguageToolButton(clickHandler, position) {
-  log.warn("remindLanguageToolButton position", position);
+  log.info("remindLanguageToolButton position", position);
   const { offsetHeight, offsetWidth } = position;
   const btn = document.createElement("A");
   btn.onclick = clickHandler;

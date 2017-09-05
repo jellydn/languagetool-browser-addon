@@ -53,25 +53,29 @@ function checkText(callback, request) {
   const metaData = getMetaData(request);
   if (document.activeElement.tagName === "IFRAME") {
     // this case happens e.g. in roundcube when selecting text in an email one is reading:
-    if (
-      document.activeElement &&
-      document.activeElement.contentWindow &&
-      document.activeElement.contentWindow.document.getSelection() &&
-      document.activeElement.contentWindow.document
-        .getSelection()
-        .toString() !== ""
-    ) {
-      // TODO: actually the text might be editable, e.g. on wordpress.com:
-      const text = document.activeElement.contentWindow.document
-        .getSelection()
-        .toString();
-      callback({
-        markupList: [{ text: text }],
-        metaData: metaData,
-        isEditableText: false,
-        url: request.pageUrl
-      });
-      return;
+    try {
+      if (
+        document.activeElement &&
+        document.activeElement.contentWindow &&
+        document.activeElement.contentWindow.document.getSelection() &&
+        document.activeElement.contentWindow.document
+          .getSelection()
+          .toString() !== ""
+      ) {
+        // TODO: actually the text might be editable, e.g. on wordpress.com:
+        const text = document.activeElement.contentWindow.document
+          .getSelection()
+          .toString();
+        callback({
+          markupList: [{ text: text }],
+          metaData: metaData,
+          isEditableText: false,
+          url: request.pageUrl
+        });
+        return;
+      }
+    } catch (err) {
+      log.error("error on checkText", err);
     }
   }
   const selection = window.getSelection();
@@ -215,22 +219,27 @@ function applyCorrection(request) {
     return;
   }
   // TODO: active element might have changed in between?!
-  const activeElem = document.activeElement;
+  //   const activeElem = document.activeElement;
+  const activeElem = activeElement();
   // Note: this duplicates the logic from getTextOfActiveElement():
   let found = false;
-  if (isSimpleInput(activeElem)) {
-    found = replaceIn(activeElem, "value", newMarkupList);
-  } else if (activeElem.hasAttribute("contenteditable")) {
-    found = replaceIn(activeElem, "innerHTML", newMarkupList); // contentEditable=true
-  } else if (activeElem.tagName === "IFRAME") {
-    const activeElem2 = activeElem.contentWindow.document.activeElement;
-    if (activeElem2 && activeElem2.innerHTML) {
-      found = replaceIn(activeElem2, "innerHTML", newMarkupList); // e.g. on wordpress.com
-    } else if (isSimpleInput(activeElem2)) {
-      found = replaceIn(activeElem2, "value", newMarkupList); // e.g. sending messages on upwork.com (https://www.upwork.com/e/.../contracts/v2/.../)
-    } else {
-      found = replaceIn(activeElem2, "textContent", newMarkupList); // tinyMCE as used on languagetool.org
+  try {
+    if (isSimpleInput(activeElem)) {
+      found = replaceIn(activeElem, "value", newMarkupList);
+    } else if (activeElem.hasAttribute("contenteditable")) {
+      found = replaceIn(activeElem, "innerHTML", newMarkupList); // contentEditable=true
+    } else if (activeElem.tagName === "IFRAME") {
+      const activeElem2 = activeElem.contentWindow.document.activeElement;
+      if (activeElem2 && activeElem2.innerHTML) {
+        found = replaceIn(activeElem2, "innerHTML", newMarkupList); // e.g. on wordpress.com
+      } else if (isSimpleInput(activeElem2)) {
+        found = replaceIn(activeElem2, "value", newMarkupList); // e.g. sending messages on upwork.com (https://www.upwork.com/e/.../contracts/v2/.../)
+      } else {
+        found = replaceIn(activeElem2, "textContent", newMarkupList); // tinyMCE as used on languagetool.org
+      }
     }
+  } catch (err) {
+    log.error("error on apply correction", err);
   }
   if (!found) {
     alert(chrome.i18n.getMessage("noReplacementPossible"));
