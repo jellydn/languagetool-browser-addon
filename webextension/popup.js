@@ -917,7 +917,7 @@ function sendMessageToTab(tabId, data, callback) {
   if (chrome.tabs) {
     chrome.tabs.sendMessage(tabId, data, function(response) {
       log.warn("response from context script", response);
-      callback(response);
+      callback && callback(response);
     });
   } else {
     // send to bg for proxy
@@ -925,7 +925,7 @@ function sendMessageToTab(tabId, data, callback) {
       response
     ) {
       log.warn("response from bg proxy", response);
-      callback(response);
+      callback && callback(response);
     });
   }
 }

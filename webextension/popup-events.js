@@ -31,7 +31,15 @@ const DOWN_KEY = "ArrowDown";
 const LEFT_KEY = "ArrowLeft";
 const RIGHT_KEY = "ArrowRight";
 const ENTER_KEY = "Enter";
-const DETECT_KEYS = [UP_KEY, DOWN_KEY, LEFT_KEY, RIGHT_KEY, ENTER_KEY];
+const ESCAPE_KEY = "Escape";
+const DETECT_KEYS = [
+  UP_KEY,
+  DOWN_KEY,
+  LEFT_KEY,
+  RIGHT_KEY,
+  ENTER_KEY,
+  ESCAPE_KEY
+];
 
 let activeSelectRow = -1;
 let activeReplacement = -1;
@@ -46,7 +54,7 @@ if (Tools.isFirefox()) {
   document.addEventListener(
     "DOMContentLoaded",
     event => {
-      console.log("DOM has loaded");
+      log.info("DOM has loaded");
       document.querySelector("body").focus();
     },
     false
@@ -111,7 +119,10 @@ document.addEventListener(
                 activeReplacement = replacements.length;
                 activeTurnOffRule = true;
                 const element = turnOffRule[0];
-                if (element && element.className.indexOf(SELECT_TURN_OFF_RULE) === -1) {
+                if (
+                  element &&
+                  element.className.indexOf(SELECT_TURN_OFF_RULE) === -1
+                ) {
                   element.className += ` ${SELECT_TURN_OFF_RULE}`;
                 }
               }
@@ -120,7 +131,10 @@ document.addEventListener(
                 activeReplacement = replacements.length;
                 activeAddToDict = true;
                 const element = addToDict[0];
-                if (element && element.className.indexOf(SELECT_ADD_TO_DICT) === -1) {
+                if (
+                  element &&
+                  element.className.indexOf(SELECT_ADD_TO_DICT) === -1
+                ) {
                   element.className += ` ${SELECT_ADD_TO_DICT}`;
                 }
               }
@@ -148,26 +162,51 @@ document.addEventListener(
               } else {
                 const turnOffRule = row.getElementsByClassName(TURN_OFF_RULE);
                 const addToDict = row.getElementsByClassName(ADD_TO_DICT);
-                if (turnOffRule && activeTurnOffRule || addToDict && activeAddToDict) {
-                  toggleSelectReplacement(replacements, activeReplacement, false);
+                if (
+                  (turnOffRule && activeTurnOffRule) ||
+                  (addToDict && activeAddToDict)
+                ) {
+                  toggleSelectReplacement(
+                    replacements,
+                    activeReplacement,
+                    false
+                  );
                   activeTurnOffRule = false;
                   activeAddToDict = false;
                   activeReplacement = 0;
                   toggleSelectReplacement(replacements, activeReplacement);
-                } else if (turnOffRule && turnOffRule.length && !activeTurnOffRule) {
-                  toggleSelectReplacement(replacements, activeReplacement, false);
+                } else if (
+                  turnOffRule &&
+                  turnOffRule.length &&
+                  !activeTurnOffRule
+                ) {
+                  toggleSelectReplacement(
+                    replacements,
+                    activeReplacement,
+                    false
+                  );
                   activeReplacement += 1;
                   activeTurnOffRule = true;
                   const element = turnOffRule[0];
-                  if (element && element.className.indexOf(SELECT_TURN_OFF_RULE) === -1) {
+                  if (
+                    element &&
+                    element.className.indexOf(SELECT_TURN_OFF_RULE) === -1
+                  ) {
                     element.className += ` ${SELECT_TURN_OFF_RULE}`;
                   }
                 } else if (addToDict && addToDict.length && !activeAddToDict) {
-                  toggleSelectReplacement(replacements, activeReplacement, false);
+                  toggleSelectReplacement(
+                    replacements,
+                    activeReplacement,
+                    false
+                  );
                   activeReplacement += 1;
                   activeAddToDict = true;
                   const element = addToDict[0];
-                  if (element && element.className.indexOf(SELECT_ADD_TO_DICT) === -1) {
+                  if (
+                    element &&
+                    element.className.indexOf(SELECT_ADD_TO_DICT) === -1
+                  ) {
                     element.className += ` ${SELECT_ADD_TO_DICT}`;
                   }
                 }
@@ -182,7 +221,9 @@ document.addEventListener(
             let hasTrigger = false;
             if (row) {
               if (activeTurnOffRule) {
-                const turnOffRules = row.getElementsByClassName(SELECT_TURN_OFF_RULE);
+                const turnOffRules = row.getElementsByClassName(
+                  SELECT_TURN_OFF_RULE
+                );
                 if (turnOffRules && turnOffRules.length) {
                   hasTrigger = true;
                   const element = turnOffRules[0];
@@ -191,7 +232,9 @@ document.addEventListener(
                   }
                 }
               } else if (activeAddToDict) {
-                const addToDicts = row.getElementsByClassName(SELECT_ADD_TO_DICT);
+                const addToDicts = row.getElementsByClassName(
+                  SELECT_ADD_TO_DICT
+                );
                 if (addToDicts && addToDicts.length) {
                   hasTrigger = true;
                   const element = addToDicts[0];
@@ -200,7 +243,9 @@ document.addEventListener(
                   }
                 }
               } else {
-                const replacements = row.getElementsByClassName(REPLACEMENT_ACTIVE);
+                const replacements = row.getElementsByClassName(
+                  REPLACEMENT_ACTIVE
+                );
                 if (replacements && replacements.length) {
                   const selectedReplacement = replacements[0];
                   hasTrigger = true;
@@ -219,7 +264,45 @@ document.addEventListener(
             }
           }
           break;
+        case ESCAPE_KEY:
+          {
+            // close popup
+            if (chrome && chrome.tabs) {
+              chrome.tabs.query({ active: true, currentWindow: true }, function(
+                tabs
+              ) {
+                if (tabs && tabs.length > 0) {
+                  sendMessageToTab(tabs[0].id, { action: "closePopup" });
+                }
+              });
+            } else {
+              chrome.runtime
+                .sendMessage({
+                  action: "getActiveTab"
+                })
+                .then(
+                  function(response) {
+                    log.warn("response", response);
+                    if (response && response.tabs && response.tabs.length > 0) {
+                      sendMessageToTab(response.tabs[0].id, {
+                        action: "closePopup"
+                      });
+                    }
+                  },
+                  function(error) {
+                    if (error) {
+                      log.warn("found error", error);
+                    }
+                  }
+                );
+            }
+          }
+          break;
+        default:
+          log.info(`unsupport for key ${keyName}`);
       }
+    } else {
+      log.info(`unsupport for key ${keyName}`);
     }
   },
   false
@@ -268,7 +351,10 @@ function toggleSelectReplacement(replacements, index, isSelect = true) {
         }
       } else {
         if (className.indexOf(REPLACEMENT_ACTIVE) !== -1) {
-          selectedReplacement.className = className.replace(` ${REPLACEMENT_ACTIVE}`, "");
+          selectedReplacement.className = className.replace(
+            ` ${REPLACEMENT_ACTIVE}`,
+            ""
+          );
         }
       }
     }
@@ -300,7 +386,10 @@ function resetTurnOffRuleAndAddToDict() {
     for (let counter = 0; counter < turnOffRules.length; counter += 1) {
       const element = turnOffRules[counter];
       if (element && element.className.indexOf(SELECT_TURN_OFF_RULE) !== -1) {
-        element.className = element.className.replace(` ${SELECT_TURN_OFF_RULE}`, "");
+        element.className = element.className.replace(
+          ` ${SELECT_TURN_OFF_RULE}`,
+          ""
+        );
       }
     }
   }
@@ -308,7 +397,10 @@ function resetTurnOffRuleAndAddToDict() {
     for (let counter = 0; counter < addToDicts.length; counter += 1) {
       const element = addToDicts[counter];
       if (element && element.className.indexOf(SELECT_ADD_TO_DICT) !== -1) {
-        element.className = element.className.replace(` ${SELECT_ADD_TO_DICT}`, "");
+        element.className = element.className.replace(
+          ` ${SELECT_ADD_TO_DICT}`,
+          ""
+        );
       }
     }
   }

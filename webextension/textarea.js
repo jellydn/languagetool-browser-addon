@@ -250,7 +250,7 @@ function attachEventListenersForTextarea() {
   // observer the  textarea
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      log.warn("mutation", mutation.type, mutation);
+      log.info("mutation", mutation.type, mutation);
       const textareaElements = document.getElementsByTagName("textarea");
       if (totalTextAreas !== textareaElements.length) {
         for (
