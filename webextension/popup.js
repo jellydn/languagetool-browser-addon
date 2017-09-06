@@ -376,18 +376,20 @@ function renderMatchesToHtml(resultJson, response, tabs, callback) {
 }
 
 function setHintListener() {
-  chrome.commands.getAll(function(commands) {
-    Tools.getStorage().get(
-      {
-        showShortcutHint: true
-      },
-      function(items) {
-        if (items.showShortcutHint) {
-          showShortcutHint(commands);
+  if (chrome.commands) {
+    chrome.commands.getAll(function(commands) {
+      Tools.getStorage().get(
+        {
+          showShortcutHint: true
+        },
+        function(items) {
+          if (items.showShortcutHint) {
+            showShortcutHint(commands);
+          }
         }
-      }
-    );
-  });
+      );
+    });
+  }
 }
 
 function fillReviewRequest() {
@@ -678,7 +680,7 @@ function addListenerActions(elements, tabs, response) {
           serverUrl: serverUrl,
           pageUrl: tabs[0].url
         };
-        chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
+        sendMessageToTab(tabs[0].id, data, function(response) {
           doCheck(tabs, "apply_suggestion"); // re-check, as applying changes might change context also for other errors
         });
       }
@@ -688,7 +690,7 @@ function addListenerActions(elements, tabs, response) {
 
 function reCheck(tabs, causeOfCheck) {
   log.info("reCheck", causeOfCheck, serverUrl, tabs);
-  chrome.tabs.sendMessage(
+  sendMessageToTab(
     tabs[0].id,
     {
       action: "checkText",
@@ -874,49 +876,28 @@ function doCheck(tabs, causeOfCheck, optionalTrackDetails) {
         return;
       }
     }
+    sendMessageToTab(
+      tabs[0].id,
+      {
+        action: "checkText",
+        serverUrl: serverUrl,
+        pageUrl: tabs[0].url || pageUrlParam
+      },
+      function(response) {
+        handleCheckResult(response, tabs);
+        Tools.getStorage().set(
+          {
+            lastCheck: new Date().getTime()
+          },
+          function() {}
+        );
+      }
+    );
     Tools.track(
       tabs[0].url || pageUrlParam,
       "check_trigger:" + causeOfCheck,
       optionalTrackDetails
     );
-    if (chrome.tabs) {
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        {
-          action: "checkText",
-          serverUrl: serverUrl,
-          pageUrl: tabs[0].url || pageUrlParam
-        },
-        function(response) {
-          handleCheckResult(response, tabs);
-          Tools.getStorage().set(
-            {
-              lastCheck: new Date().getTime()
-            },
-            function() {}
-          );
-        }
-      );
-    } else {
-      chrome.runtime.sendMessage(
-        {
-          tabId: tabs[0].id,
-          action: "checkText",
-          serverUrl: serverUrl,
-          pageUrl: tabs[0].url || pageUrlParam
-        },
-        function(response) {
-          log.warn("response from bg", response);
-          handleCheckResult(response, tabs);
-          Tools.getStorage().set(
-            {
-              lastCheck: new Date().getTime()
-            },
-            function() {}
-          );
-        }
-      );
-    }
   } else {
     // TODO: handle for empty tabs
   }
@@ -930,6 +911,23 @@ function getRandomToken() {
     hex += randomPool[i].toString(16);
   }
   return hex;
+}
+
+function sendMessageToTab(tabId, data, callback) {
+  if (chrome.tabs) {
+    chrome.tabs.sendMessage(tabId, data, function(response) {
+      log.warn("response from context script", response);
+      callback(response);
+    });
+  } else {
+    // send to bg for proxy
+    chrome.runtime.sendMessage(Object.assign({}, { tabId }, data), function(
+      response
+    ) {
+      log.warn("response from bg proxy", response);
+      callback(response);
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function() {

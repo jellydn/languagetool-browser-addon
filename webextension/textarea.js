@@ -99,7 +99,7 @@ function checkErrorMenu(evt) {
       iframe: {
         css: {
           width: "420px",
-          height: "500px"
+          height: "600px"
         }
       }
     }

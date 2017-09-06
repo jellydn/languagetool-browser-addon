@@ -36,23 +36,13 @@ function handleMessage(request, sender, sendResponse) {
     default: {
       if (request.tabId) {
         // proxy msg from cs -> bg -> cs
-        console.log("sendResponse proxy action to cs", {
-          action: request.action,
-          serverUrl: request.serverUrl,
-          pageUrl: request.pageUrl
-        });
-        chrome.tabs.sendMessage(
-          request.tabId,
-          {
-            action: request.action,
-            serverUrl: request.serverUrl,
-            pageUrl: request.pageUrl
-          },
-          function(response) {
-            console.log("sendResponse proxy action to cs result", response);
-            sendResponse(response);
-          }
+        console.log(
+          `sendResponse proxy action ${request.action} to cs`,
+          request
         );
+        chrome.tabs.sendMessage(request.tabId, request, function(response) {
+          sendResponse(response);
+        });
         return true;
       } else {
         // TODO: handle for unknow action
