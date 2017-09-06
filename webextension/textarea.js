@@ -26,6 +26,7 @@ const MARGIN_TO_CORNER = 8;
 const toggleState = {};
 let textareaCounter = 0;
 let totalTextAreas = 0;
+let totalContentEditable = 0;
 let disableOnPage = false;
 
 function offset(el) {
@@ -236,6 +237,7 @@ function isHiddenElement(el) {
 
 function attachEventListenersForTextarea() {
   log.info("attachEventListenersForTextarea");
+  // find all textarea elemnets
   const textareaElements = document.getElementsByTagName("textarea");
   log.info("insertLanguageToolIcon", textareaElements);
   totalTextAreas = textareaElements.length;
@@ -247,7 +249,24 @@ function attachEventListenersForTextarea() {
     }
   }
 
-  // observer the  textarea
+  // find all element base on attribute
+  const contentEditableElements = document.querySelectorAll(
+    '[contenteditable="true"]'
+  );
+  totalContentEditable = contentEditableElements.length;
+  for (
+    let counter = 0;
+    counter < contentEditableElements.length;
+    counter += 1
+  ) {
+    const textElement = contentEditableElements[counter];
+    textElement.addEventListener("mouseup", triggerMarker, false);
+    if (textElement === document.activeElement) {
+      triggerMarker();
+    }
+  }
+
+  // observer the textarea and content editable
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       log.info("mutation", mutation.type, mutation);
@@ -268,6 +287,26 @@ function attachEventListenersForTextarea() {
           }
         }
         totalTextAreas = textareaElements.length;
+      }
+      const contentEditableElements = document.querySelectorAll(
+        '[contenteditable="true"]'
+      );
+      if (totalContentEditable !== contentEditableElements.length) {
+        for (
+          let counter = totalContentEditable;
+          counter < contentEditableElements.length;
+          counter += 1
+        ) {
+          const textElement = contentEditableElements[counter];
+          log.info("textElement", textElement);
+          if (textElement) {
+            textElement.addEventListener("mouseup", triggerMarker, false);
+            if (textElement === document.activeElement) {
+              triggerMarker();
+            }
+          }
+        }
+        totalContentEditable = contentEditableElements.length;
       }
     });
   });
