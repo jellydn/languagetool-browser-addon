@@ -204,19 +204,21 @@ function disableLanguageToolButton(clickHandler, counter, position) {
 }
 
 function textAreaWrapper(textElement, btnElements) {
+  const { offsetLeft, offsetTop } = textElement;
   const wrapper = document.createElement("div");
-  const parent = textElement.parentNode;
   wrapper.className = REMIND_WRAPPER_CLASS;
   wrapper.id =
     "textarea-wrapper-" +
     (textElement.name || textElement.id) +
     "-" +
     Date.now();
-  wrapper.style.position = "relative";
+  wrapper.style.position = "absolute";
+  wrapper.style.top = offsetTop + "px";
+  wrapper.style.left = offsetLeft + "px";
   for (const btnElement of btnElements) {
     wrapper.appendChild(btnElement);
   }
-  parent.insertBefore(wrapper, textElement);
+  document.body.appendChild(wrapper);
 }
 
 function triggerMarker() {
