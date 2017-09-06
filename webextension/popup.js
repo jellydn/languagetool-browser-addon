@@ -786,12 +786,17 @@ function startCheckMaybeWithWarning(tabs) {
         preferredVariants.push(items.caVariant);
       }
       if (items.allowRemoteCheck === true) {
-        doCheck(tabs, "manually_triggered");
-        const newCounter = items.usageCounter + 1;
-        Tools.getStorage().set({ usageCounter: newCounter }, function() {});
-        chrome.runtime.setUninstallURL(
-          "https://languagetool.org/webextension/uninstall.php"
-        );
+        if (tabs.length > 0) {
+          doCheck(tabs, "manually_triggered");
+          const newCounter = items.usageCounter + 1;
+          Tools.getStorage().set({ usageCounter: newCounter }, function() {});
+          chrome.runtime.setUninstallURL &&
+            chrome.runtime.setUninstallURL(
+              "https://languagetool.org/webextension/uninstall.php"
+            );
+        } else {
+          // TODO: handle when empty tabs
+        }
       } else {
         let message = "<p>";
         if (serverUrl === defaultServerUrl) {
@@ -844,52 +849,77 @@ function doCheck(tabs, causeOfCheck, optionalTrackDetails) {
     '<img src="images/throbber_28.gif"> ' +
       chrome.i18n.getMessage("checkingProgress")
   );
-  const url = tabs[0].url ? tabs[0].url : pageUrlParam;
-  if (
-    Tools.isChrome() &&
-    url.match(/^(https?:\/\/chrome\.google\.com\/webstore.*)/)
-  ) {
-    renderStatus(chrome.i18n.getMessage("webstoreSiteNotSupported"));
-    Tools.logOnServer("siteNotSupported on " + url, serverUrl);
-    return;
-  } else if (url.match(unsupportedSitesRegex)) {
-    if (url.match(/docs\.google\.com/)) {
-      renderStatus(
-        chrome.i18n.getMessage("googleDocsNotSupported", googleDocsExtension)
-      );
-      Tools.logOnServer("link to google docs extension");
+  if (tabs && tabs.length) {
+    const url = tabs[0].url ? tabs[0].url : pageUrlParam;
+    if (
+      Tools.isChrome() &&
+      url.match(/^(https?:\/\/chrome\.google\.com\/webstore.*)/)
+    ) {
+      renderStatus(chrome.i18n.getMessage("webstoreSiteNotSupported"));
+      Tools.logOnServer("siteNotSupported on " + url, serverUrl);
       return;
-    } else {
-      renderStatus(chrome.i18n.getMessage("siteNotSupported"));
-      Tools.logOnServer(
-        "siteNotSupported on " + url.replace(/file:.*/, "file:[...]"),
-        serverUrl
-      ); // don't log paths, may contain personal information
-      return;
+    } else if (url.match(unsupportedSitesRegex)) {
+      if (url.match(/docs\.google\.com/)) {
+        renderStatus(
+          chrome.i18n.getMessage("googleDocsNotSupported", googleDocsExtension)
+        );
+        Tools.logOnServer("link to google docs extension");
+        return;
+      } else {
+        renderStatus(chrome.i18n.getMessage("siteNotSupported"));
+        Tools.logOnServer(
+          "siteNotSupported on " + url.replace(/file:.*/, "file:[...]"),
+          serverUrl
+        ); // don't log paths, may contain personal information
+        return;
+      }
     }
-  }
-  Tools.track(
-    tabs[0].url || pageUrlParam,
-    "check_trigger:" + causeOfCheck,
-    optionalTrackDetails
-  );
-  chrome.tabs.sendMessage(
-    tabs[0].id,
-    {
-      action: "checkText",
-      serverUrl: serverUrl,
-      pageUrl: tabs[0].url || pageUrlParam
-    },
-    function(response) {
-      handleCheckResult(response, tabs);
-      Tools.getStorage().set(
+    Tools.track(
+      tabs[0].url || pageUrlParam,
+      "check_trigger:" + causeOfCheck,
+      optionalTrackDetails
+    );
+    if (chrome.tabs) {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
         {
-          lastCheck: new Date().getTime()
+          action: "checkText",
+          serverUrl: serverUrl,
+          pageUrl: tabs[0].url || pageUrlParam
         },
-        function() {}
+        function(response) {
+          handleCheckResult(response, tabs);
+          Tools.getStorage().set(
+            {
+              lastCheck: new Date().getTime()
+            },
+            function() {}
+          );
+        }
+      );
+    } else {
+      chrome.runtime.sendMessage(
+        {
+          tabId: tabs[0].id,
+          action: "checkText",
+          serverUrl: serverUrl,
+          pageUrl: tabs[0].url || pageUrlParam
+        },
+        function(response) {
+          log.warn("response from bg", response);
+          handleCheckResult(response, tabs);
+          Tools.getStorage().set(
+            {
+              lastCheck: new Date().getTime()
+            },
+            function() {}
+          );
+        }
       );
     }
-  );
+  } else {
+    // TODO: handle for empty tabs
+  }
 }
 
 function getRandomToken() {
@@ -903,14 +933,43 @@ function getRandomToken() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-    if (tabs[0].url === "http://localhost/languagetool-for-chrome-tests.html") {
-      testMode = true;
-      runTest1(tabs, "textarea1", 1);
-      // TODO: more tests here
-    } else {
-      testMode = false;
-      startCheckMaybeWithWarning(tabs);
-    }
-  });
+  if (chrome && chrome.tabs) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (
+        tabs[0].url === "http://localhost/languagetool-for-chrome-tests.html"
+      ) {
+        testMode = true;
+        runTest1(tabs, "textarea1", 1);
+        // TODO: more tests here
+      } else {
+        testMode = false;
+        startCheckMaybeWithWarning(tabs);
+      }
+    });
+  } else {
+    // adhoc fix
+    // due to open url moz-extension://7644b7c6-5fa4-b942-99b5-0f3b0496e8d1/popup.html?pageUrl=http://localhost:5000/languagetool-for-chrome-tests.html
+    // on iframe, chrome.tabs is not defined
+    // below code is running like content script
+    testMode = false;
+    startCheckMaybeWithWarning([]);
+    log.warn("edge case", chrome.tabs, chrome.runtime.getURL("popup.html"));
+    chrome.runtime
+      .sendMessage({
+        action: "getActiveTab"
+      })
+      .then(
+        function(response) {
+          log.warn("response", response);
+          if (response && response.tabs) {
+            startCheckMaybeWithWarning(response.tabs);
+          }
+        },
+        function(error) {
+          if (error) {
+            log.warn("found error", error);
+          }
+        }
+      );
+  }
 });
