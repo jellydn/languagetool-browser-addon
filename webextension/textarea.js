@@ -89,11 +89,13 @@ function checkErrorMenu(evt) {
       textAreaElement.focus();
     }
   }
+  $.fancybox.defaults.buttons = [];
   $.fancybox.open({
     type: "iframe",
     src:
       chrome.runtime.getURL("popup.html") + "?pageUrl=" + window.location.href,
     opts: {
+      fullscreen: false,
       iframe: {
         css: {
           width: "420px",

@@ -195,10 +195,7 @@ function renderMatchesToHtml(resultJson, response, tabs, callback) {
     translatedLanguage = language;
   }
   // hide close button for opening popup from fancybox
-  let html =
-    pageUrlParam.length > 0
-      ? '<a style="display:none;" id="closeLink" href="#"></a>'
-      : '<a id="closeLink" href="#"></a>';
+  let html = '<a id="closeLink" href="#"></a>';
   html += DOMPurify.sanitize(getLanguageSelector(languageCode));
   html += '<div id="outerShortcutHint"></div>';
   html += "<hr>";
@@ -603,6 +600,9 @@ function addLinkListeners(response, tabs) {
   const closeLink = document.getElementById("closeLink");
   closeLink.addEventListener("click", function() {
     self.close();
+    if (tabs && tabs.length > 0 && pageUrlParam.length > 0) {
+      sendMessageToTab(tabs[0].id, { action: "closePopup" });
+    }
   });
   addListenerActions(document.getElementsByTagName("a"), tabs, response);
   addListenerActions(document.getElementsByTagName("div"), tabs, response);

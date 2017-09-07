@@ -299,10 +299,10 @@ document.addEventListener(
           }
           break;
         default:
-          log.info(`unsupport for key ${keyName}`);
+          log.info("unsupport for key", keyName);
       }
     } else {
-      log.info(`unsupport for key ${keyName}`);
+      log.info("unsupport for key", keyName);
     }
   },
   false
