@@ -292,6 +292,12 @@ function attachEventListenersForTextarea() {
     }
   }
 
+  // detect on window resize
+  window.onresize = function(evt) {
+    log.info("resize window", evt);
+    triggerMarker();
+  };
+
   // observer the textarea and content editable
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
