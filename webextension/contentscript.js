@@ -30,7 +30,7 @@ let unusedMinutesShowReminder = 0.5;
 function handleRequest(request, sender, callback) {
   log.info("handleRequest", request, sender);
   if (request.action === "closePopup") {
-    closeFancyPopup();
+    closePopup();
   } else if (request.action === "checkText") {
     checkText(callback, request);
   } else if (request.action === "getCurrentText") {
@@ -49,8 +49,8 @@ function handleRequest(request, sender, callback) {
   }
 }
 
-function closeFancyPopup() {
-  $.fancybox.close();
+function closePopup() {
+  $.featherlight.close();
 }
 
 function checkText(callback, request) {

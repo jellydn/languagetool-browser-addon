@@ -194,8 +194,10 @@ function renderMatchesToHtml(resultJson, response, tabs, callback) {
   if (!translatedLanguage) {
     translatedLanguage = language;
   }
-  // hide close button for opening popup from fancybox
-  let html = '<a id="closeLink" href="#"></a>';
+  let html =
+    pageUrlParam.length > 0
+      ? '<a style="display:none;" id="closeLink" href="#"></a>'
+      : '<a id="closeLink" href="#"></a>';
   html += DOMPurify.sanitize(getLanguageSelector(languageCode));
   html += '<div id="outerShortcutHint"></div>';
   html += "<hr>";
@@ -600,9 +602,6 @@ function addLinkListeners(response, tabs) {
   const closeLink = document.getElementById("closeLink");
   closeLink.addEventListener("click", function() {
     self.close();
-    if (tabs && tabs.length > 0 && pageUrlParam.length > 0) {
-      sendMessageToTab(tabs[0].id, { action: "closePopup" });
-    }
   });
   addListenerActions(document.getElementsByTagName("a"), tabs, response);
   addListenerActions(document.getElementsByTagName("div"), tabs, response);
@@ -916,7 +915,7 @@ function getRandomToken() {
 function sendMessageToTab(tabId, data, callback) {
   if (chrome.tabs) {
     chrome.tabs.sendMessage(tabId, data, function(response) {
-      log.warn("response from context script", response);
+      log.info("response from context script", response);
       callback && callback(response);
     });
   } else {
@@ -924,7 +923,7 @@ function sendMessageToTab(tabId, data, callback) {
     chrome.runtime.sendMessage(Object.assign({}, { tabId }, data), function(
       response
     ) {
-      log.warn("response from bg proxy", response);
+      log.info("response from bg proxy", response);
       callback && callback(response);
     });
   }
@@ -951,21 +950,21 @@ document.addEventListener("DOMContentLoaded", function() {
     // below code is running like content script
     testMode = false;
     startCheckMaybeWithWarning([]);
-    log.warn("edge case", chrome.tabs, chrome.runtime.getURL("popup.html"));
+    log.info("edge case", chrome.tabs, chrome.runtime.getURL("popup.html"));
     chrome.runtime
       .sendMessage({
         action: "getActiveTab"
       })
       .then(
         function(response) {
-          log.warn("response", response);
+          log.info("response", response);
           if (response && response.tabs) {
             startCheckMaybeWithWarning(response.tabs);
           }
         },
         function(error) {
           if (error) {
-            log.warn("found error", error);
+            log.info("found error", error);
           }
         }
       );

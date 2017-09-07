@@ -24,7 +24,13 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "web_accessible_resources": ["images/*", "*.js", "vendors/*", "popup.html"],
+  "web_accessible_resources": [
+    "images/*",
+    "*.js",
+    "vendors/*",
+    "popup.html",
+    "about.html"
+  ],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "file:///*"],
@@ -32,14 +38,14 @@
         "vendors/purify.min.js",
         "vendors/jquery.min.js",
         "vendors/loglevel.min.js",
-        "vendors/fancybox/jquery.fancybox.min.js",
+        "vendors/featherlight/featherlight.min.js",
         "helpers.js",
         "contentscript.js",
         "markup.js",
         "textarea.js",
         "tools.js"
       ],
-      "css": ["vendors/fancybox/jquery.fancybox.min.css"]
+      "css": ["vendors/featherlight/featherlight.min.css"]
     },
     {
       "matches": [

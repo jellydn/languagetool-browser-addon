@@ -22,6 +22,7 @@ const REMIND_WRAPPER_CLASS = "lt-text-wrapper";
 const PREFIX_REMIND = "remind-btn-";
 const PREFIX_CHECK = "check-lt-err-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
+const PREFIX_ABOUT = "about-lt-btn-";
 const MARGIN_TO_CORNER = 8;
 const toggleState = {};
 let textareaCounter = 0;
@@ -46,7 +47,8 @@ function insertLanguageToolIcon(element) {
   const btns = [
     remindLanguageToolButton(showRemindMenu, position),
     checkLanguageErrorButton(checkErrorMenu, textareaCounter, position),
-    disableLanguageToolButton(disableMenu, textareaCounter, position)
+    disableLanguageToolButton(disableMenu, textareaCounter, position),
+    aboutLanguageToolButton(showAbout, textareaCounter, position)
   ];
   textAreaWrapper(element, btns);
 }
@@ -54,6 +56,7 @@ function insertLanguageToolIcon(element) {
 /** event hanlders */
 
 function showRemindMenu(evt) {
+  evt.preventDefault();
   const targetId = evt.target.id;
   log.info("ok - show remind menu", targetId);
   const counter = Number(targetId.substr(PREFIX_REMIND.length));
@@ -61,25 +64,27 @@ function showRemindMenu(evt) {
   log.info("ok - counter", counter, toggleState);
   const checkBtn = document.getElementById(PREFIX_CHECK + counter);
   const disableBtn = document.getElementById(PREFIX_DISABLE + counter);
-  if (toggleState[counter]) {
-    if (checkBtn) {
-      checkBtn.style.display = "block";
-    }
-    if (disableBtn) {
-      disableBtn.style.display = "block";
-    }
-  } else {
-    if (checkBtn) {
-      checkBtn.style.display = "none";
-    }
-    if (disableBtn) {
-      disableBtn.style.display = "none";
-    }
-  }
+  const aboutBtn = document.getElementById(PREFIX_ABOUT + counter);
+  checkBtn.style.display = toggleState[counter] ? "block" : "none";
+  disableBtn.style.display = toggleState[counter] ? "block" : "none";
+  aboutBtn.style.display = toggleState[counter] ? "block" : "none";
+}
+
+function showAbout(evt) {
+  log.info("showAbout", evt);
+  $.featherlight({
+    iframe:
+      chrome.runtime.getURL("about.html") + "?pageUrl=" + window.location.href,
+    iframeMaxWidth: "80%",
+    iframeWidth: 500,
+    iframeHeight: 300
+  });
 }
 
 function checkErrorMenu(evt) {
   log.info("checkErrorMenu", evt);
+  evt.stopPropagation();
+  evt.preventDefault();
   const textAreaElement = activeElement();
   if (textAreaElement) {
     log.info("active textarea", textAreaElement);
@@ -89,25 +94,17 @@ function checkErrorMenu(evt) {
       textAreaElement.focus();
     }
   }
-  $.fancybox.defaults.buttons = [];
-  $.fancybox.open({
-    type: "iframe",
-    src:
+  $.featherlight({
+    iframe:
       chrome.runtime.getURL("popup.html") + "?pageUrl=" + window.location.href,
-    opts: {
-      fullscreen: false,
-      iframe: {
-        css: {
-          width: "420px",
-          height: "600px"
-        }
-      }
-    }
+    iframeWidth: 450,
+    iframeHeight: 600
   });
 }
 
-function disableMenu() {
+function disableMenu(evt) {
   log.info("disableMenu");
+  evt.preventDefault();
   disableOnPage = true;
   removeAllButtons();
 }
@@ -192,6 +189,33 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.style.position = "absolute";
   btn.style.top = top + offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
   btn.style.left = left + offsetWidth - btnSize - MARGIN_TO_CORNER - 140 + "px";
+  btn.style.zIndex = 1000;
+  btn.style.cursor = "pointer";
+  btn.style.paddingLeft = "5px";
+  btn.style.paddingRight = "5px";
+  btn.style.backgroundColor = "#afafed";
+  btn.style.color = "#fff";
+  btn.style.width = "60px";
+  btn.style.fontSize = "13px";
+  return btn;
+}
+
+function aboutLanguageToolButton(clickHandler, counter, position) {
+  const { top, left, offsetHeight, offsetWidth } = position;
+  const btn = document.createElement("A");
+  btn.onclick = clickHandler;
+  btn.id = PREFIX_ABOUT + counter;
+  btn.className = REMIND_BTN_CLASS;
+  btn.innerText = "About";
+  // style
+  const btnSize = 25;
+  btn.style.display = "none";
+  btn.style.height = btnSize + "px";
+  btn.style.lineHeight = btnSize + "px";
+  btn.style.textAlign = "center";
+  btn.style.position = "absolute";
+  btn.style.top = top + offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
+  btn.style.left = left + offsetWidth - btnSize - MARGIN_TO_CORNER - 215 + "px";
   btn.style.zIndex = 1000;
   btn.style.cursor = "pointer";
   btn.style.paddingLeft = "5px";
@@ -314,7 +338,7 @@ function attachEventListenersForTextarea() {
   });
 
   // configuration of the observer:
-  var config = { childList: true };
+  const config = { childList: true };
 
   // pass in the target node, as well as the observer options
   observer.observe(document.body, config);

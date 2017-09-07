@@ -272,7 +272,13 @@ document.addEventListener(
                 tabs
               ) {
                 if (tabs && tabs.length > 0) {
-                  sendMessageToTab(tabs[0].id, { action: "closePopup" });
+                  sendMessageToTab(
+                    tabs[0].id,
+                    { action: "closePopup" },
+                    function(response) {
+                      log.warn("response", response);
+                    }
+                  );
                 }
               });
             } else {
@@ -284,9 +290,15 @@ document.addEventListener(
                   function(response) {
                     log.warn("response", response);
                     if (response && response.tabs && response.tabs.length > 0) {
-                      sendMessageToTab(response.tabs[0].id, {
-                        action: "closePopup"
-                      });
+                      sendMessageToTab(
+                        response.tabs[0].id,
+                        {
+                          action: "closePopup"
+                        },
+                        function(response) {
+                          log.warn("response", response);
+                        }
+                      );
                     }
                   },
                   function(error) {
