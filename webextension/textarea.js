@@ -85,6 +85,16 @@ function checkErrorMenu(evt) {
   log.info("checkErrorMenu", evt);
   evt.stopPropagation();
   evt.preventDefault();
+  const targetId = evt.target.id;
+  const counter = Number(targetId.substr(PREFIX_CHECK.length));
+  toggleState[counter] = !toggleState[counter];
+  const checkBtn = document.getElementById(PREFIX_CHECK + counter);
+  const disableBtn = document.getElementById(PREFIX_DISABLE + counter);
+  const aboutBtn = document.getElementById(PREFIX_ABOUT + counter);
+  checkBtn.style.display = "none";
+  disableBtn.style.display = "none";
+  aboutBtn.style.display = "none";
+
   const textAreaElement = activeElement();
   if (textAreaElement) {
     log.info("active textarea", textAreaElement);
