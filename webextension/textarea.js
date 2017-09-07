@@ -75,9 +75,8 @@ function showAbout(evt) {
   $.featherlight({
     iframe:
       chrome.runtime.getURL("about.html") + "?pageUrl=" + window.location.href,
-    iframeMaxWidth: "80%",
-    iframeWidth: 500,
-    iframeHeight: 300
+    iframeWidth: 300,
+    iframeHeight: 250
   });
 }
 
@@ -259,14 +258,36 @@ function textAreaWrapper(textElement, btnElements) {
 }
 
 function triggerMarker() {
-  log.info("triggerMarker");
+  log.info(
+    "triggerMarker",
+    document.activeElement.tagName,
+    document.activeElement.contentEditable
+  );
+  console.trace("who is called this");
   if (activeElement()) {
     // turn off marker
     removeAllButtons();
   }
-  setActiveElement(document.activeElement);
-  if (activeElement() && !isHiddenElement(activeElement()) && !disableOnPage) {
-    insertLanguageToolIcon(activeElement());
+  log.warn(
+    "compare activeElement and document.activeElement",
+    activeElement(),
+    document.activeElement,
+    activeElement === document.activeElement
+  );
+  if (
+    document.activeElement.tagName === "TEXTAREA" ||
+    document.activeElement.contentEditable !== "inherit"
+  ) {
+    setActiveElement(document.activeElement);
+    if (
+      activeElement() &&
+      !isHiddenElement(activeElement()) &&
+      !disableOnPage
+    ) {
+      insertLanguageToolIcon(activeElement());
+    }
+  } else {
+    setActiveElement(null);
   }
 }
 

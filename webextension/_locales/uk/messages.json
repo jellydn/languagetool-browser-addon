@@ -1,10 +1,12 @@
 {
   "addToDictionary": {
-    "description": "Link shown in the popup to accept a word to the internal dictionary",
+    "description":
+      "Link shown in the popup to accept a word to the internal dictionary",
     "message": "додати до словника"
   },
   "addToDictionaryTitle": {
-    "description": "Title hover shown in the popup to accept a word to the internal dictionary",
+    "description":
+      "Title hover shown in the popup to accept a word to the internal dictionary",
     "message": "додати \"$word$\" до персонального словника",
     "placeholders": {
       "word": {
@@ -14,36 +16,51 @@
     }
   },
   "appDesc": {
-    "description": "The description of the application, displayed in the web store.",
+    "description":
+      "The description of the application, displayed in the web store.",
     "message": "Перевіряйте граматику та стиль текстів будь-де у вебі"
   },
   "appStoreDesc10": {
-    "description": "Description paragraph 1 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Цим розширенням ви можете перевіряти тексти за допомогою вільної програми перевірки граматики та стилю LanguageTool. Програма LanguageTool знаходить багато помилок, які проста перевірка орфографії не може визначити, напр. вживання неправильного відмінка після прийменника, повтор слів, невластиві мові сполуки тощо. LanguageTool підтрмує понад 25 мов, зокрема англійську, іспанську, французьку, німецьку, польську і українську."
+    "description":
+      "Description paragraph 1 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Цим розширенням ви можете перевіряти тексти за допомогою вільної програми перевірки граматики та стилю LanguageTool. Програма LanguageTool знаходить багато помилок, які проста перевірка орфографії не може визначити, напр. вживання неправильного відмінка після прийменника, повтор слів, невластиві мові сполуки тощо. LanguageTool підтрмує понад 25 мов, зокрема англійську, іспанську, французьку, німецьку, польську і українську."
   },
   "appStoreDesc20": {
-    "description": "Description paragraph 2 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "LanguageTool розроблено з думкою про простоту використання. За натисканням налаштовної комбінації клавіш, LanguageTool миттєво перевірить орфографію і граматику вибраного тексту. LanguageTool є сумісний з майже будь-яким текстом, з будь-якого джерела, включно з соціальними мережами, як Facebook, Twitter або LinkedIn та онлайновими службами, як Gmail. Не підтримуються лише декілька сайтів, такі як docs.google.com та chrome.google.com - в цих випадках використовуйте розширення для документів Google https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm."
+    "description":
+      "Description paragraph 2 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "LanguageTool розроблено з думкою про простоту використання. За натисканням налаштовної комбінації клавіш, LanguageTool миттєво перевірить орфографію і граматику вибраного тексту. LanguageTool є сумісний з майже будь-яким текстом, з будь-якого джерела, включно з соціальними мережами, як Facebook, Twitter або LinkedIn та онлайновими службами, як Gmail. Не підтримуються лише декілька сайтів, такі як docs.google.com та chrome.google.com - в цих випадках використовуйте розширення для документів Google https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm."
   },
   "appStoreDesc30": {
-    "description": "Description paragraph 3 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "З LanguageTool наша мета — надати користувачам повнофункціональну перевірку граматики та стилю, що допоможе отримати контроль і впевненість щодо їхніх текстів. Хоча LanguageTool є критичним розширенням для тих, хто пише нерідною мовою, він також достатньо розумний, щоб знайти помилки, які часто роблять ті, хто пише рідною і покращить написання загалом. Це граматичне і орфографічне виправляння працює з усіма варіантами загальних мов; розрізняючи наприклад між американською і британською англійською. LanguageTool також підтримує особистий словник для винятків або слів, що ви часто вживаєте, але яких немає у традиційному словнику. LanguageTool впізнає ці слова, коли перевірятиме подальші тексти."
+    "description":
+      "Description paragraph 3 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "З LanguageTool наша мета — надати користувачам повнофункціональну перевірку граматики та стилю, що допоможе отримати контроль і впевненість щодо їхніх текстів. Хоча LanguageTool є критичним розширенням для тих, хто пише нерідною мовою, він також достатньо розумний, щоб знайти помилки, які часто роблять ті, хто пише рідною і покращить написання загалом. Це граматичне і орфографічне виправляння працює з усіма варіантами загальних мов; розрізняючи наприклад між американською і британською англійською. LanguageTool також підтримує особистий словник для винятків або слів, що ви часто вживаєте, але яких немає у традиційному словнику. LanguageTool впізнає ці слова, коли перевірятиме подальші тексти."
   },
   "appStoreDesc40": {
-    "description": "Description paragraph 4 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Використання: виберіть текст, який ви хочете перевірити, або клацніть на полі редагування, щоб перевірити його вміст. Тоді клацніть на іконці LT в правому верхньому куті браузера. Ви також можете натиснути скорочення Ctrl+Shift+Space."
+    "description":
+      "Description paragraph 4 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Використання: виберіть текст, який ви хочете перевірити, або клацніть на полі редагування, щоб перевірити його вміст. Тоді клацніть на іконці LT в правому верхньому куті браузера. Ви також можете натиснути скорочення Ctrl+Shift+Space."
   },
   "appStoreDesc60": {
-    "description": "Description paragraph 5 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "На відміну від Grammarly та Ginger LanguageTool працює з багатьма мовами, є на 100% вільним і надає багато схожих можливостей."
+    "description":
+      "Description paragraph 5 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "На відміну від Grammarly та Ginger LanguageTool працює з багатьма мовами, є на 100% вільним і надає багато схожих можливостей."
   },
   "appStoreDesc70": {
-    "description": "Description paragraph 6 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Ваша приватність важлива для нас: типово це розширення перевіряє текст відсилаючи його до https://languagetool.org безпечним з’єднанням. Для цього розширення не вимагається мати жодних облікових записів. Ми не зберігаємо текст, який ви перевіряєте. Насправді, ми навіть не зберігаємо вашу IP-адресу. Повну політику приватності дивіться тут https://languagetool.org/privacy/."
+    "description":
+      "Description paragraph 6 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Ваша приватність важлива для нас: типово це розширення перевіряє текст відсилаючи його до https://languagetool.org безпечним з’єднанням. Для цього розширення не вимагається мати жодних облікових записів. Ми не зберігаємо текст, який ви перевіряєте. Насправді, ми навіть не зберігаємо вашу IP-адресу. Повну політику приватності дивіться тут https://languagetool.org/privacy/."
   },
   "appStoreDesc80": {
-    "description": "Description paragraph 7 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Пишіть про вади за посиланням https://github.com/languagetool-org/languagetool-browser-addon/issues"
+    "description":
+      "Description paragraph 7 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Пишіть про вади за посиланням https://github.com/languagetool-org/languagetool-browser-addon/issues"
   },
   "ast": {
     "description": "automatically added by injectTranslation.py",
@@ -74,7 +91,8 @@
     "message": "Скасувати"
   },
   "checkingProgress": {
-    "description": "Text shown in popup next to a spinning icon, indicating that the check is in progress",
+    "description":
+      "Text shown in popup next to a spinning icon, indicating that the check is in progress",
     "message": "Перевіряється..."
   },
   "contextMenuItem": {
@@ -82,7 +100,8 @@
     "message": "Перевірити у LanguageTool"
   },
   "contextMenuItemWithShortcut": {
-    "description": "Text shown in the context menu, if available. The parenthesis show the shortcut.",
+    "description":
+      "Text shown in the context menu, if available. The parenthesis show the shortcut.",
     "message": "Перевірити у LanguageTool [$shortcut$]",
     "placeholders": {
       "shortcut": {
@@ -134,11 +153,13 @@
     "message": "Німецька (спрощена)"
   },
   "defaultServerLink": {
-    "description": "Options dialog: Link to reset the URL of the API server to the default value",
+    "description":
+      "Options dialog: Link to reset the URL of the API server to the default value",
     "message": "Використовувати типовий"
   },
   "detectedLanguage": {
-    "description": "Text shown in the popup to indicate the automatically detected language of the text checked",
+    "description":
+      "Text shown in the popup to indicate the automatically detected language of the text checked",
     "message": "Визначена мова: $language$",
     "placeholders": {
       "language": {
@@ -148,7 +169,8 @@
     }
   },
   "dictionaryDesc": {
-    "description": "Options dialog: text for the textarea with the user's words to be ignored for spell checking",
+    "description":
+      "Options dialog: text for the textarea with the user's words to be ignored for spell checking",
     "message": "Слова персонального словника (одне слово на рядок):"
   },
   "el": {
@@ -200,26 +222,33 @@
     "message": "Французька"
   },
   "freshInstallReload": {
-    "description": "Error shown when user has installed extension and called it on an already open tab but not reloaded that tab yet",
-    "message": "Якщо ви встановили або (пере)активували це розширення, і хочете перевірити текст, перезавантажте спочатку цю вкладку."
+    "description":
+      "Error shown when user has installed extension and called it on an already open tab but not reloaded that tab yet",
+    "message":
+      "Якщо ви встановили або (пере)активували це розширення, і хочете перевірити текст, перезавантажте спочатку цю вкладку."
   },
   "gl": {
     "description": "automatically added by injectTranslation.py",
     "message": "Галісійська"
   },
   "googleDocsNotSupported": {
-    "description": "Google Docs is too complex to be supported, so we show this error",
-    "message": "Вибачте, це розширення не підтримує сайт Google Docs. Натомість встановіть <a target='_blank' href='$url$'>це розширення</a>, що є оптимізованим для for Google Docs.",
+    "description":
+      "Google Docs is too complex to be supported, so we show this error",
+    "message":
+      "Вибачте, це розширення не підтримує сайт Google Docs. Натомість встановіть <a target='_blank' href='$url$'>це розширення</a>, що є оптимізованим для for Google Docs.",
     "placeholders": {
       "url": {
         "content": "$1",
-        "example": "https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
+        "example":
+          "https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
       }
     }
   },
   "ignoreQuotedLines": {
-    "description": "Options dialog: checkbox to exclude quoted text from checking",
-    "message": "Ігнорувати рядки, що починаються з $char$ (переважно це цитований текст)",
+    "description":
+      "Options dialog: checkbox to exclude quoted text from checking",
+    "message":
+      "Ігнорувати рядки, що починаються з $char$ (переважно це цитований текст)",
     "placeholders": {
       "char": {
         "content": "<span id='quoteChar'>&gt;</span>",
@@ -228,7 +257,8 @@
     }
   },
   "ignoredRules": {
-    "description": "Text shown at the bottom of the popup to turn on turned off rules again",
+    "description":
+      "Text shown at the bottom of the popup to turn on turned off rules again",
     "message": "Ці правило вимкнені, клацніть на правилі, щоб його увімкнути:"
   },
   "is": {
@@ -248,7 +278,8 @@
     "message": "Кхмерська"
   },
   "language": {
-    "description": "Text shown in the popup to indicate the automatically detected language of the text checked",
+    "description":
+      "Text shown in the popup to indicate the automatically detected language of the text checked",
     "message": "Мова:"
   },
   "lt": {
@@ -264,11 +295,14 @@
     "message": "Рідна мова:"
   },
   "motherTongueExpl": {
-    "description": "Options dialog: more descriptive text explaining what selection of mother tongue does",
-    "message": "Встановіть рідну мову, якщо хочете отримувати попередження про фальшивих друзів коли перевіряєте тексти не рідною мовою."
+    "description":
+      "Options dialog: more descriptive text explaining what selection of mother tongue does",
+    "message":
+      "Встановіть рідну мову, якщо хочете отримувати попередження про фальшивих друзів коли перевіряєте тексти не рідною мовою."
   },
   "networkError": {
-    "description": "Error message shown if API server could not be connected due to network issues",
+    "description":
+      "Error message shown if API server could not be connected due to network issues",
     "message": "Помилка мережі ($serverUrl$)",
     "placeholders": {
       "serverUrl": {
@@ -282,16 +316,21 @@
     "message": "Голландська"
   },
   "noErrorsFound": {
-    "description": "Text shown in the popup when the server found no potential errors in the text to check",
+    "description":
+      "Text shown in the popup when the server found no potential errors in the text to check",
     "message": "Помилок не знайдено"
   },
   "noReplacementPossible": {
-    "description": "Error message shown when the extension could not apply the suggestion selected by the user. May happen under some circumstances when editing HTML.",
-    "message": "Перепрошуєм, розширення LanguageTool не може знайти контекст помилки в тексті"
+    "description":
+      "Error message shown when the extension could not apply the suggestion selected by the user. May happen under some circumstances when editing HTML.",
+    "message":
+      "Перепрошуєм, розширення LanguageTool не може знайти контекст помилки в тексті"
   },
   "noReplacementPossible2": {
-    "description": "Error message shown when trying to replace an error with a suggestion in certain HTML that's not yet supported",
-    "message": "Перепрошуємо, не можемо замінити помилку на виправлення. Це може статися коли редагується HTML."
+    "description":
+      "Error message shown when trying to replace an error with a suggestion in certain HTML that's not yet supported",
+    "message":
+      "Перепрошуємо, не можемо замінити помилку на виправлення. Це може статися коли редагується HTML."
   },
   "noResponseFromServer": {
     "description": "Error message if API server doesn't respond",
@@ -326,12 +365,16 @@
     "message": "Польська"
   },
   "placeCursor1": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Поставте курсор в редаговне поле або виберіть текст (не знайдено активних елементів в iframe)."
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Поставте курсор в редаговне поле або виберіть текст (не знайдено активних елементів в iframe)."
   },
   "placeCursor2": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Поставте курсор в редаговне поле або виберіть текст (активний елемент: $elem$).",
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Поставте курсор в редаговне поле або виберіть текст (активний елемент: $elem$).",
     "placeholders": {
       "elem": {
         "content": "$1",
@@ -340,12 +383,16 @@
     }
   },
   "placeCursor3": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Поставте курсор в редаговне поле або виберіть текст (активний елемент не знайдено)."
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Поставте курсор в редаговне поле або виберіть текст (активний елемент не знайдено)."
   },
   "privacyNoteForDefaultServer": {
-    "description": "Shown on first start of extension to make user aware of privacy issues when using the default server on languagetool.org",
-    "message": "Це розширення перевірить ваш текст відіславши його до <a href='$serverUrl$' target='_blank'>$serverUrl$</a> зашифрованим з'єднанням. Ваш текст не буде збережено. Докладніше про це можна прочитати в <a href='$privacyUrl$' target='_blank'>наших правилах приватності</a>.",
+    "description":
+      "Shown on first start of extension to make user aware of privacy issues when using the default server on languagetool.org",
+    "message":
+      "Це розширення перевірить ваш текст відіславши його до <a href='$serverUrl$' target='_blank'>$serverUrl$</a> зашифрованим з'єднанням. Ваш текст не буде збережено. Докладніше про це можна прочитати в <a href='$privacyUrl$' target='_blank'>наших правилах приватності</a>.",
     "placeholders": {
       "privacyUrl": {
         "content": "$2",
@@ -358,8 +405,10 @@
     }
   },
   "privacyNoteForOtherServer": {
-    "description": "Shown on first start of extension to make user aware of privacy issues when using some other than the default server",
-    "message": "Це розширення перевірить ваш текст відіславши його до  $serverUrl$. Щоб перемикнутися назад до типового сервера, зайдіть на сторінку налаштувань розширення.",
+    "description":
+      "Shown on first start of extension to make user aware of privacy issues when using some other than the default server",
+    "message":
+      "Це розширення перевірить ваш текст відіславши його до  $serverUrl$. Щоб перемикнутися назад до типового сервера, зайдіть на сторінку налаштувань розширення.",
     "placeholders": {
       "serverUrl": {
         "content": "$1",
@@ -400,7 +449,8 @@
     "message": "Португальська (Португалія, дореформений)"
   },
   "quotedLinesIgnored": {
-    "description": "Text shown in the popup to let the user know when parts of the text have been ignored",
+    "description":
+      "Text shown in the popup to let the user know when parts of the text have been ignored",
     "message": "Залапковані рядки, що починаються з $char$ було проігноровано",
     "placeholders": {
       "char": {
@@ -410,12 +460,15 @@
     }
   },
   "reviewRequest": {
-    "description": "Shown at the bottom of the popup dialog (for some users only)",
-    "message": "If you like this extension, why not <a target='_blank' href='$url$'>write a review</a>?",
+    "description":
+      "Shown at the bottom of the popup dialog (for some users only)",
+    "message":
+      "If you like this extension, why not <a target='_blank' href='$url$'>write a review</a>?",
     "placeholders": {
       "url": {
         "content": "$1",
-        "example": "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji"
+        "example":
+          "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji"
       }
     }
   },
@@ -431,12 +484,24 @@
     "description": "Options dialog: save button",
     "message": "Зберегти"
   },
+  "aboutDesc": {
+    "message":
+      "LanguageTool is a proof­reading service for English, German, Polish, Russian, and more than 20 other languages. This extension / add-on can help you proofread almost any text you write on the web.",
+    "description":
+      "About dialog: description of the introduction on about popup"
+  },
+  "aboutLink": {
+    "message": "Get more information at languagetool.org",
+    "description": "About dialog: description of the link on about popup"
+  },
   "serverText": {
-    "description": "Options dialog: description of the text field for the API server URL",
+    "description":
+      "Options dialog: description of the text field for the API server URL",
     "message": "Адреса сервера LanguageTool API:"
   },
   "shortcutHint": {
-    "description": "Text shown in the popup to let the user know about the shortcut key combination",
+    "description":
+      "Text shown in the popup to let the user know about the shortcut key combination",
     "message": "Ви можете запустити перевірку ось цією комбінацією: $shortcut$",
     "placeholders": {
       "shortcut": {
@@ -470,7 +535,8 @@
     "message": "Тамільська"
   },
   "textCheckedBy": {
-    "description": "Text shown in the popup to make the user aware of which, possibly remote, service was used to check their text",
+    "description":
+      "Text shown in the popup to make the user aware of which, possibly remote, service was used to check their text",
     "message": "Текст перевірено на $serverUrl$",
     "placeholders": {
       "serverUrl": {
@@ -480,8 +546,10 @@
     }
   },
   "textCheckedRemotely": {
-    "description": "Text shown in the popup to make the user aware of which remote service was used to check their text",
-    "message": "Текст перевірено віддалено через <a target='_blank' href='$url$'>languagetool.org</a>",
+    "description":
+      "Text shown in the popup to make the user aware of which remote service was used to check their text",
+    "message":
+      "Текст перевірено віддалено через <a target='_blank' href='$url$'>languagetool.org</a>",
     "placeholders": {
       "url": {
         "content": "$1",
@@ -508,7 +576,8 @@
     "message": "Перевірити вибраний текст\nабо поле редагування в LanguageTool"
   },
   "turnOffRule": {
-    "description": "Link shown in the popup to turn off, i.e. ignore, a rule (the rule - not just this match)",
+    "description":
+      "Link shown in the popup to turn off, i.e. ignore, a rule (the rule - not just this match)",
     "message": "Вимкнути правило"
   },
   "uk": {
@@ -532,8 +601,10 @@
     "message": "Вважати для португальської типовим варіант:"
   },
   "webstoreSiteNotSupported": {
-    "description": "Error shown when Chrome extension is used on https://chrome.google.com/webstore, which doesn't work for technical reasons",
-    "message": "Вибачте, Google Chrome не дозволяє розширенням доступатися до веб-сховища Chrome."
+    "description":
+      "Error shown when Chrome extension is used on https://chrome.google.com/webstore, which doesn't work for technical reasons",
+    "message":
+      "Вибачте, Google Chrome не дозволяє розширенням доступатися до веб-сховища Chrome."
   },
   "zh": {
     "description": "automatically added by injectTranslation.py",

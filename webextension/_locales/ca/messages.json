@@ -1,10 +1,12 @@
 {
   "addToDictionary": {
-    "description": "Link shown in the popup to accept a word to the internal dictionary",
+    "description":
+      "Link shown in the popup to accept a word to the internal dictionary",
     "message": "afegeix al diccionari"
   },
   "addToDictionaryTitle": {
-    "description": "Title hover shown in the popup to accept a word to the internal dictionary",
+    "description":
+      "Title hover shown in the popup to accept a word to the internal dictionary",
     "message": "afegeix \"$word$\" al diccionari personal",
     "placeholders": {
       "word": {
@@ -14,36 +16,52 @@
     }
   },
   "appDesc": {
-    "description": "The description of the application, displayed in the web store.",
-    "message": "Reviseu la gramàtica i l'estil dels vostres texts arreu d'Internet. "
+    "description":
+      "The description of the application, displayed in the web store.",
+    "message":
+      "Reviseu la gramàtica i l'estil dels vostres texts arreu d'Internet. "
   },
   "appStoreDesc10": {
-    "description": "Description paragraph 1 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Amb aquesta extensió podeu revisar text amb el corrector gramatical i d'estil gratuït LanguageTool. LanguageTool troba molts més errors dels que troba un simple corrector ortogràfic, com ara accents diacrítics, apostrofacions, repeticions de paraules i molts altres. Funciona en més de 25 idiomes, incloent-hi català, anglès, castellà, francès, alemany i polonès."
+    "description":
+      "Description paragraph 1 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Amb aquesta extensió podeu revisar text amb el corrector gramatical i d'estil gratuït LanguageTool. LanguageTool troba molts més errors dels que troba un simple corrector ortogràfic, com ara accents diacrítics, apostrofacions, repeticions de paraules i molts altres. Funciona en més de 25 idiomes, incloent-hi català, anglès, castellà, francès, alemany i polonès."
   },
   "appStoreDesc20": {
-    "description": "Description paragraph 2 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "LanguageTool està dissenyat pensant en la simplicitat. Tot just prement un botó o una drecera de teclat personalitzables, LanguageTool comprova a l'instant l'ortografia i la gramàtica de qualsevol text  seleccionat. LanguageTool és compatible amb gairebé tots els texts, independentment de l'origen, incloses les xarxes socials com Facebook, Twitter o LinkedIn i serveis de correu electrònic en línia, com ara Gmail. Alguns llocs com docs.google.com i chrome.google.com actualment no són compatibles. Per a Google Docs feu servir https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm."
+    "description":
+      "Description paragraph 2 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "LanguageTool està dissenyat pensant en la simplicitat. Tot just prement un botó o una drecera de teclat personalitzables, LanguageTool comprova a l'instant l'ortografia i la gramàtica de qualsevol text  seleccionat. LanguageTool és compatible amb gairebé tots els texts, independentment de l'origen, incloses les xarxes socials com Facebook, Twitter o LinkedIn i serveis de correu electrònic en línia, com ara Gmail. Alguns llocs com docs.google.com i chrome.google.com actualment no són compatibles. Per a Google Docs feu servir https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm."
   },
   "appStoreDesc30": {
-    "description": "Description paragraph 3 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "L'objectiu de LanguageTool és oferir als usuaris un verificador complet de gramàtica i estil que els permeti controlar els continguts que generen. La revisió troba tota classe d'errors freqüents; distingeix entre variants de català i català-valencià. LanguageTool també té un diccionari personal per a excepcions o paraules que useu sovint però que no són en els diccionaris convencionals. LanguageTool reconeixerà aquestes paraules les següents revisions. "
+    "description":
+      "Description paragraph 3 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "L'objectiu de LanguageTool és oferir als usuaris un verificador complet de gramàtica i estil que els permeti controlar els continguts que generen. La revisió troba tota classe d'errors freqüents; distingeix entre variants de català i català-valencià. LanguageTool també té un diccionari personal per a excepcions o paraules que useu sovint però que no són en els diccionaris convencionals. LanguageTool reconeixerà aquestes paraules les següents revisions. "
   },
   "appStoreDesc40": {
-    "description": "Description paragraph 4 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Ús: Seleccioneu el text que voleu revisar o cliqueu en el camp editable del qual voleu revisar el contingut. Llavors feu clic en la icona de LT, que es mostra en la part superior dreta del navegador. També podeu usar Ctrl+Maj+Espai com a drecera."
+    "description":
+      "Description paragraph 4 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Ús: Seleccioneu el text que voleu revisar o cliqueu en el camp editable del qual voleu revisar el contingut. Llavors feu clic en la icona de LT, que es mostra en la part superior dreta del navegador. També podeu usar Ctrl+Maj+Espai com a drecera."
   },
   "appStoreDesc60": {
-    "description": "Description paragraph 5 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "A diferència de Grammarly i Ginger, LanguageTool funciona per a moltes llengües, és 100% gratuït i ofereix moltes de les mateixes característiques."
+    "description":
+      "Description paragraph 5 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "A diferència de Grammarly i Ginger, LanguageTool funciona per a moltes llengües, és 100% gratuït i ofereix moltes de les mateixes característiques."
   },
   "appStoreDesc70": {
-    "description": "Description paragraph 6 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "La vostra privacitat és important per a nosaltres. Per defecte, aquesta extensió revisa els texts enviant-los a https://languagetool.org mitjançant una connexió xifrada segura. No cal obrir cap compte per a usar l'extensió. No emmagatzemem els texts que es revisen. De fet, ni tan sols desem la vostra adreça IP. Vegeu la nostra política de privacitat a https://languagetool.org/privacy/."
+    "description":
+      "Description paragraph 6 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "La vostra privacitat és important per a nosaltres. Per defecte, aquesta extensió revisa els texts enviant-los a https://languagetool.org mitjançant una connexió xifrada segura. No cal obrir cap compte per a usar l'extensió. No emmagatzemem els texts que es revisen. De fet, ni tan sols desem la vostra adreça IP. Vegeu la nostra política de privacitat a https://languagetool.org/privacy/."
   },
   "appStoreDesc80": {
-    "description": "Description paragraph 7 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Informeu d'errors en https://github.com/languagetool-org/languagetool-browser-addon/issues"
+    "description":
+      "Description paragraph 7 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Informeu d'errors en https://github.com/languagetool-org/languagetool-browser-addon/issues"
   },
   "ast": {
     "description": "automatically added by injectTranslation.py",
@@ -74,7 +92,8 @@
     "message": "Cancel·la"
   },
   "checkingProgress": {
-    "description": "Text shown in popup next to a spinning icon, indicating that the check is in progress",
+    "description":
+      "Text shown in popup next to a spinning icon, indicating that the check is in progress",
     "message": "Revisant..."
   },
   "contextMenuItem": {
@@ -82,7 +101,8 @@
     "message": "Revisa el text amb LanguageTool"
   },
   "contextMenuItemWithShortcut": {
-    "description": "Text shown in the context menu, if available. The parenthesis show the shortcut.",
+    "description":
+      "Text shown in the context menu, if available. The parenthesis show the shortcut.",
     "message": "Revisa el text amb LanguageTool [$shortcut$]",
     "placeholders": {
       "shortcut": {
@@ -134,11 +154,13 @@
     "message": "alemany (alemany fàcil)"
   },
   "defaultServerLink": {
-    "description": "Options dialog: Link to reset the URL of the API server to the default value",
+    "description":
+      "Options dialog: Link to reset the URL of the API server to the default value",
     "message": "Usa el servidor per defecte"
   },
   "detectedLanguage": {
-    "description": "Text shown in the popup to indicate the automatically detected language of the text checked",
+    "description":
+      "Text shown in the popup to indicate the automatically detected language of the text checked",
     "message": "Idioma detectat: $language$",
     "placeholders": {
       "language": {
@@ -148,7 +170,8 @@
     }
   },
   "dictionaryDesc": {
-    "description": "Options dialog: text for the textarea with the user's words to be ignored for spell checking",
+    "description":
+      "Options dialog: text for the textarea with the user's words to be ignored for spell checking",
     "message": "Paraules del diccionari personal (una paraula per línia)"
   },
   "el": {
@@ -200,26 +223,33 @@
     "message": "francès"
   },
   "freshInstallReload": {
-    "description": "Error shown when user has installed extension and called it on an already open tab but not reloaded that tab yet",
-    "message": "Si acabeu d'instal·lar o de reactivar aquesta extensió, recarregueu primer la pestanya en què voleu revisar un text."
+    "description":
+      "Error shown when user has installed extension and called it on an already open tab but not reloaded that tab yet",
+    "message":
+      "Si acabeu d'instal·lar o de reactivar aquesta extensió, recarregueu primer la pestanya en què voleu revisar un text."
   },
   "gl": {
     "description": "automatically added by injectTranslation.py",
     "message": "gallec"
   },
   "googleDocsNotSupported": {
-    "description": "Google Docs is too complex to be supported, so we show this error",
-    "message": "Google Docs no funciona amb aquesta extensió. Instal·leu-vos <a target='_blank' href='$url$'>aquesta altra extensió<a>, optimitzada per a Google Docs.",
+    "description":
+      "Google Docs is too complex to be supported, so we show this error",
+    "message":
+      "Google Docs no funciona amb aquesta extensió. Instal·leu-vos <a target='_blank' href='$url$'>aquesta altra extensió<a>, optimitzada per a Google Docs.",
     "placeholders": {
       "url": {
         "content": "$1",
-        "example": "https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
+        "example":
+          "https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
       }
     }
   },
   "ignoreQuotedLines": {
-    "description": "Options dialog: checkbox to exclude quoted text from checking",
-    "message": "Ignora les línies que comencen amb $char$ (normalment text citat)",
+    "description":
+      "Options dialog: checkbox to exclude quoted text from checking",
+    "message":
+      "Ignora les línies que comencen amb $char$ (normalment text citat)",
     "placeholders": {
       "char": {
         "content": "<span id='quoteChar'>&gt;</span>",
@@ -228,8 +258,10 @@
     }
   },
   "ignoredRules": {
-    "description": "Text shown at the bottom of the popup to turn on turned off rules again",
-    "message": "Aquestes regles s'han inhabilitat. Feu clic en una regla per a habilitar-la de nou:"
+    "description":
+      "Text shown at the bottom of the popup to turn on turned off rules again",
+    "message":
+      "Aquestes regles s'han inhabilitat. Feu clic en una regla per a habilitar-la de nou:"
   },
   "is": {
     "description": "automatically added by injectTranslation.py",
@@ -248,7 +280,8 @@
     "message": "khmer"
   },
   "language": {
-    "description": "Text shown in the popup to indicate the automatically detected language of the text checked",
+    "description":
+      "Text shown in the popup to indicate the automatically detected language of the text checked",
     "message": "Idioma:"
   },
   "lt": {
@@ -264,11 +297,14 @@
     "message": "Idioma matern:"
   },
   "motherTongueExpl": {
-    "description": "Options dialog: more descriptive text explaining what selection of mother tongue does",
-    "message": "Establiu idioma matern si voleu que us advertim sobre falsos amics quan reviseu texts no escrits en el vostre idioma matern."
+    "description":
+      "Options dialog: more descriptive text explaining what selection of mother tongue does",
+    "message":
+      "Establiu idioma matern si voleu que us advertim sobre falsos amics quan reviseu texts no escrits en el vostre idioma matern."
   },
   "networkError": {
-    "description": "Error message shown if API server could not be connected due to network issues",
+    "description":
+      "Error message shown if API server could not be connected due to network issues",
     "message": "Error de xarxa ($serverUrl$)",
     "placeholders": {
       "serverUrl": {
@@ -282,16 +318,21 @@
     "message": "neerlandès"
   },
   "noErrorsFound": {
-    "description": "Text shown in the popup when the server found no potential errors in the text to check",
+    "description":
+      "Text shown in the popup when the server found no potential errors in the text to check",
     "message": "No s'han trobat errors."
   },
   "noReplacementPossible": {
-    "description": "Error message shown when the extension could not apply the suggestion selected by the user. May happen under some circumstances when editing HTML.",
-    "message": "L'extensió de LanguageTool no ha pogut trobar el context de l'error en el text."
+    "description":
+      "Error message shown when the extension could not apply the suggestion selected by the user. May happen under some circumstances when editing HTML.",
+    "message":
+      "L'extensió de LanguageTool no ha pogut trobar el context de l'error en el text."
   },
   "noReplacementPossible2": {
-    "description": "Error message shown when trying to replace an error with a suggestion in certain HTML that's not yet supported",
-    "message": "No s'ha pogut reemplaçar l'error amb el suggeriment. Això pot passar quan s'edita HTML."
+    "description":
+      "Error message shown when trying to replace an error with a suggestion in certain HTML that's not yet supported",
+    "message":
+      "No s'ha pogut reemplaçar l'error amb el suggeriment. Això pot passar quan s'edita HTML."
   },
   "noResponseFromServer": {
     "description": "Error message if API server doesn't respond",
@@ -305,7 +346,8 @@
   },
   "noValidResponseFromServer": {
     "description": "Error message shown we cannot parse API server response",
-    "message": "No hi ha resposta vàlida de $serverUrl$: $response$, codi $status$",
+    "message":
+      "No hi ha resposta vàlida de $serverUrl$: $response$, codi $status$",
     "placeholders": {
       "response": {
         "content": "$2",
@@ -326,12 +368,16 @@
     "message": "polonès"
   },
   "placeCursor1": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Poseu el cursor en un camp editable o seleccioneu un text (no s'ha trobat cap element actiu en iframe)."
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Poseu el cursor en un camp editable o seleccioneu un text (no s'ha trobat cap element actiu en iframe)."
   },
   "placeCursor2": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Poseu el cursor en un camp editable o seleccioneu un text (element actiu: $elem$).",
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Poseu el cursor en un camp editable o seleccioneu un text (element actiu: $elem$).",
     "placeholders": {
       "elem": {
         "content": "$1",
@@ -340,12 +386,16 @@
     }
   },
   "placeCursor3": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Poseu el cursor en un camp editable o seleccioneu un text (no s'ha trobat cap element actiu). "
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Poseu el cursor en un camp editable o seleccioneu un text (no s'ha trobat cap element actiu). "
   },
   "privacyNoteForDefaultServer": {
-    "description": "Shown on first start of extension to make user aware of privacy issues when using the default server on languagetool.org",
-    "message": "Aquesta extensió revisarà el vostre text enviant-lo a <a href='$serverUrl$' target='_blank'>$serverUrl$</a> en una connexió encriptada. El text no es desarà. Per a més detalls, vegeu <a href='$privacyUrl$' target='_blank'>la nostra política de privacitat</a>.",
+    "description":
+      "Shown on first start of extension to make user aware of privacy issues when using the default server on languagetool.org",
+    "message":
+      "Aquesta extensió revisarà el vostre text enviant-lo a <a href='$serverUrl$' target='_blank'>$serverUrl$</a> en una connexió encriptada. El text no es desarà. Per a més detalls, vegeu <a href='$privacyUrl$' target='_blank'>la nostra política de privacitat</a>.",
     "placeholders": {
       "privacyUrl": {
         "content": "$2",
@@ -358,8 +408,10 @@
     }
   },
   "privacyNoteForOtherServer": {
-    "description": "Shown on first start of extension to make user aware of privacy issues when using some other than the default server",
-    "message": "Aquest extensió revisarà el vostre text enviant-lo a $serverUrl$. Per a tornar al servidor per defecte, visiteu la pàgina d'opcions de l'extensió.",
+    "description":
+      "Shown on first start of extension to make user aware of privacy issues when using some other than the default server",
+    "message":
+      "Aquest extensió revisarà el vostre text enviant-lo a $serverUrl$. Per a tornar al servidor per defecte, visiteu la pàgina d'opcions de l'extensió.",
     "placeholders": {
       "serverUrl": {
         "content": "$1",
@@ -400,7 +452,8 @@
     "message": "portuguès (Portugal, pre-reforma)"
   },
   "quotedLinesIgnored": {
-    "description": "Text shown in the popup to let the user know when parts of the text have been ignored",
+    "description":
+      "Text shown in the popup to let the user know when parts of the text have been ignored",
     "message": "S'han ignorat les línies citades que comencen amb $char$ ",
     "placeholders": {
       "char": {
@@ -410,12 +463,15 @@
     }
   },
   "reviewRequest": {
-    "description": "Shown at the bottom of the popup dialog (for some users only)",
-    "message": "Si us agrada aquesta extensió, per què no <a target='_blank' href='$url$'>n'escriviu una ressenya</a>?",
+    "description":
+      "Shown at the bottom of the popup dialog (for some users only)",
+    "message":
+      "Si us agrada aquesta extensió, per què no <a target='_blank' href='$url$'>n'escriviu una ressenya</a>?",
     "placeholders": {
       "url": {
         "content": "$1",
-        "example": "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji"
+        "example":
+          "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji"
       }
     }
   },
@@ -431,12 +487,24 @@
     "description": "Options dialog: save button",
     "message": "Desa"
   },
+  "aboutDesc": {
+    "message":
+      "LanguageTool is a proof­reading service for English, German, Polish, Russian, and more than 20 other languages. This extension / add-on can help you proofread almost any text you write on the web.",
+    "description":
+      "About dialog: description of the introduction on about popup"
+  },
+  "aboutLink": {
+    "message": "Get more information at languagetool.org",
+    "description": "About dialog: description of the link on about popup"
+  },
   "serverText": {
-    "description": "Options dialog: description of the text field for the API server URL",
+    "description":
+      "Options dialog: description of the text field for the API server URL",
     "message": "URL de l'API del servidor de LanguageTool:"
   },
   "shortcutHint": {
-    "description": "Text shown in the popup to let the user know about the shortcut key combination",
+    "description":
+      "Text shown in the popup to let the user know about the shortcut key combination",
     "message": "Podeu activar la revisió de text amb la drecera: $shortcut$",
     "placeholders": {
       "shortcut": {
@@ -470,7 +538,8 @@
     "message": "Tàmil"
   },
   "textCheckedBy": {
-    "description": "Text shown in the popup to make the user aware of which, possibly remote, service was used to check their text",
+    "description":
+      "Text shown in the popup to make the user aware of which, possibly remote, service was used to check their text",
     "message": "Text revisat per $serverUrl$",
     "placeholders": {
       "serverUrl": {
@@ -480,8 +549,10 @@
     }
   },
   "textCheckedRemotely": {
-    "description": "Text shown in the popup to make the user aware of which remote service was used to check their text",
-    "message": "Text revisat remotament per <a target='_blank' href='$url$'>languagetool.org</a>",
+    "description":
+      "Text shown in the popup to make the user aware of which remote service was used to check their text",
+    "message":
+      "Text revisat remotament per <a target='_blank' href='$url$'>languagetool.org</a>",
     "placeholders": {
       "url": {
         "content": "$1",
@@ -508,7 +579,8 @@
     "message": "Revisa la selecció o el camp \neditable actual amb LanguageTool"
   },
   "turnOffRule": {
-    "description": "Link shown in the popup to turn off, i.e. ignore, a rule (the rule - not just this match)",
+    "description":
+      "Link shown in the popup to turn off, i.e. ignore, a rule (the rule - not just this match)",
     "message": "Inhabilita la regla"
   },
   "uk": {
@@ -532,8 +604,10 @@
     "message": "Assumeix aquesta variant de portuguès:"
   },
   "webstoreSiteNotSupported": {
-    "description": "Error shown when Chrome extension is used on https://chrome.google.com/webstore, which doesn't work for technical reasons",
-    "message": "Disculpeu, Google Chrome impedeix a les extensions accedir a la Chrome Web Store. És estrany, no?"
+    "description":
+      "Error shown when Chrome extension is used on https://chrome.google.com/webstore, which doesn't work for technical reasons",
+    "message":
+      "Disculpeu, Google Chrome impedeix a les extensions accedir a la Chrome Web Store. És estrany, no?"
   },
   "zh": {
     "description": "automatically added by injectTranslation.py",
