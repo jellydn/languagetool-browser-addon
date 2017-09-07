@@ -81,7 +81,7 @@ function checkText(callback, request) {
         return;
       }
     } catch (err) {
-      log.error("error on checkText", err);
+      log.warn("error on checkText", err);
     }
   }
   const selection = window.getSelection();
@@ -245,7 +245,7 @@ function applyCorrection(request) {
       }
     }
   } catch (err) {
-    log.error("error on apply correction", err);
+    log.warn("error on apply correction", err);
   }
   if (!found) {
     alert(chrome.i18n.getMessage("noReplacementPossible"));

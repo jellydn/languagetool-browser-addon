@@ -153,6 +153,7 @@ function remindLanguageToolButton(clickHandler, position) {
   btn.style.borderRadius = "50%";
   btn.style.color = "#fff";
   btn.style.fontSize = "13px";
+  btn.style.fontFamily = "sans-serif";
   return btn;
 }
 
@@ -180,6 +181,7 @@ function checkLanguageErrorButton(clickHandler, counter, position) {
   btn.style.color = "#fff";
   btn.style.width = "50px";
   btn.style.fontSize = "13px";
+  btn.style.fontFamily = "sans-serif";
   return btn;
 }
 
@@ -207,6 +209,7 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.style.color = "#fff";
   btn.style.width = "60px";
   btn.style.fontSize = "13px";
+  btn.style.fontFamily = "sans-serif";
   return btn;
 }
 
@@ -234,6 +237,7 @@ function aboutLanguageToolButton(clickHandler, counter, position) {
   btn.style.color = "#fff";
   btn.style.width = "60px";
   btn.style.fontSize = "13px";
+  btn.style.fontFamily = "sans-serif";
   return btn;
 }
 
