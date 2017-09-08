@@ -62,7 +62,10 @@ function offset(el) {
 function isEditorElement(focusElement) {
   return (
     focusElement.tagName === "TEXTAREA" ||
-    focusElement.contentEditable !== "inherit"
+    focusElement.contentEditable !== "inherit" ||
+    (focusElement.tagName === "IFRAME" &&
+      (focusElement.className.indexOf("cke_wysiwyg_frame") !== -1 ||
+        focusElement.title.indexOf("Rich Text Area") !== -1))
   );
 }
 
