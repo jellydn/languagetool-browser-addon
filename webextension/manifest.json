@@ -38,15 +38,15 @@
         "vendors/purify.min.js",
         "vendors/jquery.min.js",
         "vendors/loglevel.min.js",
-        "vendors/featherlight/featherlight.min.js",
         "vendors/ally.min.js",
+        "vendors/featherlight/featherlight.js",
         "helpers.js",
         "contentscript.js",
         "markup.js",
         "textarea.js",
         "tools.js"
       ],
-      "css": ["vendors/featherlight/featherlight.min.css"]
+      "css": ["vendors/featherlight/featherlight.css"]
     },
     {
       "matches": [

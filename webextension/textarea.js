@@ -309,7 +309,7 @@ function clickOnEditor(currentElement) {
       currentElement.addEventListener(
         "mouseup",
         function() {
-          log.warn("mouseup event");
+          log.info("mouseup event");
           showMarkerOnEditor(currentElement);
         },
         false
@@ -347,7 +347,7 @@ document.addEventListener(
   function(event) {
     // event.detail.focus: element that received focus
     // event.detail.blur: element that lost focus
-    log.warn("active-element", event);
+    log.info("active-element", event);
     const { focus: focusElement } = event.detail;
     showMarkerOnEditor(focusElement);
     clickOnEditor(focusElement);
