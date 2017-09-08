@@ -30,11 +30,23 @@ let totalTextAreas = 0;
 let totalContentEditable = 0;
 let disableOnPage = false;
 
+/* util function for checking html */
+
+/**
+ * Check the element is display or hidden
+ * @param DOMElement el 
+ * @return bool
+ */
 function isHiddenElement(el) {
   const style = window.getComputedStyle(el);
   return style.display === "none";
 }
 
+/**
+ * Find the position of element base on window
+ * @param DOMElement el 
+ * @return object position { top, left }
+ */
 function offset(el) {
   const rect = el.getBoundingClientRect(),
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
@@ -42,6 +54,11 @@ function offset(el) {
   return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
 }
 
+/**
+ * True if that is textarea or html5 contentEditable element
+ * @param DOMElement focusElement 
+ * @return bool
+ */
 function isEditorElement(focusElement) {
   return (
     focusElement.tagName === "TEXTAREA" ||
@@ -269,12 +286,32 @@ function textAreaWrapper(textElement, btnElements) {
   document.body.appendChild(wrapper);
 }
 
+/**
+ * show marker on element
+ * @param DOMELement focusElement 
+ */
 function showMarkerOnEditor(focusElement) {
   if (isEditorElement(focusElement)) {
     removeAllButtons();
     setActiveElement(focusElement);
     if (!isHiddenElement(focusElement) && !disableOnPage) {
       insertLanguageToolIcon(focusElement);
+    }
+  }
+}
+
+function clickOnEditor(currentElement) {
+  if (isEditorElement(currentElement)) {
+    if (!currentElement.getAttribute("lt-bind-click")) {
+      currentElement.addEventListener(
+        "mouseup",
+        function() {
+          log.warn("mouseup event");
+          showMarkerOnEditor(currentElement);
+        },
+        false
+      );
+      currentElement.setAttribute("lt-bind-click", true);
     }
   }
 }
@@ -292,33 +329,16 @@ if (
 ) {
   const currentElement = document.activeElement;
   showMarkerOnEditor(currentElement);
-  if (isEditorElement(currentElement)) {
-    currentElement.addEventListener(
-      "mouseup",
-      function() {
-        log.warn("mouseup event");
-        showMarkerOnEditor(currentElement);
-      },
-      false
-    );
-  }
+  clickOnEditor(currentElement);
 } else {
   document.addEventListener("DOMContentLoaded", function() {
     const currentElement = document.activeElement;
     showMarkerOnEditor(currentElement);
-    if (isEditorElement(currentElement)) {
-      currentElement.addEventListener(
-        "mouseup",
-        function() {
-          log.warn("mouseup event");
-          showMarkerOnEditor(currentElement);
-        },
-        false
-      );
-    }
+    clickOnEditor(currentElement);
   });
 }
 
+// observe the active element to show the marker
 document.addEventListener(
   "active-element",
   function(event) {
@@ -327,16 +347,7 @@ document.addEventListener(
     log.warn("active-element", event);
     const { focus: focusElement } = event.detail;
     showMarkerOnEditor(focusElement);
-    if (isEditorElement(focusElement)) {
-      focusElement.addEventListener(
-        "mouseup",
-        function() {
-          log.warn("mouseup event");
-          showMarkerOnEditor(focusElement);
-        },
-        false
-      );
-    }
+    clickOnEditor(focusElement);
   },
   false
 );
