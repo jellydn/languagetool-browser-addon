@@ -838,6 +838,11 @@ function startCheckMaybeWithWarning(tabs) {
           .getElementById("cancelCheck")
           .addEventListener("click", function() {
             self.close();
+            sendMessageToTab(tabs[0].id, { action: "closePopup" }, function(
+              response
+            ) {
+              log.warn("response", response);
+            });
           });
       }
     }

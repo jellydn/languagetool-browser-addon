@@ -39,6 +39,7 @@
         "vendors/jquery.min.js",
         "vendors/loglevel.min.js",
         "vendors/featherlight/featherlight.min.js",
+        "vendors/ally.min.js",
         "helpers.js",
         "contentscript.js",
         "markup.js",

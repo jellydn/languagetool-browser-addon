@@ -30,11 +30,23 @@ let totalTextAreas = 0;
 let totalContentEditable = 0;
 let disableOnPage = false;
 
+function isHiddenElement(el) {
+  const style = window.getComputedStyle(el);
+  return style.display === "none";
+}
+
 function offset(el) {
   const rect = el.getBoundingClientRect(),
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+}
+
+function isEditorElement(focusElement) {
+  return (
+    focusElement.tagName === "TEXTAREA" ||
+    focusElement.contentEditable !== "inherit"
+  );
 }
 
 function insertLanguageToolIcon(element) {
@@ -257,142 +269,76 @@ function textAreaWrapper(textElement, btnElements) {
   document.body.appendChild(wrapper);
 }
 
-function triggerMarker() {
-  log.info(
-    "triggerMarker",
-    document.activeElement.tagName,
-    document.activeElement.contentEditable
-  );
-  console.trace("who is called this");
-  if (activeElement()) {
-    // turn off marker
+function showMarkerOnEditor(focusElement) {
+  if (isEditorElement(focusElement)) {
     removeAllButtons();
-  }
-  log.warn(
-    "compare activeElement and document.activeElement",
-    activeElement(),
-    document.activeElement,
-    activeElement === document.activeElement
-  );
-  if (
-    document.activeElement.tagName === "TEXTAREA" ||
-    document.activeElement.contentEditable !== "inherit"
-  ) {
-    setActiveElement(document.activeElement);
-    if (
-      activeElement() &&
-      !isHiddenElement(activeElement()) &&
-      !disableOnPage
-    ) {
-      insertLanguageToolIcon(activeElement());
+    setActiveElement(focusElement);
+    if (!isHiddenElement(focusElement) && !disableOnPage) {
+      insertLanguageToolIcon(focusElement);
     }
-  } else {
-    setActiveElement(null);
   }
 }
 
-function isHiddenElement(el) {
-  const style = window.getComputedStyle(el);
-  return style.display === "none";
-}
-
-function attachEventListenersForTextarea() {
-  log.info("attachEventListenersForTextarea");
-  // find all textarea elemnets
-  const textareaElements = document.getElementsByTagName("textarea");
-  log.info("insertLanguageToolIcon", textareaElements);
-  totalTextAreas = textareaElements.length;
-  for (let counter = 0; counter < textareaElements.length; counter += 1) {
-    const textElement = textareaElements[counter];
-    textElement.addEventListener("mouseup", triggerMarker, false);
-    if (textElement === document.activeElement) {
-      triggerMarker();
-    }
-  }
-
-  // find all element base on attribute
-  const contentEditableElements = document.querySelectorAll(
-    '[contenteditable="true"]'
-  );
-  totalContentEditable = contentEditableElements.length;
-  for (
-    let counter = 0;
-    counter < contentEditableElements.length;
-    counter += 1
-  ) {
-    const textElement = contentEditableElements[counter];
-    textElement.addEventListener("mouseup", triggerMarker, false);
-    if (textElement === document.activeElement) {
-      triggerMarker();
-    }
-  }
-
-  // detect on window resize
-  window.onresize = function(evt) {
-    log.info("resize window", evt);
-    triggerMarker();
-  };
-
-  // observer the textarea and content editable
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      log.info("mutation", mutation.type, mutation);
-      const textareaElements = document.getElementsByTagName("textarea");
-      if (totalTextAreas !== textareaElements.length) {
-        for (
-          let counter = totalTextAreas;
-          counter < textareaElements.length;
-          counter += 1
-        ) {
-          const textElement = textareaElements[counter];
-          log.info("textElement", textElement);
-          if (textElement) {
-            textElement.addEventListener("mouseup", triggerMarker, false);
-            if (textElement === document.activeElement) {
-              triggerMarker();
-            }
-          }
-        }
-        totalTextAreas = textareaElements.length;
-      }
-      const contentEditableElements = document.querySelectorAll(
-        '[contenteditable="true"]'
-      );
-      if (totalContentEditable !== contentEditableElements.length) {
-        for (
-          let counter = totalContentEditable;
-          counter < contentEditableElements.length;
-          counter += 1
-        ) {
-          const textElement = contentEditableElements[counter];
-          log.info("textElement", textElement);
-          if (textElement) {
-            textElement.addEventListener("mouseup", triggerMarker, false);
-            if (textElement === document.activeElement) {
-              triggerMarker();
-            }
-          }
-        }
-        totalContentEditable = contentEditableElements.length;
-      }
-    });
-  });
-
-  // configuration of the observer:
-  const config = { childList: true };
-
-  // pass in the target node, as well as the observer options
-  observer.observe(document.body, config);
-}
+// detect on window resize
+window.onresize = function(evt) {
+  log.info("resize window", evt);
+  removeAllButtons();
+  showMarkerOnEditor(document.activeElement);
+};
 
 if (
   document.readyState === "complete" ||
   (document.readyState !== "loading" && !document.documentElement.doScroll)
 ) {
-  attachEventListenersForTextarea();
+  const currentElement = document.activeElement;
+  showMarkerOnEditor(currentElement);
+  if (isEditorElement(currentElement)) {
+    currentElement.addEventListener(
+      "mouseup",
+      function() {
+        log.warn("mouseup event");
+        showMarkerOnEditor(currentElement);
+      },
+      false
+    );
+  }
 } else {
-  document.addEventListener(
-    "DOMContentLoaded",
-    attachEventListenersForTextarea
-  );
+  document.addEventListener("DOMContentLoaded", function() {
+    const currentElement = document.activeElement;
+    showMarkerOnEditor(currentElement);
+    if (isEditorElement(currentElement)) {
+      currentElement.addEventListener(
+        "mouseup",
+        function() {
+          log.warn("mouseup event");
+          showMarkerOnEditor(currentElement);
+        },
+        false
+      );
+    }
+  });
 }
+
+document.addEventListener(
+  "active-element",
+  function(event) {
+    // event.detail.focus: element that received focus
+    // event.detail.blur: element that lost focus
+    log.warn("active-element", event);
+    const { focus: focusElement } = event.detail;
+    showMarkerOnEditor(focusElement);
+    if (isEditorElement(focusElement)) {
+      focusElement.addEventListener(
+        "mouseup",
+        function() {
+          log.warn("mouseup event");
+          showMarkerOnEditor(focusElement);
+        },
+        false
+      );
+    }
+  },
+  false
+);
+
+const handle = ally.event.activeElement();
