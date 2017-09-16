@@ -46,7 +46,10 @@
         "textarea.js",
         "tools.js"
       ],
-      "css": ["vendors/featherlight/featherlight.css"]
+      "css": [
+        "vendors/featherlight/featherlight.css",
+        "css/lt-marker-style.css"
+      ]
     },
     {
       "matches": [

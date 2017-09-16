@@ -17,13 +17,15 @@
  * USA
  */
 "use strict";
-const REMIND_BTN_CLASS = "lt-btn";
-const REMIND_WRAPPER_CLASS = "lt-text-wrapper";
+const REMIND_BTN_CLASS = "lt-buttons";
+const REMIND_WRAPPER_CLASS = "lt-marker-container";
 const PREFIX_REMIND = "remind-btn-";
 const PREFIX_CHECK = "check-lt-err-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
 const PREFIX_ABOUT = "about-lt-btn-";
 const MARGIN_TO_CORNER = 8;
+const REMIND_BTN_SIZE = 32;
+const REMIND_ACTION_BTN_SIZE = 24;
 const toggleState = {};
 let textareaCounter = 0;
 let totalTextAreas = 0;
@@ -61,11 +63,12 @@ function offset(el) {
  */
 function isEditorElement(focusElement) {
   return (
-    focusElement.tagName === "TEXTAREA" ||
-    focusElement.contentEditable !== "inherit" ||
-    (focusElement.tagName === "IFRAME" &&
-      (focusElement.className.indexOf("cke_wysiwyg_frame") !== -1 ||
-        focusElement.title.indexOf("Rich Text Area") !== -1))
+    focusElement &&
+    (focusElement.tagName === "TEXTAREA" ||
+      focusElement.contentEditable !== "inherit" ||
+      (focusElement.tagName === "IFRAME" &&
+        (focusElement.className.indexOf("cke_wysiwyg_frame") !== -1 ||
+          focusElement.title.indexOf("Rich Text Area") !== -1)))
   );
 }
 
@@ -77,10 +80,10 @@ function insertLanguageToolIcon(element) {
     offsetWidth
   });
   const btns = [
-    remindLanguageToolButton(showRemindMenu, position),
-    checkLanguageErrorButton(checkErrorMenu, textareaCounter, position),
+    aboutLanguageToolButton(showAbout, textareaCounter, position),
     disableLanguageToolButton(disableMenu, textareaCounter, position),
-    aboutLanguageToolButton(showAbout, textareaCounter, position)
+    checkLanguageErrorButton(checkErrorMenu, textareaCounter, position),
+    remindLanguageToolButton(showRemindMenu, position)
   ];
   textAreaWrapper(element, btns);
 }
@@ -94,12 +97,6 @@ function showRemindMenu(evt) {
   const counter = Number(targetId.substr(PREFIX_REMIND.length));
   toggleState[counter] = !toggleState[counter];
   log.info("ok - counter", counter, toggleState);
-  const checkBtn = document.getElementById(PREFIX_CHECK + counter);
-  const disableBtn = document.getElementById(PREFIX_DISABLE + counter);
-  const aboutBtn = document.getElementById(PREFIX_ABOUT + counter);
-  checkBtn.style.display = toggleState[counter] ? "block" : "none";
-  disableBtn.style.display = toggleState[counter] ? "block" : "none";
-  aboutBtn.style.display = toggleState[counter] ? "block" : "none";
 }
 
 function showAbout(evt) {
@@ -108,7 +105,7 @@ function showAbout(evt) {
     iframe:
       chrome.runtime.getURL("about.html") + "?pageUrl=" + window.location.href,
     iframeWidth: 300,
-    iframeHeight: 250
+    iframeHeight: 300
   });
 }
 
@@ -168,23 +165,16 @@ function remindLanguageToolButton(clickHandler, position) {
   textareaCounter += 1;
   btn.id = PREFIX_REMIND + textareaCounter;
   btn.className = REMIND_BTN_CLASS;
-  btn.innerText = "LT";
-  // style
-  const btnSize = 25;
-  btn.style.width = btnSize + "px";
-  btn.style.height = btnSize + "px";
-  btn.style.lineHeight = btnSize + "px";
-  btn.style.textAlign = "center";
+  btn.setAttribute("tooltip", "LanguageTool");
+  // // style
   btn.style.position = "absolute";
-  btn.style.top = top + offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.left = left + offsetWidth - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.zIndex = 1000;
-  btn.style.cursor = "pointer";
-  btn.style.backgroundColor = "#afafed";
-  btn.style.borderRadius = "50%";
-  btn.style.color = "#fff";
-  btn.style.fontSize = "13px";
-  btn.style.fontFamily = "sans-serif";
+  btn.style.top =
+    top + offsetHeight - REMIND_ACTION_BTN_SIZE - MARGIN_TO_CORNER + "px";
+  btn.style.left =
+    left + offsetWidth - REMIND_BTN_SIZE - MARGIN_TO_CORNER + "px";
+  btn.style.backgroundImage = `url(${chrome.extension.getURL(
+    "images/icon48.png"
+  )})`;
   return btn;
 }
 
@@ -194,25 +184,26 @@ function checkLanguageErrorButton(clickHandler, counter, position) {
   btn.onclick = clickHandler;
   btn.id = PREFIX_CHECK + counter;
   btn.className = REMIND_BTN_CLASS;
-  btn.innerText = "Check";
+  btn.setAttribute("tooltip", "Grammar and Style Checker");
   // style
-  const btnSize = 25;
-  btn.style.display = "none";
-  btn.style.height = btnSize + "px";
-  btn.style.lineHeight = btnSize + "px";
-  btn.style.textAlign = "center";
   btn.style.position = "absolute";
-  btn.style.top = top + offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.left = left + offsetWidth - btnSize - MARGIN_TO_CORNER - 65 + "px";
-  btn.style.zIndex = 1000;
-  btn.style.cursor = "pointer";
-  btn.style.paddingLeft = "5px";
-  btn.style.paddingRight = "5px";
-  btn.style.backgroundColor = "#afafed";
-  btn.style.color = "#fff";
-  btn.style.width = "50px";
-  btn.style.fontSize = "13px";
-  btn.style.fontFamily = "sans-serif";
+  btn.style.top =
+    top +
+    offsetHeight -
+    REMIND_ACTION_BTN_SIZE -
+    MARGIN_TO_CORNER -
+    REMIND_BTN_SIZE * 1 +
+    "px";
+  btn.style.left =
+    left +
+    offsetWidth -
+    REMIND_BTN_SIZE -
+    MARGIN_TO_CORNER +
+    (REMIND_BTN_SIZE - REMIND_ACTION_BTN_SIZE) / 2 +
+    "px";
+  btn.style.backgroundImage = `url(${chrome.extension.getURL(
+    "images/check.png"
+  )})`;
   return btn;
 }
 
@@ -222,25 +213,26 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.onclick = clickHandler;
   btn.id = PREFIX_DISABLE + counter;
   btn.className = REMIND_BTN_CLASS;
-  btn.innerText = "Disable";
+  btn.setAttribute("tooltip", "Disable for this domain");
   // style
-  const btnSize = 25;
-  btn.style.display = "none";
-  btn.style.height = btnSize + "px";
-  btn.style.lineHeight = btnSize + "px";
-  btn.style.textAlign = "center";
   btn.style.position = "absolute";
-  btn.style.top = top + offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.left = left + offsetWidth - btnSize - MARGIN_TO_CORNER - 140 + "px";
-  btn.style.zIndex = 1000;
-  btn.style.cursor = "pointer";
-  btn.style.paddingLeft = "5px";
-  btn.style.paddingRight = "5px";
-  btn.style.backgroundColor = "#afafed";
-  btn.style.color = "#fff";
-  btn.style.width = "60px";
-  btn.style.fontSize = "13px";
-  btn.style.fontFamily = "sans-serif";
+  btn.style.top =
+    top +
+    offsetHeight -
+    REMIND_ACTION_BTN_SIZE -
+    MARGIN_TO_CORNER -
+    REMIND_BTN_SIZE * 2 +
+    "px";
+  btn.style.left =
+    left +
+    offsetWidth -
+    REMIND_BTN_SIZE -
+    MARGIN_TO_CORNER +
+    (REMIND_BTN_SIZE - REMIND_ACTION_BTN_SIZE) / 2 +
+    "px";
+  btn.style.backgroundImage = `url(${chrome.extension.getURL(
+    "images/power-button-symbol.png"
+  )})`;
   return btn;
 }
 
@@ -250,25 +242,26 @@ function aboutLanguageToolButton(clickHandler, counter, position) {
   btn.onclick = clickHandler;
   btn.id = PREFIX_ABOUT + counter;
   btn.className = REMIND_BTN_CLASS;
-  btn.innerText = "About";
+  btn.setAttribute("tooltip", "About");
   // style
-  const btnSize = 25;
-  btn.style.display = "none";
-  btn.style.height = btnSize + "px";
-  btn.style.lineHeight = btnSize + "px";
-  btn.style.textAlign = "center";
   btn.style.position = "absolute";
-  btn.style.top = top + offsetHeight - btnSize - MARGIN_TO_CORNER + "px";
-  btn.style.left = left + offsetWidth - btnSize - MARGIN_TO_CORNER - 215 + "px";
-  btn.style.zIndex = 1000;
-  btn.style.cursor = "pointer";
-  btn.style.paddingLeft = "5px";
-  btn.style.paddingRight = "5px";
-  btn.style.backgroundColor = "#afafed";
-  btn.style.color = "#fff";
-  btn.style.width = "60px";
-  btn.style.fontSize = "13px";
-  btn.style.fontFamily = "sans-serif";
+  btn.style.top =
+    top +
+    offsetHeight -
+    REMIND_ACTION_BTN_SIZE -
+    MARGIN_TO_CORNER -
+    REMIND_BTN_SIZE * 3 +
+    "px";
+  btn.style.left =
+    left +
+    offsetWidth -
+    REMIND_BTN_SIZE -
+    MARGIN_TO_CORNER +
+    (REMIND_BTN_SIZE - REMIND_ACTION_BTN_SIZE) / 2 +
+    "px";
+  btn.style.backgroundImage = `url(${chrome.extension.getURL(
+    "images/info.png"
+  )})`;
   return btn;
 }
 
