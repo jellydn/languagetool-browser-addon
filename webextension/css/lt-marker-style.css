@@ -10,8 +10,8 @@
   display: block;
   width: 32px;
   height: 32px;
-  -webkit-transition: all 0.1s ease-out;
-  transition: all 0.1s ease-out;
+  -webkit-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
   cursor: pointer;
   z-index: 1000;
 }
@@ -23,12 +23,10 @@
 }
 
 .lt-buttons:not(:last-child) {
-  width: 24px;
-  height: 24px;
   opacity: 0;
-  -webkit-transform: translateY(24px);
-  -ms-transform: translateY(24px);
-  transform: translateY(24px);
+  -webkit-transform: translateY(32px);
+  -ms-transform: translateY(32px);
+  transform: translateY(32px);
 }
 
 .lt-marker-container:hover .lt-buttons:not(:last-child) {
@@ -59,15 +57,11 @@
   background-size: contain;
 }
 
-.lt-buttons:not(:last-child):nth-last-child(4) {
-  -webkit-transition-delay: 100ms;
-  transition-delay: 60ms;
-  background-size: contain;
-}
 /* Show tooltip content on hover */
 
 .lt-buttons[tooltip]:before {
-  bottom: 5%;
+  bottom: 100%;
+  right: 5%;
   font-family: arial;
   font-weight: 600;
   border-radius: 2px;
@@ -78,9 +72,8 @@
   visibility: hidden;
   opacity: 0;
   padding: 5px;
-  margin-right: 12px;
+  margin-bottom: 5px;
   position: absolute;
-  right: 100%;
   white-space: nowrap;
 }
 

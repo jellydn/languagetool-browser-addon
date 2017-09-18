@@ -1,6 +1,6 @@
-/* LanguageTool WebExtension 
+/* LanguageTool WebExtension
  * Copyright (C) 2016 Daniel Naber (http://www.danielnaber.de)
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -16,27 +16,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-"use strict";
+
+/* global chrome, window, document, $, log, ally, activeElement, setActiveElement */
+
 const REMIND_BTN_CLASS = "lt-buttons";
 const REMIND_WRAPPER_CLASS = "lt-marker-container";
 const PREFIX_REMIND = "remind-btn-";
-const PREFIX_CHECK = "check-lt-err-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
 const PREFIX_ABOUT = "about-lt-btn-";
 const MARGIN_TO_CORNER = 8;
 const REMIND_BTN_SIZE = 32;
-const REMIND_ACTION_BTN_SIZE = 24;
-const toggleState = {};
 let textareaCounter = 0;
-let totalTextAreas = 0;
-let totalContentEditable = 0;
 let disableOnPage = false;
-
-/* util function for checking html */
 
 /**
  * Check the element is display or hidden
- * @param DOMElement el 
+ * @param DOMElement el
  * @return bool
  */
 function isHiddenElement(el) {
@@ -46,19 +41,19 @@ function isHiddenElement(el) {
 
 /**
  * Find the position of element base on window
- * @param DOMElement el 
+ * @param DOMElement el
  * @return object position { top, left }
  */
 function offset(el) {
-  const rect = el.getBoundingClientRect(),
-    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const rect = el.getBoundingClientRect();
+  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
 }
 
 /**
  * True if that is textarea or html5 contentEditable element
- * @param DOMElement focusElement 
+ * @param DOMElement focusElement
  * @return bool
  */
 function isEditorElement(focusElement) {
@@ -72,38 +67,13 @@ function isEditorElement(focusElement) {
   );
 }
 
-function insertLanguageToolIcon(element) {
-  log.info("insertLanguageToolIcon", element, offset(element));
-  const { left, top, offsetHeight, offsetWidth } = element;
-  const position = Object.assign({}, offset(element), {
-    offsetHeight,
-    offsetWidth
-  });
-  const btns = [
-    aboutLanguageToolButton(showAbout, textareaCounter, position),
-    disableLanguageToolButton(disableMenu, textareaCounter, position),
-    checkLanguageErrorButton(checkErrorMenu, textareaCounter, position),
-    remindLanguageToolButton(showRemindMenu, position)
-  ];
-  textAreaWrapper(element, btns);
-}
-
 /** event hanlders */
-
-function showRemindMenu(evt) {
-  evt.preventDefault();
-  const targetId = evt.target.id;
-  log.info("ok - show remind menu", targetId);
-  const counter = Number(targetId.substr(PREFIX_REMIND.length));
-  toggleState[counter] = !toggleState[counter];
-  log.info("ok - counter", counter, toggleState);
-}
 
 function showAbout(evt) {
   log.info("showAbout", evt);
+  const currentUrl = window.location.href;
   $.featherlight({
-    iframe:
-      chrome.runtime.getURL("about.html") + "?pageUrl=" + window.location.href,
+    iframe: `${chrome.runtime.getURL("about.html")}?pageUrl=${currentUrl}`,
     iframeWidth: 300,
     iframeHeight: 300
   });
@@ -113,16 +83,7 @@ function checkErrorMenu(evt) {
   log.info("checkErrorMenu", evt);
   evt.stopPropagation();
   evt.preventDefault();
-  const targetId = evt.target.id;
-  const counter = Number(targetId.substr(PREFIX_CHECK.length));
-  toggleState[counter] = !toggleState[counter];
-  const checkBtn = document.getElementById(PREFIX_CHECK + counter);
-  const disableBtn = document.getElementById(PREFIX_DISABLE + counter);
-  const aboutBtn = document.getElementById(PREFIX_ABOUT + counter);
-  checkBtn.style.display = "none";
-  disableBtn.style.display = "none";
-  aboutBtn.style.display = "none";
-
+  const currentUrl = window.location.href;
   const textAreaElement = activeElement();
   if (textAreaElement) {
     log.info("active textarea", textAreaElement);
@@ -133,18 +94,10 @@ function checkErrorMenu(evt) {
     }
   }
   $.featherlight({
-    iframe:
-      chrome.runtime.getURL("popup.html") + "?pageUrl=" + window.location.href,
+    iframe: `${chrome.runtime.getURL("popup.html")}?pageUrl=${currentUrl}`,
     iframeWidth: 450,
     iframeHeight: 600
   });
-}
-
-function disableMenu(evt) {
-  log.info("disableMenu");
-  evt.preventDefault();
-  disableOnPage = true;
-  removeAllButtons();
 }
 
 function removeAllButtons() {
@@ -153,6 +106,13 @@ function removeAllButtons() {
     const btn = btns[counter];
     btn.parentNode.removeChild(btn);
   }
+}
+
+function disableMenu(evt) {
+  log.info("disableMenu");
+  evt.preventDefault();
+  disableOnPage = true;
+  removeAllButtons();
 }
 
 /** DOM manupulate */
@@ -165,45 +125,34 @@ function remindLanguageToolButton(clickHandler, position) {
   textareaCounter += 1;
   btn.id = PREFIX_REMIND + textareaCounter;
   btn.className = REMIND_BTN_CLASS;
-  btn.setAttribute("tooltip", "LanguageTool");
+  btn.setAttribute("tooltip", "Grammar and Style Checker");
+
   // // style
   btn.style.position = "absolute";
-  btn.style.top =
-    top + offsetHeight - REMIND_ACTION_BTN_SIZE - MARGIN_TO_CORNER + "px";
-  btn.style.left =
-    left + offsetWidth - REMIND_BTN_SIZE - MARGIN_TO_CORNER + "px";
-  btn.style.backgroundImage = `url(${chrome.extension.getURL(
-    "images/icon48.png"
-  )})`;
-  return btn;
-}
-
-function checkLanguageErrorButton(clickHandler, counter, position) {
-  const { top, left, offsetHeight, offsetWidth } = position;
-  const btn = document.createElement("A");
-  btn.onclick = clickHandler;
-  btn.id = PREFIX_CHECK + counter;
-  btn.className = REMIND_BTN_CLASS;
-  btn.setAttribute("tooltip", "Grammar and Style Checker");
-  // style
-  btn.style.position = "absolute";
-  btn.style.top =
-    top +
+  btn.style.top = `${top +
     offsetHeight -
-    REMIND_ACTION_BTN_SIZE -
-    MARGIN_TO_CORNER -
-    REMIND_BTN_SIZE * 1 +
-    "px";
-  btn.style.left =
-    left +
+    REMIND_BTN_SIZE -
+    MARGIN_TO_CORNER}px`;
+  btn.style.left = `${left +
     offsetWidth -
     REMIND_BTN_SIZE -
-    MARGIN_TO_CORNER +
-    (REMIND_BTN_SIZE - REMIND_ACTION_BTN_SIZE) / 2 +
-    "px";
+    MARGIN_TO_CORNER}px`;
   btn.style.backgroundImage = `url(${chrome.extension.getURL(
-    "images/check.png"
+    "images/logo.png"
   )})`;
+
+  btn.onmouseenter = () => {
+    btn.style.backgroundImage = `url(${chrome.extension.getURL(
+      "images/check.png"
+    )})`;
+  };
+
+  btn.onmouseleave = () => {
+    btn.style.backgroundImage = `url(${chrome.extension.getURL(
+      "images/logo.png"
+    )})`;
+  };
+
   return btn;
 }
 
@@ -216,20 +165,14 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.setAttribute("tooltip", "Disable for this domain");
   // style
   btn.style.position = "absolute";
-  btn.style.top =
-    top +
+  btn.style.top = `${top +
     offsetHeight -
-    REMIND_ACTION_BTN_SIZE -
-    MARGIN_TO_CORNER -
-    REMIND_BTN_SIZE * 2 +
-    "px";
-  btn.style.left =
-    left +
-    offsetWidth -
     REMIND_BTN_SIZE -
-    MARGIN_TO_CORNER +
-    (REMIND_BTN_SIZE - REMIND_ACTION_BTN_SIZE) / 2 +
-    "px";
+    MARGIN_TO_CORNER}px`;
+  btn.style.left = `${left +
+    offsetWidth -
+    REMIND_BTN_SIZE * 2 -
+    MARGIN_TO_CORNER}px`;
   btn.style.backgroundImage = `url(${chrome.extension.getURL(
     "images/power-button-symbol.png"
   )})`;
@@ -245,20 +188,14 @@ function aboutLanguageToolButton(clickHandler, counter, position) {
   btn.setAttribute("tooltip", "About");
   // style
   btn.style.position = "absolute";
-  btn.style.top =
-    top +
+  btn.style.top = `${top +
     offsetHeight -
-    REMIND_ACTION_BTN_SIZE -
-    MARGIN_TO_CORNER -
-    REMIND_BTN_SIZE * 3 +
-    "px";
-  btn.style.left =
-    left +
-    offsetWidth -
     REMIND_BTN_SIZE -
-    MARGIN_TO_CORNER +
-    (REMIND_BTN_SIZE - REMIND_ACTION_BTN_SIZE) / 2 +
-    "px";
+    MARGIN_TO_CORNER}px`;
+  btn.style.left = `${left +
+    offsetWidth -
+    REMIND_BTN_SIZE * 3 -
+    MARGIN_TO_CORNER}px`;
   btn.style.backgroundImage = `url(${chrome.extension.getURL(
     "images/info.png"
   )})`;
@@ -268,23 +205,35 @@ function aboutLanguageToolButton(clickHandler, counter, position) {
 function textAreaWrapper(textElement, btnElements) {
   const wrapper = document.createElement("div");
   wrapper.className = REMIND_WRAPPER_CLASS;
-  wrapper.id =
-    "textarea-wrapper-" +
-    (textElement.name || textElement.id) +
-    "-" +
-    Date.now();
+  wrapper.id = `textarea-wrapper-${textElement.name ||
+    textElement.id}-${Date.now()}`;
   wrapper.style.position = "absolute";
   wrapper.style.top = "0px";
   wrapper.style.left = "0px";
-  for (const btnElement of btnElements) {
+  btnElements.forEach(btnElement => {
     wrapper.appendChild(btnElement);
-  }
+  });
   document.body.appendChild(wrapper);
+}
+
+function insertLanguageToolIcon(element) {
+  log.info("insertLanguageToolIcon", element, offset(element));
+  const { offsetHeight, offsetWidth } = element;
+  const position = Object.assign({}, offset(element), {
+    offsetHeight,
+    offsetWidth
+  });
+  const btns = [
+    aboutLanguageToolButton(showAbout, textareaCounter, position),
+    disableLanguageToolButton(disableMenu, textareaCounter, position),
+    remindLanguageToolButton(checkErrorMenu, position)
+  ];
+  textAreaWrapper(element, btns);
 }
 
 /**
  * show marker on element
- * @param DOMELement focusElement 
+ * @param DOMELement focusElement
  */
 function showMarkerOnEditor(focusElement) {
   if (isEditorElement(focusElement)) {
@@ -301,7 +250,7 @@ function clickOnEditor(currentElement) {
     if (!currentElement.getAttribute("lt-bind-click")) {
       currentElement.addEventListener(
         "mouseup",
-        function() {
+        () => {
           log.info("mouseup event");
           showMarkerOnEditor(currentElement);
         },
@@ -313,7 +262,7 @@ function clickOnEditor(currentElement) {
 }
 
 // detect on window resize
-window.onresize = function(evt) {
+window.onresize = function onWindowResize(evt) {
   log.info("resize window", evt);
   removeAllButtons();
   showMarkerOnEditor(document.activeElement);
@@ -327,7 +276,7 @@ if (
   showMarkerOnEditor(currentElement);
   clickOnEditor(currentElement);
 } else {
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", () => {
     const currentElement = document.activeElement;
     showMarkerOnEditor(currentElement);
     clickOnEditor(currentElement);
@@ -337,7 +286,7 @@ if (
 // observe the active element to show the marker
 document.addEventListener(
   "active-element",
-  function(event) {
+  event => {
     // event.detail.focus: element that received focus
     // event.detail.blur: element that lost focus
     log.info("active-element", event);
@@ -348,4 +297,4 @@ document.addEventListener(
   false
 );
 
-const handle = ally.event.activeElement();
+ally.event.activeElement();
