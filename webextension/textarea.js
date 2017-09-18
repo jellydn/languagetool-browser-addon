@@ -332,8 +332,11 @@ document.addEventListener(
     log.info("active-element", event);
     const { focus: focusElement } = event.detail;
     if (!disableOnDomain) {
-      showMarkerOnEditor(focusElement);
-      clickOnEditor(focusElement);
+      // use timeout for adjust html after redering DOM
+      setTimeout(() => {
+        showMarkerOnEditor(focusElement);
+        clickOnEditor(focusElement);
+      }, 0);
     }
   },
   false
