@@ -8,8 +8,8 @@
     0px 4px 12px -7px rgba(0, 0, 0, 0.15);
   border-radius: 50%;
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 16px;
+  height: 16px;
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
   cursor: pointer;
@@ -22,22 +22,37 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
 }
 
-.lt-buttons:not(:last-child) {
+.lt-buttons:not(:first-child) {
   opacity: 0;
-  -webkit-transform: translateY(32px);
-  -ms-transform: translateY(32px);
-  transform: translateY(32px);
+  -webkit-transform: translateY(16px);
+  -ms-transform: translateY(16px);
+  transform: translateY(16px);
 }
 
-.lt-marker-container:hover .lt-buttons:not(:last-child) {
+/* delay animation on timeout */
+.lt-buttons:nth-last-child(1) {
+  -webkit-transition-delay: 1000ms;
+  transition-delay: 1000ms;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.lt-buttons:nth-last-child(2) {
+  -webkit-transition-delay: 1050ms;
+  transition-delay: 1050ms;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.lt-marker-container:hover .lt-buttons:not(:first-child) {
   opacity: 1;
   -webkit-transform: none;
   -ms-transform: none;
   transform: none;
 }
-/* Unessential styling for sliding up buttons at differnt speeds */
 
-.lt-buttons:nth-last-child(1) {
+.lt-marker-container:hover .lt-buttons:nth-last-child(1) {
   -webkit-transition-delay: 25ms;
   transition-delay: 25ms;
   background-size: contain;
@@ -45,13 +60,13 @@
   background-position: center;
 }
 
-.lt-buttons:not(:last-child):nth-last-child(2) {
+.lt-marker-container:hover .lt-buttons:not(:last-child):nth-last-child(2) {
   -webkit-transition-delay: 50ms;
   transition-delay: 20ms;
   background-size: contain;
 }
 
-.lt-buttons:not(:last-child):nth-last-child(3) {
+.lt-marker-container:hover .lt-buttons:not(:last-child):nth-last-child(3) {
   -webkit-transition-delay: 75ms;
   transition-delay: 40ms;
   background-size: contain;
@@ -62,13 +77,13 @@
 .lt-buttons[tooltip]:before {
   bottom: 100%;
   right: 5%;
-  font-family: arial;
+  font-family: sans-serif;
   font-weight: 600;
   border-radius: 2px;
   background: #585858;
   color: #fff;
   content: attr(tooltip);
-  font-size: 12px;
+  font-size: 11px;
   visibility: hidden;
   opacity: 0;
   padding: 5px;

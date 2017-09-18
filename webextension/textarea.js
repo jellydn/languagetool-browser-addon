@@ -25,7 +25,7 @@ const PREFIX_REMIND = "remind-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
 const PREFIX_ABOUT = "about-lt-btn-";
 const MARGIN_TO_CORNER = 8;
-const REMIND_BTN_SIZE = 32;
+const REMIND_BTN_SIZE = 16;
 let textareaCounter = 0;
 let disableOnDomain = false;
 
@@ -238,9 +238,9 @@ function insertLanguageToolIcon(element) {
     offsetWidth
   });
   const btns = [
-    aboutLanguageToolButton(showAbout, textareaCounter, position),
+    remindLanguageToolButton(checkErrorMenu, position),
     disableLanguageToolButton(disableMenu, textareaCounter, position),
-    remindLanguageToolButton(checkErrorMenu, position)
+    aboutLanguageToolButton(showAbout, textareaCounter, position)
   ];
   textAreaWrapper(element, btns);
 }
