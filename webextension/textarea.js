@@ -27,7 +27,7 @@ const PREFIX_ABOUT = "about-lt-btn-";
 const MARGIN_TO_CORNER = 8;
 const REMIND_BTN_SIZE = 32;
 let textareaCounter = 0;
-let disableOnPage = false;
+let disableOnDomain = false;
 
 /**
  * Check the element is display or hidden
@@ -111,8 +111,22 @@ function removeAllButtons() {
 function disableMenu(evt) {
   log.info("disableMenu");
   evt.preventDefault();
-  disableOnPage = true;
+  disableOnDomain = true;
   removeAllButtons();
+  Tools.getStorage().get(
+    {
+      disabledDomains: []
+    },
+    items => {
+      log.info("disabledDomains", items);
+      const currentUrl = window.location.href;
+      const { hostname } = new URL(currentUrl);
+      items.disabledDomains.push(hostname);
+      Tools.getStorage().set({
+        disabledDomains: [...new Set(items.disabledDomains)]
+      });
+    }
+  );
 }
 
 /** DOM manupulate */
@@ -239,7 +253,7 @@ function showMarkerOnEditor(focusElement) {
   if (isEditorElement(focusElement)) {
     removeAllButtons();
     setActiveElement(focusElement);
-    if (!isHiddenElement(focusElement) && !disableOnPage) {
+    if (!isHiddenElement(focusElement) && !disableOnDomain) {
       insertLanguageToolIcon(focusElement);
     }
   }
@@ -261,25 +275,51 @@ function clickOnEditor(currentElement) {
   }
 }
 
+function allowToShowMarker(callback) {
+  Tools.getStorage().get(
+    {
+      disabledDomains: []
+    },
+    items => {
+      log.info("disabledDomains", items);
+      const currentUrl = window.location.href;
+      const { hostname } = new URL(currentUrl);
+      log.info("hostname", hostname);
+      if (items.disabledDomains.indexOf(hostname) !== -1) {
+        disableOnDomain = true;
+        removeAllButtons();
+      } else {
+        callback();
+      }
+    }
+  );
+}
+
 // detect on window resize
 window.onresize = function onWindowResize(evt) {
   log.info("resize window", evt);
   removeAllButtons();
-  showMarkerOnEditor(document.activeElement);
+  if (!disableOnDomain) {
+    showMarkerOnEditor(document.activeElement);
+  }
 };
 
 if (
   document.readyState === "complete" ||
   (document.readyState !== "loading" && !document.documentElement.doScroll)
 ) {
-  const currentElement = document.activeElement;
-  showMarkerOnEditor(currentElement);
-  clickOnEditor(currentElement);
-} else {
-  document.addEventListener("DOMContentLoaded", () => {
+  allowToShowMarker(() => {
     const currentElement = document.activeElement;
     showMarkerOnEditor(currentElement);
     clickOnEditor(currentElement);
+  });
+} else {
+  document.addEventListener("DOMContentLoaded", () => {
+    allowToShowMarker(() => {
+      const currentElement = document.activeElement;
+      showMarkerOnEditor(currentElement);
+      clickOnEditor(currentElement);
+    });
   });
 }
 
@@ -291,8 +331,10 @@ document.addEventListener(
     // event.detail.blur: element that lost focus
     log.info("active-element", event);
     const { focus: focusElement } = event.detail;
-    showMarkerOnEditor(focusElement);
-    clickOnEditor(focusElement);
+    if (!disableOnDomain) {
+      showMarkerOnEditor(focusElement);
+      clickOnEditor(focusElement);
+    }
   },
   false
 );

@@ -41,10 +41,10 @@
         "vendors/ally.min.js",
         "vendors/featherlight/featherlight.js",
         "helpers.js",
+        "tools.js",
         "contentscript.js",
         "markup.js",
-        "textarea.js",
-        "tools.js"
+        "textarea.js"
       ],
       "css": [
         "vendors/featherlight/featherlight.css",
