@@ -23,7 +23,6 @@ const REMIND_BTN_CLASS = "lt-buttons";
 const REMIND_WRAPPER_CLASS = "lt-marker-container";
 const PREFIX_REMIND = "remind-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
-const PREFIX_ABOUT = "about-lt-btn-";
 const MARGIN_TO_CORNER = 8;
 const REMIND_BTN_SIZE = 16;
 let textareaCounter = 0;
@@ -68,16 +67,6 @@ function isEditorElement(focusElement) {
 }
 
 /** event hanlders */
-
-function showAbout(evt) {
-  log.info("showAbout", evt);
-  const currentUrl = window.location.href;
-  $.featherlight({
-    iframe: `${chrome.runtime.getURL("about.html")}?pageUrl=${currentUrl}`,
-    iframeWidth: 300,
-    iframeHeight: 300
-  });
-}
 
 function checkErrorMenu(evt) {
   log.info("checkErrorMenu", evt);
@@ -185,33 +174,9 @@ function disableLanguageToolButton(clickHandler, counter, position) {
     MARGIN_TO_CORNER}px`;
   btn.style.left = `${left +
     offsetWidth -
-    REMIND_BTN_SIZE * 2 -
-    MARGIN_TO_CORNER}px`;
+    (REMIND_BTN_SIZE + MARGIN_TO_CORNER) * 2}px`;
   btn.style.backgroundImage = `url(${chrome.extension.getURL(
     "images/power-button-symbol.png"
-  )})`;
-  return btn;
-}
-
-function aboutLanguageToolButton(clickHandler, counter, position) {
-  const { top, left, offsetHeight, offsetWidth } = position;
-  const btn = document.createElement("A");
-  btn.onclick = clickHandler;
-  btn.id = PREFIX_ABOUT + counter;
-  btn.className = REMIND_BTN_CLASS;
-  btn.setAttribute("tooltip", "About");
-  // style
-  btn.style.position = "absolute";
-  btn.style.top = `${top +
-    offsetHeight -
-    REMIND_BTN_SIZE -
-    MARGIN_TO_CORNER}px`;
-  btn.style.left = `${left +
-    offsetWidth -
-    REMIND_BTN_SIZE * 3 -
-    MARGIN_TO_CORNER}px`;
-  btn.style.backgroundImage = `url(${chrome.extension.getURL(
-    "images/info.png"
   )})`;
   return btn;
 }
@@ -239,8 +204,7 @@ function insertLanguageToolIcon(element) {
   });
   const btns = [
     remindLanguageToolButton(checkErrorMenu, position),
-    disableLanguageToolButton(disableMenu, textareaCounter, position),
-    aboutLanguageToolButton(showAbout, textareaCounter, position)
+    disableLanguageToolButton(disableMenu, textareaCounter, position)
   ];
   textAreaWrapper(element, btns);
 }

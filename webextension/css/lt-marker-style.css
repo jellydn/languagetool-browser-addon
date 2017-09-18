@@ -22,6 +22,11 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
 }
 
+.lt-buttons:first-child {
+  background-color: #fff;
+  opacity: 0.5;
+}
+
 .lt-buttons:not(:first-child) {
   opacity: 0;
   -webkit-transform: translateY(16px);
@@ -43,6 +48,10 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.lt-marker-container:hover .lt-buttons:first-child {
+  opacity: 1;
 }
 
 .lt-marker-container:hover .lt-buttons:not(:first-child) {
