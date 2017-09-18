@@ -1,10 +1,12 @@
 {
   "addToDictionary": {
-    "description": "Link shown in the popup to accept a word to the internal dictionary",
+    "description":
+      "Link shown in the popup to accept a word to the internal dictionary",
     "message": "dodaj v slovar"
   },
   "addToDictionaryTitle": {
-    "description": "Title hover shown in the popup to accept a word to the internal dictionary",
+    "description":
+      "Title hover shown in the popup to accept a word to the internal dictionary",
     "message": "dodaj »$word$« v osebni slovar",
     "placeholders": {
       "word": {
@@ -14,36 +16,52 @@
     }
   },
   "appDesc": {
-    "description": "The description of the application, displayed in the web store.",
-    "message": "Preverite slog in slovnične težave svojih besedil kjer koli na spletu"
+    "description":
+      "The description of the application, displayed in the web store.",
+    "message":
+      "Preverite slog in slovnične težave svojih besedil kjer koli na spletu"
   },
   "appStoreDesc10": {
-    "description": "Description paragraph 1 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "S to razširitvijo lahko preverite besedilo z uporabo brezplačnega slovničnega in slogovnega preverjalnika LanguageTool. Slednji najde številne napake, ki jih navadno preverjanje črkovanja ne zazna, kot je napačna raba predlogov, postavljanje vejic, podvajanje besed itn. Podpira več kot 25 jezikov, med njimi slovenščino, angleščino, španščino, francoščino in nemščino."
+    "description":
+      "Description paragraph 1 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "S to razširitvijo lahko preverite besedilo z uporabo brezplačnega slovničnega in slogovnega preverjalnika LanguageTool. Slednji najde številne napake, ki jih navadno preverjanje črkovanja ne zazna, kot je napačna raba predlogov, postavljanje vejic, podvajanje besed itn. Podpira več kot 25 jezikov, med njimi slovenščino, angleščino, španščino, francoščino in nemščino."
   },
   "appStoreDesc20": {
-    "description": "Description paragraph 2 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "LanguageTool je zasnovan z mislijo na enostavnost. S pritiskom na gumb ali prilagodljivo kombinacijo tipk LanguageTool nemudoma preveri črkovanje in slovnico poljubnega izbranega besedila. LanguageTool je združljiv s skoraj vsemi vrstami besedila, ne glede na vir, vključno z družbenimi omrežji, kot so Facebook, Twitter in LinkedIn, in spletnimi storitvami e-pošte, kot je Gmail. Le redka spletišča, kot sta docs.google.com in chrome.google.com, trenutno niso podprta, namesto tega za Google Docs uporabite https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
+    "description":
+      "Description paragraph 2 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "LanguageTool je zasnovan z mislijo na enostavnost. S pritiskom na gumb ali prilagodljivo kombinacijo tipk LanguageTool nemudoma preveri črkovanje in slovnico poljubnega izbranega besedila. LanguageTool je združljiv s skoraj vsemi vrstami besedila, ne glede na vir, vključno z družbenimi omrežji, kot so Facebook, Twitter in LinkedIn, in spletnimi storitvami e-pošte, kot je Gmail. Le redka spletišča, kot sta docs.google.com in chrome.google.com, trenutno niso podprta, namesto tega za Google Docs uporabite https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
   },
   "appStoreDesc30": {
-    "description": "Description paragraph 3 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Naš cilj je, da z LanguageTool uporabnikom omogočimo polno funkcionalni preverjalnik slovnice in korektor, s katerim bodo imeli nadzor nad svojimi vsebinami. Čeprav je LanguageTool vitalnega pomena za tujerodne govorce, je dovolj pameten, da opazi napake, ki jih pogosto delajo domorodni govorci ter nasploh izboljša vaše pisanje. To slovnično in črkovalno preverjanje deluje prek vseh variacij pogostih jezikov; razlikuje npr. med ameriško in britansko angleščino. LanguageTool vsebuje tudi osebni slovar za izjeme ali besede, ki jih morda pogosto uporabljate, vendar jih ni mogoče najti v običajnem slovarju. LanguageTool prepozna te besede ob naslednjem preverjanju slovnice in črkovanja."
+    "description":
+      "Description paragraph 3 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Naš cilj je, da z LanguageTool uporabnikom omogočimo polno funkcionalni preverjalnik slovnice in korektor, s katerim bodo imeli nadzor nad svojimi vsebinami. Čeprav je LanguageTool vitalnega pomena za tujerodne govorce, je dovolj pameten, da opazi napake, ki jih pogosto delajo domorodni govorci ter nasploh izboljša vaše pisanje. To slovnično in črkovalno preverjanje deluje prek vseh variacij pogostih jezikov; razlikuje npr. med ameriško in britansko angleščino. LanguageTool vsebuje tudi osebni slovar za izjeme ali besede, ki jih morda pogosto uporabljate, vendar jih ni mogoče najti v običajnem slovarju. LanguageTool prepozna te besede ob naslednjem preverjanju slovnice in črkovanja."
   },
   "appStoreDesc40": {
-    "description": "Description paragraph 4 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Raba: izberite besedilo, ki ga želite korigirati ali kliknite polje urejanja, če želite preveriti njegovo vsebino. Nato kliknite ikono LT, ki je prikazana v desnem zgornjem kotu vašega brskalnika. Namesto tega lahko uporabite tudi kombinacijo tipk krmilka+dvigalka+preslednica."
+    "description":
+      "Description paragraph 4 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Raba: izberite besedilo, ki ga želite korigirati ali kliknite polje urejanja, če želite preveriti njegovo vsebino. Nato kliknite ikono LT, ki je prikazana v desnem zgornjem kotu vašega brskalnika. Namesto tega lahko uporabite tudi kombinacijo tipk krmilka+dvigalka+preslednica."
   },
   "appStoreDesc60": {
-    "description": "Description paragraph 5 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "LanguageTool (za razliko od Grammarly in Ginger) deluje za številne jezike in je 100 % prost in ponuja številne enake funkcije."
+    "description":
+      "Description paragraph 5 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "LanguageTool (za razliko od Grammarly in Ginger) deluje za številne jezike in je 100 % prost in ponuja številne enake funkcije."
   },
   "appStoreDesc70": {
-    "description": "Description paragraph 6 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "Vaša zasebnost je za nas pomembna: ta razširitev privzeto preveri besedilo tako, da ga pošlje na naslov https://languagetool.org prek varno šifrirane povezave. Nobenega računa ne potrebujete za uporabo te razširitve. Besedil, ki jih preverjate, ne shranjujemo. Niti vašega naslova IP ne hranimo. Politiko zasebnosti si preberite na naslovu https://languagetool.org/privacy/"
+    "description":
+      "Description paragraph 6 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "Vaša zasebnost je za nas pomembna: ta razširitev privzeto preveri besedilo tako, da ga pošlje na naslov https://languagetool.org prek varno šifrirane povezave. Nobenega računa ne potrebujete za uporabo te razširitve. Besedil, ki jih preverjate, ne shranjujemo. Niti vašega naslova IP ne hranimo. Politiko zasebnosti si preberite na naslovu https://languagetool.org/privacy/"
   },
   "appStoreDesc80": {
-    "description": "Description paragraph 7 in Google Chrome Web Store (does not appear in the extension itself)",
-    "message": "O napakah poročajte na naslovu https://github.com/languagetool-org/languagetool-browser-addon/issues"
+    "description":
+      "Description paragraph 7 in Google Chrome Web Store (does not appear in the extension itself)",
+    "message":
+      "O napakah poročajte na naslovu https://github.com/languagetool-org/languagetool-browser-addon/issues"
   },
   "ast": {
     "description": "automatically added by injectTranslation.py",
@@ -74,7 +92,8 @@
     "message": "Prekliči"
   },
   "checkingProgress": {
-    "description": "Text shown in popup next to a spinning icon, indicating that the check is in progress",
+    "description":
+      "Text shown in popup next to a spinning icon, indicating that the check is in progress",
     "message": "Preverjanje ..."
   },
   "contextMenuItem": {
@@ -82,7 +101,8 @@
     "message": "Preveri besedilo z LanguageTool"
   },
   "contextMenuItemWithShortcut": {
-    "description": "Text shown in the context menu, if available. The parenthesis show the shortcut.",
+    "description":
+      "Text shown in the context menu, if available. The parenthesis show the shortcut.",
     "message": "Preveri besedilo z LanguageTool [$shortcut$]",
     "placeholders": {
       "shortcut": {
@@ -134,11 +154,13 @@
     "message": "nemški (enostavni, Nemčija)"
   },
   "defaultServerLink": {
-    "description": "Options dialog: Link to reset the URL of the API server to the default value",
+    "description":
+      "Options dialog: Link to reset the URL of the API server to the default value",
     "message": "Uporabi privzeto"
   },
   "detectedLanguage": {
-    "description": "Text shown in the popup to indicate the automatically detected language of the text checked",
+    "description":
+      "Text shown in the popup to indicate the automatically detected language of the text checked",
     "message": "Zaznan jezik: $language$",
     "placeholders": {
       "language": {
@@ -148,8 +170,14 @@
     }
   },
   "dictionaryDesc": {
-    "description": "Options dialog: text for the textarea with the user's words to be ignored for spell checking",
+    "description":
+      "Options dialog: text for the textarea with the user's words to be ignored for spell checking",
     "message": "Besede osebnega slovarja (ena na vrstico):"
+  },
+  "domainsDesc": {
+    "description":
+      "Options dialog: text for the textarea with the domains's words to be ignored for spell checking",
+    "message": "Disable on these domains (one domain per line):"
   },
   "el": {
     "description": "automatically added by injectTranslation.py",
@@ -200,25 +228,31 @@
     "message": "francoski"
   },
   "freshInstallReload": {
-    "description": "Error shown when user has installed extension and called it on an already open tab but not reloaded that tab yet",
-    "message": "Če ste le namestili ali (ponovno) aktivirali to razširitev, najprej ponovno naložite zavihek, v katerem želite preverjati besedilo."
+    "description":
+      "Error shown when user has installed extension and called it on an already open tab but not reloaded that tab yet",
+    "message":
+      "Če ste le namestili ali (ponovno) aktivirali to razširitev, najprej ponovno naložite zavihek, v katerem želite preverjati besedilo."
   },
   "gl": {
     "description": "automatically added by injectTranslation.py",
     "message": "galicijski"
   },
   "googleDocsNotSupported": {
-    "description": "Google Docs is too complex to be supported, so we show this error",
-    "message": "Žal ta razširitev ne podpira spletišča Google Docs. Namesto tega namestite <a target='_blank' href='$url$'>to razširitev</a>, ki je optimizirana za Google Docs.",
+    "description":
+      "Google Docs is too complex to be supported, so we show this error",
+    "message":
+      "Žal ta razširitev ne podpira spletišča Google Docs. Namesto tega namestite <a target='_blank' href='$url$'>to razširitev</a>, ki je optimizirana za Google Docs.",
     "placeholders": {
       "url": {
         "content": "$1",
-        "example": "https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
+        "example":
+          "https://chrome.google.com/webstore/detail/languagetool/kjcoklfhicmkbfifghaecedbohbmofkm"
       }
     }
   },
   "ignoreQuotedLines": {
-    "description": "Options dialog: checkbox to exclude quoted text from checking",
+    "description":
+      "Options dialog: checkbox to exclude quoted text from checking",
     "message": "Prezri vrstice, ki se začenjajo s $char$ (običajno navedke)",
     "placeholders": {
       "char": {
@@ -228,7 +262,8 @@
     }
   },
   "ignoredRules": {
-    "description": "Text shown at the bottom of the popup to turn on turned off rules again",
+    "description":
+      "Text shown at the bottom of the popup to turn on turned off rules again",
     "message": "Naslednja pravila so izključena, s klikom jih znova vključite:"
   },
   "is": {
@@ -248,7 +283,8 @@
     "message": "kmerski"
   },
   "language": {
-    "description": "Text shown in the popup to indicate the automatically detected language of the text checked",
+    "description":
+      "Text shown in the popup to indicate the automatically detected language of the text checked",
     "message": "Jezik:"
   },
   "lt": {
@@ -264,11 +300,14 @@
     "message": "Materni jezik:"
   },
   "motherTongueExpl": {
-    "description": "Options dialog: more descriptive text explaining what selection of mother tongue does",
-    "message": "Izberite materni jezik, da boste prejeli opozorilo ob lažnih prijateljih v tujejezičnih besedilih."
+    "description":
+      "Options dialog: more descriptive text explaining what selection of mother tongue does",
+    "message":
+      "Izberite materni jezik, da boste prejeli opozorilo ob lažnih prijateljih v tujejezičnih besedilih."
   },
   "networkError": {
-    "description": "Error message shown if API server could not be connected due to network issues",
+    "description":
+      "Error message shown if API server could not be connected due to network issues",
     "message": "Omrežna napaka ($serverUrl$)",
     "placeholders": {
       "serverUrl": {
@@ -282,16 +321,21 @@
     "message": "nizozemski"
   },
   "noErrorsFound": {
-    "description": "Text shown in the popup when the server found no potential errors in the text to check",
+    "description":
+      "Text shown in the popup when the server found no potential errors in the text to check",
     "message": "Nobenih napak ni videti"
   },
   "noReplacementPossible": {
-    "description": "Error message shown when the extension could not apply the suggestion selected by the user. May happen under some circumstances when editing HTML.",
-    "message": "Žal z razširitvijo LanguageTool v besedilu ni bilo mogoče najti konteksta napake"
+    "description":
+      "Error message shown when the extension could not apply the suggestion selected by the user. May happen under some circumstances when editing HTML.",
+    "message":
+      "Žal z razširitvijo LanguageTool v besedilu ni bilo mogoče najti konteksta napake"
   },
   "noReplacementPossible2": {
-    "description": "Error message shown when trying to replace an error with a suggestion in certain HTML that's not yet supported",
-    "message": "Žal napake ni mogoče zamenjati s predlogom. To se včasih zgodi pri urejanju HTML."
+    "description":
+      "Error message shown when trying to replace an error with a suggestion in certain HTML that's not yet supported",
+    "message":
+      "Žal napake ni mogoče zamenjati s predlogom. To se včasih zgodi pri urejanju HTML."
   },
   "noResponseFromServer": {
     "description": "Error message if API server doesn't respond",
@@ -305,7 +349,8 @@
   },
   "noValidResponseFromServer": {
     "description": "Error message shown we cannot parse API server response",
-    "message": "Strežnik $serverUrl$ ni poslal veljavnega odgovora: $response$, koda $status$",
+    "message":
+      "Strežnik $serverUrl$ ni poslal veljavnega odgovora: $response$, koda $status$",
     "placeholders": {
       "response": {
         "content": "$2",
@@ -326,12 +371,16 @@
     "message": "poljski"
   },
   "placeCursor1": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Postavite kazalko v polje za urejanje ali izberite besedilo (nobenega aktivnega elementa namreč ni mogoče najti v iframe)."
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Postavite kazalko v polje za urejanje ali izberite besedilo (nobenega aktivnega elementa namreč ni mogoče najti v iframe)."
   },
   "placeCursor2": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Postavite kazalko v polje za urejanje ali izberite besedilo (aktivni element: $elem$).",
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Postavite kazalko v polje za urejanje ali izberite besedilo (aktivni element: $elem$).",
     "placeholders": {
       "elem": {
         "content": "$1",
@@ -340,12 +389,16 @@
     }
   },
   "placeCursor3": {
-    "description": "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
-    "message": "Postavite kazalko v polje za urejanje ali izberite besedilo (nobenega aktivnega elementa namreč ni mogoče najti)."
+    "description":
+      "Error message shown when the extension button is clicked but cursor is not an editable field and there's no selection either.",
+    "message":
+      "Postavite kazalko v polje za urejanje ali izberite besedilo (nobenega aktivnega elementa namreč ni mogoče najti)."
   },
   "privacyNoteForDefaultServer": {
-    "description": "Shown on first start of extension to make user aware of privacy issues when using the default server on languagetool.org",
-    "message": "S to razširitvijo boste preverili besedilo, tako da bo poslano na strežnik <a href='$serverUrl$' target='_blank'>$serverUrl$</a> prek šifrirane povezave. Vaše besedilo ne bo shranjeno. Podrobnosti si preberite v <a href='$privacyUrl$' target='_blank'>naši politiki zasebnosti</a>.",
+    "description":
+      "Shown on first start of extension to make user aware of privacy issues when using the default server on languagetool.org",
+    "message":
+      "S to razširitvijo boste preverili besedilo, tako da bo poslano na strežnik <a href='$serverUrl$' target='_blank'>$serverUrl$</a> prek šifrirane povezave. Vaše besedilo ne bo shranjeno. Podrobnosti si preberite v <a href='$privacyUrl$' target='_blank'>naši politiki zasebnosti</a>.",
     "placeholders": {
       "privacyUrl": {
         "content": "$2",
@@ -358,8 +411,10 @@
     }
   },
   "privacyNoteForOtherServer": {
-    "description": "Shown on first start of extension to make user aware of privacy issues when using some other than the default server",
-    "message": "S to razširitvijo boste preverili besedilo, tako da bo poslano na strežnik $serverUrl$. Če želite preklopiti nazaj na privzeti strežnik, obiščite stran nastavitev razširitve.",
+    "description":
+      "Shown on first start of extension to make user aware of privacy issues when using some other than the default server",
+    "message":
+      "S to razširitvijo boste preverili besedilo, tako da bo poslano na strežnik $serverUrl$. Če želite preklopiti nazaj na privzeti strežnik, obiščite stran nastavitev razširitve.",
     "placeholders": {
       "serverUrl": {
         "content": "$1",
@@ -380,7 +435,8 @@
     "message": "portugalski (Portugalska, pred reformo)"
   },
   "quotedLinesIgnored": {
-    "description": "Text shown in the popup to let the user know when parts of the text have been ignored",
+    "description":
+      "Text shown in the popup to let the user know when parts of the text have been ignored",
     "message": "Vrstice navedkov, ki se začenjajo z $char$, so bile prezrte",
     "placeholders": {
       "char": {
@@ -390,12 +446,15 @@
     }
   },
   "reviewRequest": {
-    "description": "Shown at the bottom of the popup dialog (for some users only)",
-    "message": "Če vam je razširitev všeč, zakaj ne <a target='_blank' href='$url$'>napišete ocene</a>?",
+    "description":
+      "Shown at the bottom of the popup dialog (for some users only)",
+    "message":
+      "Če vam je razširitev všeč, zakaj ne <a target='_blank' href='$url$'>napišete ocene</a>?",
     "placeholders": {
       "url": {
         "content": "$1",
-        "example": "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji"
+        "example":
+          "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji"
       }
     }
   },
@@ -412,12 +471,15 @@
     "message": "Shrani"
   },
   "serverText": {
-    "description": "Options dialog: description of the text field for the API server URL",
+    "description":
+      "Options dialog: description of the text field for the API server URL",
     "message": "URL strežnika API LanguageTool:"
   },
   "shortcutHint": {
-    "description": "Text shown in the popup to let the user know about the shortcut key combination",
-    "message": "Preverjanje besedila lahko sprožite s kombinacijo tipk: $shortcut$",
+    "description":
+      "Text shown in the popup to let the user know about the shortcut key combination",
+    "message":
+      "Preverjanje besedila lahko sprožite s kombinacijo tipk: $shortcut$",
     "placeholders": {
       "shortcut": {
         "content": "$1",
@@ -450,7 +512,8 @@
     "message": "tamilski"
   },
   "textCheckedBy": {
-    "description": "Text shown in the popup to make the user aware of which, possibly remote, service was used to check their text",
+    "description":
+      "Text shown in the popup to make the user aware of which, possibly remote, service was used to check their text",
     "message": "Preverjanje besedila je izvedel strežnik $serverUrl$",
     "placeholders": {
       "serverUrl": {
@@ -460,8 +523,10 @@
     }
   },
   "textCheckedRemotely": {
-    "description": "Text shown in the popup to make the user aware of which remote service was used to check their text",
-    "message": "Besedilo oddaljeno preverjeno z <a target='_blank' href='$url$'>languagetool.org</a>",
+    "description":
+      "Text shown in the popup to make the user aware of which remote service was used to check their text",
+    "message":
+      "Besedilo oddaljeno preverjeno z <a target='_blank' href='$url$'>languagetool.org</a>",
     "placeholders": {
       "url": {
         "content": "$1",
@@ -471,7 +536,8 @@
   },
   "timeoutError": {
     "description": "Error message shown if API server doesn't respond timely",
-    "message": "Strežnik je prekoračil čas, poskusite znova kasneje ($serverUrl$)",
+    "message":
+      "Strežnik je prekoračil čas, poskusite znova kasneje ($serverUrl$)",
     "placeholders": {
       "serverUrl": {
         "content": "$1",
@@ -488,7 +554,8 @@
     "message": "Preveri trenutni izbor\nali polje urejanja z LanguageTool"
   },
   "turnOffRule": {
-    "description": "Link shown in the popup to turn off, i.e. ignore, a rule (the rule - not just this match)",
+    "description":
+      "Link shown in the popup to turn off, i.e. ignore, a rule (the rule - not just this match)",
     "message": "Izključi pravilo"
   },
   "uk": {
@@ -512,8 +579,10 @@
     "message": "Privzeta varianta portugalščine:"
   },
   "webstoreSiteNotSupported": {
-    "description": "Error shown when Chrome extension is used on https://chrome.google.com/webstore, which doesn't work for technical reasons",
-    "message": "Google Chrome žal preprečuje razširitvam dostop do Spletne trgovine Chrome. Čudno, kajne?"
+    "description":
+      "Error shown when Chrome extension is used on https://chrome.google.com/webstore, which doesn't work for technical reasons",
+    "message":
+      "Google Chrome žal preprečuje razširitvam dostop do Spletne trgovine Chrome. Čudno, kajne?"
   },
   "zh": {
     "description": "automatically added by injectTranslation.py",

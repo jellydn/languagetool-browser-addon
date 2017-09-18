@@ -415,6 +415,11 @@
     "description":
       "Options dialog: text for the textarea with the user's words to be ignored for spell checking"
   },
+  "domainsDesc": {
+    "description":
+      "Options dialog: text for the textarea with the domains's words to be ignored for spell checking",
+    "message": "Disable on these domains (one domain per line):"
+  },
   "save": {
     "message": "Save",
     "description": "Options dialog: save button"

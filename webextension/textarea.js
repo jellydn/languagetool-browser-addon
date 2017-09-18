@@ -17,7 +17,7 @@
  * USA
  */
 
-/* global chrome, window, document, $, log, ally, activeElement, setActiveElement */
+/* global activeElement, setActiveElement */
 
 const REMIND_BTN_CLASS = "lt-buttons";
 const REMIND_WRAPPER_CLASS = "lt-marker-container";

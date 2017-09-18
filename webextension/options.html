@@ -1,61 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>LanguageTool Extension Options</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <script src="tools.js"></script>
-    <style>
-        body {
-            font-family: sans-serif;
-            padding: 10px;
-        }
-        select {
-            width: 105%;
-        }
-        textarea {
-            width: 105%;
-        }
-        #apiServerUrl { width: 250px; margin-top: 5px; margin-bottom: 5px; }
-        #save { margin-top: 10px; }
-        #quoteChar {
-            padding-left: 2px;
-            padding-right: 2px;
-            font-family: monospace;
-            background-color: #dddddd;
-        }
-        .expl {
-            color: #777777;
-            margin-left: 10px;
-        }
-        .error {
-            font-weight: bold;
-            color: darkred;
-        }
-    </style>
+  <title>LanguageTool Extension Options</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script src="tools.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 10px;
+    }
+
+    select {
+      width: 105%;
+    }
+
+    textarea {
+      width: 105%;
+    }
+
+    #apiServerUrl {
+      width: 250px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    #save {
+      margin-top: 10px;
+    }
+
+    #quoteChar {
+      padding-left: 2px;
+      padding-right: 2px;
+      font-family: monospace;
+      background-color: #dddddd;
+    }
+
+    .expl {
+      color: #777777;
+      margin-left: 10px;
+    }
+
+    .error {
+      font-weight: bold;
+      color: darkred;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- just setting 'body' width in CSS leads to a strange bug of misplaced <select>s when clicked, work around that: -->
-<div style="width:500px"></div>
+  <!-- just setting 'body' width in CSS leads to a strange bug of misplaced <select>s when clicked, work around that: -->
+  <div style="width:500px"></div>
 
-<div id="serverText"></div>
-<input autofocus id="apiServerUrl" type="text" spellcheck="false"/> <span id="privacyPolicy"></span>
-<div class="error" id="status"></div>
-<a id="defaultServerLink" href="#"></a><br>
+  <div id="serverText"></div>
+  <input autofocus id="apiServerUrl" type="text" spellcheck="false" /> <span id="privacyPolicy"></span>
+  <div class="error" id="status"></div>
+  <a id="defaultServerLink" href="#"></a><br>
 
-<br>
-<table>
+  <br>
+  <table>
     <tr>
-        <td style="vertical-align: top"><input id="ignoreQuotedLines" type="checkbox" checked></td>
-        <td><label for="ignoreQuotedLines"><span id="ignoreQuotedLinesDesc"></span></label></td>
+      <td style="vertical-align: top"><input id="ignoreQuotedLines" type="checkbox" checked></td>
+      <td><label for="ignoreQuotedLines"><span id="ignoreQuotedLinesDesc"></span></label></td>
     </tr>
-</table>
+  </table>
 
-<table style="margin-top: 10px">
+  <table style="margin-top: 10px">
     <tr>
-        <td><label id="motherTongueDesc" for="motherTongue"></label></td>
-        <td>
-            <select id="motherTongue">
+      <td><label id="motherTongueDesc" for="motherTongue"></label></td>
+      <td>
+        <select id="motherTongue">
                 <option value="">-</option>
                 <!-- This list only contains languages for which LT has false friend hints (see false-friends.xml in LT): -->
                 <option value="ca">Catalan</option>
@@ -72,15 +87,17 @@
                 <option value="ru">Russian</option>
                 <option value="sv">Swedish</option>
             </select>
-        </td>
+      </td>
     </tr>
     <tr>
-        <td colspan="2"><div class="expl" id="motherTongueExpl"></div></td>
+      <td colspan="2">
+        <div class="expl" id="motherTongueExpl"></div>
+      </td>
     </tr>
     <tr>
-        <td><label id="variant-en-desc" for="variant-en"></label></td>
-        <td>
-            <select id="variant-en">
+      <td><label id="variant-en-desc" for="variant-en"></label></td>
+      <td>
+        <select id="variant-en">
                 <option value="en-US">English (US)</option>
                 <option value="en-GB">English (GB)</option>
                 <option value="en-AU">English (Australian)</option>
@@ -88,48 +105,55 @@
                 <option value="en-NZ">English (New Zealand)</option>
                 <option value="en-ZA">English (South African)</option>
             </select>
-        </td>
+      </td>
     </tr>
     <tr>
-        <td><label id="variant-de-desc" for="variant-de"></label></td>
-        <td>
-            <select id="variant-de">
+      <td><label id="variant-de-desc" for="variant-de"></label></td>
+      <td>
+        <select id="variant-de">
                 <option value="de-DE">Deutsch (Deutschland)</option>
                 <option value="de-AT">Deutsch (Österreich)</option>
                 <option value="de-CH">Deutsch (Schweiz)</option>
             </select>
-        </td>
+      </td>
     </tr>
     <tr>
-        <td><label id="variant-pt-desc" for="variant-pt"></label></td>
-        <td>
-            <select id="variant-pt">
+      <td><label id="variant-pt-desc" for="variant-pt"></label></td>
+      <td>
+        <select id="variant-pt">
                 <option value="pt-PT">Português (Portugal)</option>
                 <option value="pt-BR">Português (Brasil)</option>
             </select>
-        </td>
+      </td>
     </tr>
     <tr>
-        <td><label id="variant-ca-desc" for="variant-ca"></label></td>
-        <td>
-            <select id="variant-ca">
+      <td><label id="variant-ca-desc" for="variant-ca"></label></td>
+      <td>
+        <select id="variant-ca">
                 <option value="ca-ES">Català</option>
                 <option value="ca-ES-valencia">Català (Valencià)</option>
             </select>
-        </td>
+      </td>
     </tr>
     <tr>
-        <td style="vertical-align: top"><label id="dictionaryDesc" for="dictionary"></label></td>
-        <td>
-            <textarea id="dictionary" spellcheck="false" rows="5"></textarea>
-        </td>
+      <td style="vertical-align: top"><label id="dictionaryDesc" for="dictionary"></label></td>
+      <td>
+        <textarea id="dictionary" spellcheck="false" rows="5"></textarea>
+      </td>
     </tr>
-</table>
- 
-<br>
-<button id="save">Save</button>
+    <tr>
+      <td style="vertical-align: top"><label id="domainsDesc" for="domains"></label></td>
+      <td>
+        <textarea id="domains" spellcheck="false" rows="5"></textarea>
+      </td>
+    </tr>
+  </table>
 
-<script src="options.js"></script>
+  <br>
+  <button id="save">Save</button>
+
+  <script src="options.js"></script>
 
 </body>
+
 </html>

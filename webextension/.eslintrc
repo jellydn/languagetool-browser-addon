@@ -2,7 +2,15 @@
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["prettier"],
   "env": {
-    "es6": true
+    "es6": true,
+    "browser": true,
+    "jquery": true
+  },
+  "globals": {
+    "chrome": true,
+    "log": true, // log-level
+    "ally": true, // activeElement
+    "Tools": true
   },
   "rules": {
     "prettier/prettier": "error"
