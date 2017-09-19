@@ -296,7 +296,10 @@ document.addEventListener(
     log.info("active-element", event);
     const { focus: focusElement } = event.detail;
     if (!disableOnDomain) {
+      showMarkerOnEditor(focusElement);
+      clickOnEditor(focusElement);
       // use timeout for adjust html after redering DOM
+      // try to reposition for some site which is rendering from JS (e.g: Upwork)
       setTimeout(() => {
         showMarkerOnEditor(focusElement);
         clickOnEditor(focusElement);
