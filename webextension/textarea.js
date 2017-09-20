@@ -19,14 +19,13 @@
 
 /* global activeElement, setActiveElement */
 
-const REMIND_BTN_CLASS = "lt-buttons";
 const REMIND_WRAPPER_CLASS = "lt-marker-container";
 const POPUP_CONTENT_CLASS = "ltaddon-popup-content";
-const PREFIX_REMIND = "remind-btn-";
-const PREFIX_DISABLE = "disable-lt-btn-";
+const BTN_CLASS = "lt-buttons";
+const REMIND_BTN_CLASS = "lt-remind-btn";
+const DISABLE_BTN_CLASS = "lt-disable-btn";
 const MARGIN_TO_CORNER = 8;
 const REMIND_BTN_SIZE = 16;
-let textareaCounter = 0;
 let disableOnDomain = false;
 
 /**
@@ -84,10 +83,11 @@ function checkErrorMenu(evt) {
     }
   }
   const popupWidth = 450;
+  const popupHeight = Math.min(window.innerHeight * 80 / 100, 600);
   $.featherlight({
     iframe: `${chrome.runtime.getURL("popup.html")}?pageUrl=${currentUrl}`,
     iframeWidth: popupWidth,
-    iframeHeight: 600,
+    iframeHeight: popupHeight,
     namespace: "ltaddon-popup",
     beforeOpen: () => {
       const popupContainers = document.getElementsByClassName(
@@ -96,6 +96,7 @@ function checkErrorMenu(evt) {
       for (let counter = 0; counter < popupContainers.length; counter += 1) {
         const popupContainer = popupContainers[counter];
         popupContainer.style.minWidth = `${popupWidth}px`;
+        popupContainer.style.minHeight = `${popupHeight}px`;
       }
     },
     afterOpen: () => {
@@ -141,9 +142,7 @@ function remindLanguageToolButton(clickHandler, position) {
   const { top, left, offsetHeight, offsetWidth } = position;
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
-  textareaCounter += 1;
-  btn.id = PREFIX_REMIND + textareaCounter;
-  btn.className = REMIND_BTN_CLASS;
+  btn.className = `${BTN_CLASS} ${REMIND_BTN_CLASS}`;
   btn.setAttribute("tooltip", "Grammar and Style Checker");
 
   // // style
@@ -156,31 +155,15 @@ function remindLanguageToolButton(clickHandler, position) {
     offsetWidth -
     REMIND_BTN_SIZE -
     MARGIN_TO_CORNER}px`;
-  btn.style.backgroundImage = `url(${chrome.extension.getURL(
-    "images/logo.png"
-  )})`;
-
-  btn.onmouseenter = () => {
-    btn.style.backgroundImage = `url(${chrome.extension.getURL(
-      "images/check.png"
-    )})`;
-  };
-
-  btn.onmouseleave = () => {
-    btn.style.backgroundImage = `url(${chrome.extension.getURL(
-      "images/logo.png"
-    )})`;
-  };
 
   return btn;
 }
 
-function disableLanguageToolButton(clickHandler, counter, position) {
+function disableLanguageToolButton(clickHandler, position) {
   const { top, left, offsetHeight, offsetWidth } = position;
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
-  btn.id = PREFIX_DISABLE + counter;
-  btn.className = REMIND_BTN_CLASS;
+  btn.className = `${BTN_CLASS} ${DISABLE_BTN_CLASS}`;
   btn.setAttribute("tooltip", "Disable for this domain");
   // style
   btn.style.position = "absolute";
@@ -191,9 +174,6 @@ function disableLanguageToolButton(clickHandler, counter, position) {
   btn.style.left = `${left +
     offsetWidth -
     (REMIND_BTN_SIZE + MARGIN_TO_CORNER) * 2}px`;
-  btn.style.backgroundImage = `url(${chrome.extension.getURL(
-    "images/power-button-symbol.png"
-  )})`;
   return btn;
 }
 
@@ -220,7 +200,7 @@ function insertLanguageToolIcon(element) {
   });
   const btns = [
     remindLanguageToolButton(checkErrorMenu, position),
-    disableLanguageToolButton(disableMenu, textareaCounter, position)
+    disableLanguageToolButton(disableMenu, position)
   ];
   textAreaWrapper(element, btns);
 }

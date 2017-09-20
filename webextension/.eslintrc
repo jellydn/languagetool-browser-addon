@@ -10,7 +10,9 @@
     "chrome": true,
     "log": true, // log-level
     "ally": true, // activeElement
-    "Tools": true
+    "Tools": true,
+    "DOMPurify": true,
+    "Markup": true
   },
   "rules": {
     "prettier/prettier": "error"

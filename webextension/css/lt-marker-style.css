@@ -22,9 +22,10 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
 }
 
-.lt-buttons:first-child {
+.lt-remind-btn {
   background-color: #fff;
   opacity: 0.5;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/logo.png");
 }
 
 .lt-buttons:not(:first-child) {
@@ -32,26 +33,21 @@
   -webkit-transform: translateY(16px);
   -ms-transform: translateY(16px);
   transform: translateY(16px);
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/power-button-symbol.png");
 }
 
 /* delay animation on timeout */
-.lt-buttons:nth-last-child(1) {
+.lt-disable-btn {
   -webkit-transition-delay: 1000ms;
   transition-delay: 1000ms;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
-.lt-buttons:nth-last-child(2) {
-  -webkit-transition-delay: 1050ms;
-  transition-delay: 1050ms;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
 
-.lt-marker-container:hover .lt-buttons:first-child {
+.lt-marker-container:hover .lt-remind-btn:hover {
   opacity: 1;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/check.png");
 }
 
 .lt-marker-container:hover .lt-buttons:not(:first-child) {
@@ -72,12 +68,6 @@
 .lt-marker-container:hover .lt-buttons:not(:last-child):nth-last-child(2) {
   -webkit-transition-delay: 50ms;
   transition-delay: 20ms;
-  background-size: contain;
-}
-
-.lt-marker-container:hover .lt-buttons:not(:last-child):nth-last-child(3) {
-  -webkit-transition-delay: 75ms;
-  transition-delay: 40ms;
   background-size: contain;
 }
 
