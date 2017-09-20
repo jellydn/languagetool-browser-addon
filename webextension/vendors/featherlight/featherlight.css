@@ -92,8 +92,8 @@
     /* position: centering vertical and horizontal */
     position: absolute;
     z-index: 9999;
-    top: 0;
-    right: 15px;
+    top: 5px;
+    right: 20px;
 
     /* dimensions: 16px x 16px */
     line-height: 16px;
