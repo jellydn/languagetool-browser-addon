@@ -21,7 +21,7 @@
 
 const REMIND_BTN_CLASS = "lt-buttons";
 const REMIND_WRAPPER_CLASS = "lt-marker-container";
-const POPUP_CONTENT_CLASS = "featherlight-content";
+const POPUP_CONTENT_CLASS = "ltaddon-popup-content";
 const PREFIX_REMIND = "remind-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
 const MARGIN_TO_CORNER = 8;
@@ -88,6 +88,7 @@ function checkErrorMenu(evt) {
     iframe: `${chrome.runtime.getURL("popup.html")}?pageUrl=${currentUrl}`,
     iframeWidth: popupWidth,
     iframeHeight: 600,
+    namespace: "ltaddon-popup",
     beforeOpen: () => {
       const popupContainers = document.getElementsByClassName(
         POPUP_CONTENT_CLASS
