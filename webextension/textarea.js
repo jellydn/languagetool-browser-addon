@@ -164,7 +164,10 @@ function disableLanguageToolButton(clickHandler, position) {
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
   btn.className = `${BTN_CLASS} ${DISABLE_BTN_CLASS}`;
-  btn.setAttribute("tooltip", chrome.i18n.getMessage("disableForThisDomainTitle"));
+  btn.setAttribute(
+    "tooltip",
+    chrome.i18n.getMessage("disableForThisDomainTitle")
+  );
   // style
   btn.style.position = "absolute";
   btn.style.top = `${top +
@@ -256,13 +259,13 @@ function allowToShowMarker(callback) {
 }
 
 // detect on window resize
-window.onresize = function onWindowResize(evt) {
+window.addEventListener("resize", evt => {
   log.info("resize window", evt);
   removeAllButtons();
   if (!disableOnDomain) {
     showMarkerOnEditor(document.activeElement);
   }
-};
+});
 
 if (
   document.readyState === "complete" ||

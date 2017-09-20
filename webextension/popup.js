@@ -1,6 +1,6 @@
-/* LanguageTool WebExtension 
+/* LanguageTool WebExtension
  * Copyright (C) 2016-2017 Daniel Naber (http://www.danielnaber.de)
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -905,16 +905,6 @@ function doCheck(tabs, causeOfCheck, optionalTrackDetails) {
   } else {
     // TODO: handle for empty tabs
   }
-}
-
-function getRandomToken() {
-  const randomPool = new Uint8Array(8);
-  crypto.getRandomValues(randomPool);
-  let hex = "";
-  for (let i = 0; i < randomPool.length; ++i) {
-    hex += randomPool[i].toString(16);
-  }
-  return hex;
 }
 
 function sendMessageToTab(tabId, data, callback) {
