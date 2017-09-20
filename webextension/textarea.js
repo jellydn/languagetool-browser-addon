@@ -97,6 +97,10 @@ function checkErrorMenu(evt) {
         const popupContainer = popupContainers[counter];
         popupContainer.style.minWidth = `${popupWidth}px`;
       }
+    },
+    afterOpen: () => {
+      const currentPopup = $.featherlight.current();
+      currentPopup.$content.focus();
     }
   });
 }
