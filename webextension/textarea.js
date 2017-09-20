@@ -143,7 +143,7 @@ function remindLanguageToolButton(clickHandler, position) {
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
   btn.className = `${BTN_CLASS} ${REMIND_BTN_CLASS}`;
-  btn.setAttribute("tooltip", "Grammar and Style Checker");
+  btn.setAttribute("tooltip", chrome.i18n.getMessage("reminderIconTitle"));
 
   // // style
   btn.style.position = "absolute";
@@ -164,7 +164,7 @@ function disableLanguageToolButton(clickHandler, position) {
   const btn = document.createElement("A");
   btn.onclick = clickHandler;
   btn.className = `${BTN_CLASS} ${DISABLE_BTN_CLASS}`;
-  btn.setAttribute("tooltip", "Disable for this domain");
+  btn.setAttribute("tooltip", chrome.i18n.getMessage("disableForThisDomainTitle"));
   // style
   btn.style.position = "absolute";
   btn.style.top = `${top +
