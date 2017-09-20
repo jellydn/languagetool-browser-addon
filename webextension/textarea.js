@@ -35,7 +35,7 @@ let disableOnDomain = false;
  */
 function isHiddenElement(el) {
   const style = window.getComputedStyle(el);
-  return style.display === "none";
+  return el.offsetParent === null || style.display === "none";
 }
 
 /**
@@ -288,7 +288,10 @@ document.addEventListener(
   "active-element",
   event => {
     log.info("active-element", event);
-    const { focus: focusElement } = event.detail;
+    const { focus: focusElement, blur: blurElement } = event.detail;
+    if (isHiddenElement(blurElement) && isEditorElement(blurElement)) {
+      removeAllButtons();
+    }
     if (!disableOnDomain) {
       showMarkerOnEditor(focusElement);
       clickOnEditor(focusElement);
