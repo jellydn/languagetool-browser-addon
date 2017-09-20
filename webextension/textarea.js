@@ -21,6 +21,7 @@
 
 const REMIND_BTN_CLASS = "lt-buttons";
 const REMIND_WRAPPER_CLASS = "lt-marker-container";
+const POPUP_CONTENT_CLASS = "featherlight-content";
 const PREFIX_REMIND = "remind-btn-";
 const PREFIX_DISABLE = "disable-lt-btn-";
 const MARGIN_TO_CORNER = 8;
@@ -82,10 +83,20 @@ function checkErrorMenu(evt) {
       textAreaElement.focus();
     }
   }
+  const popupWidth = 450;
   $.featherlight({
     iframe: `${chrome.runtime.getURL("popup.html")}?pageUrl=${currentUrl}`,
-    iframeWidth: 450,
-    iframeHeight: 600
+    iframeWidth: popupWidth,
+    iframeHeight: 600,
+    beforeOpen: () => {
+      const popupContainers = document.getElementsByClassName(
+        POPUP_CONTENT_CLASS
+      );
+      for (let counter = 0; counter < popupContainers.length; counter += 1) {
+        const popupContainer = popupContainers[counter];
+        popupContainer.style.minWidth = `${popupWidth}px`;
+      }
+    }
   });
 }
 
@@ -291,8 +302,6 @@ if (
 document.addEventListener(
   "active-element",
   event => {
-    // event.detail.focus: element that received focus
-    // event.detail.blur: element that lost focus
     log.info("active-element", event);
     const { focus: focusElement } = event.detail;
     if (!disableOnDomain) {

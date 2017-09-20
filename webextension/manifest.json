@@ -24,13 +24,7 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "web_accessible_resources": [
-    "images/*",
-    "*.js",
-    "vendors/*",
-    "popup.html",
-    "about.html"
-  ],
+  "web_accessible_resources": ["images/*", "*.js", "vendors/*", "popup.html"],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "file:///*"],
