@@ -259,18 +259,23 @@ function allowToShowMarker(callback) {
 }
 
 // detect on window resize, scroll
-window.addEventListener("resize", () => {
-  removeAllButtons();
-  if (!disableOnDomain) {
-    showMarkerOnEditor(document.activeElement);
+let ticking = false;
+
+function positionMarkerOnChangeSize() {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      removeAllButtons();
+      if (!disableOnDomain) {
+        showMarkerOnEditor(document.activeElement);
+      }
+      ticking = false;
+    });
   }
-});
-window.addEventListener("scroll", () => {
-  removeAllButtons();
-  if (!disableOnDomain) {
-    showMarkerOnEditor(document.activeElement);
-  }
-});
+  ticking = true;
+}
+
+window.addEventListener("resize", positionMarkerOnChangeSize);
+window.addEventListener("scroll", positionMarkerOnChangeSize);
 
 if (
   document.readyState === "complete" ||
