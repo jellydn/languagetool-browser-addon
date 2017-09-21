@@ -43,25 +43,27 @@ class Tools {
             uid = this.getRandomToken();
             storage.set({ uid }, () => {});
           }
-          const shortenedUrl = pageUrl.replace(/^(.*?:\/\/.+?)[?/].*/, "$1"); // for privacy reasons, only log host
-          const url = encodeURIComponent(shortenedUrl);
-          const trackingUrl = `${trackingBaseUrl}?idsite=${trackingSiteId}&rec=1&url=${url}&action_name=${encodeURIComponent(
-            actionName
-          )}&rand=${Date.now()}&apiv=1&_id=${uid}&e_c=Action&e_a=${encodeURIComponent(
-            actionName
-          )}${optionalTrackDetails
-            ? `&e_n=${encodeURIComponent(optionalTrackDetails)}`
-            : ""}`;
-          log.info("trackingUrl", trackingUrl);
-          const trackReq = new XMLHttpRequest();
-          trackReq.open("POST", trackingUrl);
-          trackReq.onerror = () => {
-            log.info("LT add-on tracking failed");
-          };
-          trackReq.ontimeout = () => {
-            log.info("LT add-on tracking failed with timeout");
-          };
-          trackReq.send();
+          if (pageUrl) {
+            const shortenedUrl = pageUrl.replace(/^(.*?:\/\/.+?)[?/].*/, "$1"); // for privacy reasons, only log host
+            const url = encodeURIComponent(shortenedUrl);
+            const trackingUrl = `${trackingBaseUrl}?idsite=${trackingSiteId}&rec=1&url=${url}&action_name=${encodeURIComponent(
+              actionName
+            )}&rand=${Date.now()}&apiv=1&_id=${uid}&e_c=Action&e_a=${encodeURIComponent(
+              actionName
+            )}${optionalTrackDetails
+              ? `&e_n=${encodeURIComponent(optionalTrackDetails)}`
+              : ""}`;
+            log.info("trackingUrl", trackingUrl);
+            const trackReq = new XMLHttpRequest();
+            trackReq.open("POST", trackingUrl);
+            trackReq.onerror = () => {
+              log.info("LT add-on tracking failed");
+            };
+            trackReq.ontimeout = () => {
+              log.info("LT add-on tracking failed with timeout");
+            };
+            trackReq.send();
+          }
         }
       );
     } catch (e) {
