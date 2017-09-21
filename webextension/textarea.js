@@ -60,6 +60,17 @@ function offset(el) {
 }
 
 /**
+ * Check tectarea or editor is allow spellcheck
+ * @param {DOMElement} element
+ */
+function isAllowSpellcheck(element) {
+  return (
+    element.getAttribute("spellcheck") === null ||
+    element.getAttribute("spellcheck") === true
+  );
+}
+
+/**
  * True if that is textarea or html5 contentEditable element
  * @param {DOMElement} focusElement
  * @return {bool}
@@ -67,6 +78,7 @@ function offset(el) {
 function isEditorElement(focusElement) {
   return (
     focusElement &&
+    isAllowSpellcheck(focusElement) &&
     (focusElement.tagName === "TEXTAREA" ||
       focusElement.contentEditable !== "inherit" ||
       (focusElement.tagName === "IFRAME" &&
