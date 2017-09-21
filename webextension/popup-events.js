@@ -430,7 +430,7 @@ document.addEventListener(
   false
 );
 
-document.addEventListener("unload", () => {
+window.addEventListener("unload", () => {
   log.info("Stop observer change on HTML");
   observer.disconnect();
 });

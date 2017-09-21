@@ -258,9 +258,14 @@ function allowToShowMarker(callback) {
   );
 }
 
-// detect on window resize
-window.addEventListener("resize", evt => {
-  log.info("resize window", evt);
+// detect on window resize, scroll
+window.addEventListener("resize", () => {
+  removeAllButtons();
+  if (!disableOnDomain) {
+    showMarkerOnEditor(document.activeElement);
+  }
+});
+window.addEventListener("scroll", () => {
   removeAllButtons();
   if (!disableOnDomain) {
     showMarkerOnEditor(document.activeElement);
