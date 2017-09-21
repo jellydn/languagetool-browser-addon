@@ -197,6 +197,7 @@ function textAreaWrapper(textElement, btnElements) {
   wrapper.style.position = "absolute";
   wrapper.style.top = "0px";
   wrapper.style.left = "0px";
+  wrapper.style.zIndex = "999999";
   btnElements.forEach(btnElement => {
     wrapper.appendChild(btnElement);
   });
@@ -204,8 +205,15 @@ function textAreaWrapper(textElement, btnElements) {
 }
 
 function insertLanguageToolIcon(element) {
-  log.info("insertLanguageToolIcon", element, offset(element));
   const { offsetHeight, offsetWidth } = element;
+  log.info(
+    "insertLanguageToolIcon",
+    element,
+    Object.assign({}, offset(element), {
+      offsetHeight,
+      offsetWidth
+    })
+  );
   const position = Object.assign({}, offset(element), {
     offsetHeight,
     offsetWidth
@@ -307,6 +315,7 @@ if (
 
 // observe the active element to show the marker
 let cleanUpTimeout;
+let renderTimeout;
 document.addEventListener(
   "active-element",
   event => {
@@ -317,19 +326,20 @@ document.addEventListener(
         removeAllButtons();
       }
       if (!disableOnDomain) {
-        showMarkerOnEditor(focusElement);
-        bindClickEventOnElement(focusElement);
         // use timeout for adjust html after redering DOM
         // try to reposition for some site which is rendering from JS (e.g: Upwork)
-        setTimeout(() => {
-          log.info(
-            "show marker on focus element by timeout",
-            focusElement,
-            blurElement
-          );
-          showMarkerOnEditor(focusElement);
-          bindClickEventOnElement(focusElement);
-        }, 0);
+        if (!renderTimeout) {
+          renderTimeout = setTimeout(() => {
+            log.warn(
+              "show marker on focus element by timeout",
+              focusElement,
+              blurElement
+            );
+            showMarkerOnEditor(focusElement);
+            bindClickEventOnElement(focusElement);
+            renderTimeout = null;
+          }, 0);
+        }
 
         if (!cleanUpTimeout) {
           cleanUpTimeout = setTimeout(() => {
