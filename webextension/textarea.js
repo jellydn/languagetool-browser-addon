@@ -231,7 +231,7 @@ function showMarkerOnEditor(focusElement) {
   }
 }
 
-function clickOnEditor(currentElement) {
+function bindClickEventOnElement(currentElement) {
   if (isEditorElement(currentElement)) {
     if (!currentElement.getAttribute("lt-bind-click")) {
       currentElement.addEventListener(
@@ -293,19 +293,20 @@ if (
   allowToShowMarker(() => {
     const currentElement = document.activeElement;
     showMarkerOnEditor(currentElement);
-    clickOnEditor(currentElement);
+    bindClickEventOnElement(currentElement);
   });
 } else {
   document.addEventListener("DOMContentLoaded", () => {
     allowToShowMarker(() => {
       const currentElement = document.activeElement;
       showMarkerOnEditor(currentElement);
-      clickOnEditor(currentElement);
+      bindClickEventOnElement(currentElement);
     });
   });
 }
 
 // observe the active element to show the marker
+let cleanUpTimeout;
 document.addEventListener(
   "active-element",
   event => {
@@ -317,13 +318,34 @@ document.addEventListener(
       }
       if (!disableOnDomain) {
         showMarkerOnEditor(focusElement);
-        clickOnEditor(focusElement);
+        bindClickEventOnElement(focusElement);
         // use timeout for adjust html after redering DOM
         // try to reposition for some site which is rendering from JS (e.g: Upwork)
         setTimeout(() => {
+          log.info(
+            "show marker on focus element by timeout",
+            focusElement,
+            blurElement
+          );
           showMarkerOnEditor(focusElement);
-          clickOnEditor(focusElement);
+          bindClickEventOnElement(focusElement);
         }, 0);
+
+        if (!cleanUpTimeout) {
+          cleanUpTimeout = setTimeout(() => {
+            log.warn(
+              "clean marker on active element by timeout",
+              document.activeElement
+            );
+            if (
+              isHiddenElement(document.activeElement) ||
+              !isEditorElement(document.activeElement)
+            ) {
+              removeAllButtons();
+            }
+            cleanUpTimeout = null;
+          }, 1000);
+        }
       }
     });
   },
