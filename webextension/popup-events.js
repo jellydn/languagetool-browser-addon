@@ -395,7 +395,21 @@ document.addEventListener(
 function openPowerByLink(evt) {
   evt.preventDefault();
   log.warn("open new tab", this.href, evt);
-  window.open(this.href, "_blank");
+  chrome.runtime
+    .sendMessage({
+      action: "openNewTab",
+      url: this.href
+    })
+    .then(
+      response => {
+        log.info("response", response);
+      },
+      error => {
+        if (error) {
+          log.info("found error", error);
+        }
+      }
+    );
 }
 
 function openPowerByLinkOnNewTab() {
@@ -412,25 +426,28 @@ function openPowerByLinkOnNewTab() {
   }
 }
 
-// create an observer instance
-const observer = new MutationObserver(mutations => {
-  mutations.forEach(() => {
-    openPowerByLinkOnNewTab();
+/** workaround for FF */
+if (Tools.isFirefox()) {
+  // create an observer instance
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(() => {
+      openPowerByLinkOnNewTab();
+    });
   });
-});
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    log.info("DOM has loaded");
-    const target = document.getElementById(CONTAINER_ID);
-    const config = { childList: true };
-    observer.observe(target, config);
-  },
-  false
-);
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      log.info("DOM has loaded");
+      const target = document.getElementById(CONTAINER_ID);
+      const config = { childList: true };
+      observer.observe(target, config);
+    },
+    false
+  );
 
-window.addEventListener("unload", () => {
-  log.info("Stop observer change on HTML");
-  observer.disconnect();
-});
+  window.addEventListener("unload", () => {
+    log.info("Stop observer change on HTML");
+    observer.disconnect();
+  });
+}

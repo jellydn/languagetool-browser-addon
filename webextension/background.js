@@ -14,6 +14,11 @@ function onClickHandler() {
 /* workaround handle for FF */
 function handleMessage(request, sender, sendResponse) {
   switch (request.action) {
+    case "openNewTab": {
+      const { url } = request;
+      chrome.tabs.create({ url });
+      return false;
+    }
     case "getActiveTab": {
       chrome.tabs.query(
         {

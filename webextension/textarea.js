@@ -30,8 +30,8 @@ let disableOnDomain = false;
 
 /**
  * Check the element is display or hidden
- * @param DOMElement el
- * @return bool
+ * @param {DOMElement} el
+ * @return {bool}
  */
 function isHiddenElement(el) {
   const style = window.getComputedStyle(el);
@@ -39,9 +39,18 @@ function isHiddenElement(el) {
 }
 
 /**
+ * check element is on viewport or not
+ * @param {DOMElement} el
+ */
+function isShowOnViewPort(el) {
+  const bounds = el.getBoundingClientRect();
+  return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+
+/**
  * Find the position of element base on window
- * @param DOMElement el
- * @return object position { top, left }
+ * @param {DOMElement} el
+ * @return {object} position { top, left }
  */
 function offset(el) {
   const rect = el.getBoundingClientRect();
@@ -52,8 +61,8 @@ function offset(el) {
 
 /**
  * True if that is textarea or html5 contentEditable element
- * @param DOMElement focusElement
- * @return bool
+ * @param {DOMElement} focusElement
+ * @return {bool}
  */
 function isEditorElement(focusElement) {
   return (
@@ -265,7 +274,7 @@ function positionMarkerOnChangeSize() {
   if (!ticking) {
     window.requestAnimationFrame(() => {
       removeAllButtons();
-      if (!disableOnDomain) {
+      if (!disableOnDomain && isShowOnViewPort(document.activeElement)) {
         showMarkerOnEditor(document.activeElement);
       }
       ticking = false;
