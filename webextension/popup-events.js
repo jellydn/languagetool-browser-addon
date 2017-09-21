@@ -1,6 +1,6 @@
-/* LanguageTool WebExtension 
+/* LanguageTool WebExtension
  * Copyright (C) 2015 Daniel Naber (http://www.danielnaber.de)
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -16,8 +16,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-"use strict";
-
+/* global sendMessageToTab */
+const CONTAINER_ID = "status";
+const POWER_BY_CLASS = "poweredBy";
 const SELECT_ROW_ACTIVE = "suggestionActiveRow";
 const REPLACEMENT_ACTIVE = "replacementActive";
 const SELECT_TURN_OFF_RULE = "turnOffRuleActive";
@@ -46,23 +47,100 @@ let activeReplacement = -1;
 let activeTurnOffRule = false;
 let activeAddToDict = false;
 
-/* workaround for FF - attempt to work around lack of focus (https://bugzilla.mozilla.org/show_bug.cgi?id=1324255)
-   but doesn't really seem to work
-*/
-if (Tools.isFirefox()) {
-  /* option 1 */
-  document.addEventListener(
-    "DOMContentLoaded",
-    event => {
-      log.info("DOM has loaded");
-      document.querySelector("body").focus();
-    },
-    false
-  );
-  /* option 2 */
-  setTimeout(() => {
-    document.querySelector("body").focus();
-  }, 100);
+function selectedRow() {
+  const activeElements = document.getElementsByClassName(SELECT_ROW_ACTIVE);
+  if (activeElements && activeElements.length) {
+    return activeElements[0];
+  }
+  return null;
+}
+
+function toggleSelectReplacement(replacements, index, isSelect = true) {
+  if (replacements && replacements.length) {
+    const selectedReplacement = replacements[index];
+    if (selectedReplacement) {
+      const { className } = selectedReplacement;
+      if (isSelect) {
+        if (className.indexOf(REPLACEMENT_ACTIVE) === -1) {
+          selectedReplacement.className = `${className} ${REPLACEMENT_ACTIVE}`;
+        }
+      } else if (className.indexOf(REPLACEMENT_ACTIVE) !== -1) {
+        selectedReplacement.className = className.replace(
+          ` ${REPLACEMENT_ACTIVE}`,
+          ""
+        );
+      }
+    }
+  }
+}
+
+function toggleSelectRow(rowIndex, isSelect = true) {
+  const rows = document.getElementsByClassName(SUGGESTION_ROW);
+  const currentRow = rows[rowIndex];
+  if (currentRow) {
+    const { className } = currentRow;
+    if (isSelect) {
+      if (className.indexOf(SELECT_ROW_ACTIVE) === -1) {
+        currentRow.className = `${className} ${SELECT_ROW_ACTIVE}`;
+      }
+    } else {
+      if (className.indexOf(SELECT_ROW_ACTIVE) !== -1) {
+        currentRow.className = className.replace(` ${SELECT_ROW_ACTIVE}`, "");
+      }
+      const replacements = currentRow.getElementsByClassName(REPLACEMENT_ROW);
+      toggleSelectReplacement(replacements, activeReplacement, false);
+    }
+  }
+}
+
+function scrollToActiveRow(duration = 200) {
+  const element = selectedRow();
+  if (element) {
+    $.scrollTo(element, {
+      axis: "y",
+      duration
+    });
+  }
+}
+
+function resetTurnOffRuleAndAddToDict() {
+  const turnOffRules = document.getElementsByClassName(SELECT_TURN_OFF_RULE);
+  const addToDicts = document.getElementsByClassName(SELECT_ADD_TO_DICT);
+  if (turnOffRules && turnOffRules.length) {
+    for (let counter = 0; counter < turnOffRules.length; counter += 1) {
+      const element = turnOffRules[counter];
+      if (element && element.className.indexOf(SELECT_TURN_OFF_RULE) !== -1) {
+        element.className = element.className.replace(
+          ` ${SELECT_TURN_OFF_RULE}`,
+          ""
+        );
+      }
+    }
+  }
+  if (addToDicts && addToDicts.length) {
+    for (let counter = 0; counter < addToDicts.length; counter += 1) {
+      const element = addToDicts[counter];
+      if (element && element.className.indexOf(SELECT_ADD_TO_DICT) !== -1) {
+        element.className = element.className.replace(
+          ` ${SELECT_ADD_TO_DICT}`,
+          ""
+        );
+      }
+    }
+  }
+}
+
+function selectFirstReplacement() {
+  const row = selectedRow();
+  if (row) {
+    const replacements = row.getElementsByClassName(REPLACEMENT_ROW);
+    const maxReplacements = replacements.length || 0;
+    if (activeReplacement < maxReplacements - 1) {
+      toggleSelectReplacement(replacements, activeReplacement, false);
+      activeReplacement += 1;
+      toggleSelectReplacement(replacements, activeReplacement);
+    }
+  }
 }
 
 document.addEventListener(
@@ -72,18 +150,16 @@ document.addEventListener(
     if (DETECT_KEYS.indexOf(keyName) !== -1) {
       switch (keyName) {
         case UP_KEY:
-          {
-            activeTurnOffRule = false;
-            activeAddToDict = false;
-            resetTurnOffRuleAndAddToDict();
-            if (activeSelectRow >= 0) {
-              toggleSelectRow(activeSelectRow, false);
-              activeSelectRow -= 1;
-              toggleSelectRow(activeSelectRow);
-              activeReplacement = -1;
-              selectFirstReplacement();
-              scrollToActiveRow();
-            }
+          activeTurnOffRule = false;
+          activeAddToDict = false;
+          resetTurnOffRuleAndAddToDict();
+          if (activeSelectRow >= 0) {
+            toggleSelectRow(activeSelectRow, false);
+            activeSelectRow -= 1;
+            toggleSelectRow(activeSelectRow);
+            activeReplacement = -1;
+            selectFirstReplacement();
+            scrollToActiveRow();
           }
           break;
         case DOWN_KEY:
@@ -143,7 +219,7 @@ document.addEventListener(
               toggleSelectReplacement(replacements, activeReplacement, false);
               activeReplacement -= 1;
               toggleSelectReplacement(replacements, activeReplacement);
-              Tools.isFirefox() && scrollToActiveRow(600);
+              if (Tools.isFirefox()) scrollToActiveRow(600);
             }
           }
           break;
@@ -211,7 +287,7 @@ document.addEventListener(
                   }
                 }
               }
-              Tools.isFirefox() && scrollToActiveRow(600);
+              if (Tools.isFirefox()) scrollToActiveRow(600);
             }
           }
           break;
@@ -265,49 +341,45 @@ document.addEventListener(
           }
           break;
         case ESCAPE_KEY:
-          {
-            // close popup
-            if (chrome && chrome.tabs) {
-              chrome.tabs.query({ active: true, currentWindow: true }, function(
-                tabs
-              ) {
-                if (tabs && tabs.length > 0) {
-                  sendMessageToTab(
-                    tabs[0].id,
-                    { action: "closePopup" },
-                    function(response) {
-                      log.warn("response", response);
-                    }
-                  );
-                }
-              });
-            } else {
-              chrome.runtime
-                .sendMessage({
-                  action: "getActiveTab"
-                })
-                .then(
-                  function(response) {
+          // close popup
+          if (chrome && chrome.tabs) {
+            chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+              if (tabs && tabs.length > 0) {
+                sendMessageToTab(
+                  tabs[0].id,
+                  { action: "closePopup" },
+                  response => {
                     log.warn("response", response);
-                    if (response && response.tabs && response.tabs.length > 0) {
-                      sendMessageToTab(
-                        response.tabs[0].id,
-                        {
-                          action: "closePopup"
-                        },
-                        function(response) {
-                          log.warn("response", response);
-                        }
-                      );
-                    }
-                  },
-                  function(error) {
-                    if (error) {
-                      log.warn("found error", error);
-                    }
                   }
                 );
-            }
+              }
+            });
+          } else {
+            chrome.runtime
+              .sendMessage({
+                action: "getActiveTab"
+              })
+              .then(
+                response => {
+                  log.warn("response", response);
+                  if (response && response.tabs && response.tabs.length > 0) {
+                    sendMessageToTab(
+                      response.tabs[0].id,
+                      {
+                        action: "closePopup"
+                      },
+                      result => {
+                        log.warn("result", result);
+                      }
+                    );
+                  }
+                },
+                error => {
+                  if (error) {
+                    log.warn("found error", error);
+                  }
+                }
+              );
           }
           break;
         default:
@@ -320,100 +392,45 @@ document.addEventListener(
   false
 );
 
-function selectFirstReplacement() {
-  const row = selectedRow();
-  if (row) {
-    const replacements = row.getElementsByClassName(REPLACEMENT_ROW);
-    const maxReplacements = replacements.length || 0;
-    if (activeReplacement < maxReplacements - 1) {
-      toggleSelectReplacement(replacements, activeReplacement, false);
-      activeReplacement += 1;
-      toggleSelectReplacement(replacements, activeReplacement);
-    }
-  }
+function openPowerByLink(evt) {
+  evt.preventDefault();
+  log.warn("open new tab", this.href, evt);
+  window.open(this.href, "_blank");
 }
 
-function toggleSelectRow(rowIndex, isSelect = true) {
-  const rows = document.getElementsByClassName(SUGGESTION_ROW);
-  const selectedRow = rows[rowIndex];
-  if (!!selectedRow) {
-    const className = selectedRow.className;
-    if (isSelect) {
-      if (className.indexOf(SELECT_ROW_ACTIVE) === -1) {
-        selectedRow.className = `${className} ${SELECT_ROW_ACTIVE}`;
-      }
-    } else {
-      if (className.indexOf(SELECT_ROW_ACTIVE) !== -1) {
-        selectedRow.className = className.replace(` ${SELECT_ROW_ACTIVE}`, "");
-      }
-      const replacements = selectedRow.getElementsByClassName(REPLACEMENT_ROW);
-      toggleSelectReplacement(replacements, activeReplacement, false);
-    }
-  }
-}
-
-function toggleSelectReplacement(replacements, index, isSelect = true) {
-  if (replacements && replacements.length) {
-    const selectedReplacement = replacements[index];
-    if (!!selectedReplacement) {
-      const className = selectedReplacement.className;
-      if (isSelect) {
-        if (className.indexOf(REPLACEMENT_ACTIVE) === -1) {
-          selectedReplacement.className = `${className} ${REPLACEMENT_ACTIVE}`;
-        }
-      } else {
-        if (className.indexOf(REPLACEMENT_ACTIVE) !== -1) {
-          selectedReplacement.className = className.replace(
-            ` ${REPLACEMENT_ACTIVE}`,
-            ""
-          );
-        }
+function openPowerByLinkOnNewTab() {
+  // handle edge case for open poweredBy link from popup
+  const poweredByElements = document.getElementsByClassName(POWER_BY_CLASS);
+  if (poweredByElements.length) {
+    for (let counter = 0; counter < poweredByElements.length; counter += 1) {
+      const element = poweredByElements[counter];
+      const anchorTag = element.getElementsByTagName("a");
+      if (anchorTag.length) {
+        anchorTag[0].addEventListener("click", openPowerByLink);
       }
     }
   }
 }
 
-function scrollToActiveRow(duration = 200) {
-  const element = selectedRow();
-  if (element) {
-    $.scrollTo(element, {
-      axis: "y",
-      duration
-    });
-  }
-}
+// create an observer instance
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(() => {
+    openPowerByLinkOnNewTab();
+  });
+});
 
-function selectedRow() {
-  const activeElements = document.getElementsByClassName(SELECT_ROW_ACTIVE);
-  if (activeElements && activeElements.length) {
-    return activeElements[0];
-  }
-  return null;
-}
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    log.info("DOM has loaded");
+    const target = document.getElementById(CONTAINER_ID);
+    const config = { childList: true };
+    observer.observe(target, config);
+  },
+  false
+);
 
-function resetTurnOffRuleAndAddToDict() {
-  const turnOffRules = document.getElementsByClassName(SELECT_TURN_OFF_RULE);
-  const addToDicts = document.getElementsByClassName(SELECT_ADD_TO_DICT);
-  if (turnOffRules && turnOffRules.length) {
-    for (let counter = 0; counter < turnOffRules.length; counter += 1) {
-      const element = turnOffRules[counter];
-      if (element && element.className.indexOf(SELECT_TURN_OFF_RULE) !== -1) {
-        element.className = element.className.replace(
-          ` ${SELECT_TURN_OFF_RULE}`,
-          ""
-        );
-      }
-    }
-  }
-  if (addToDicts && addToDicts.length) {
-    for (let counter = 0; counter < addToDicts.length; counter += 1) {
-      const element = addToDicts[counter];
-      if (element && element.className.indexOf(SELECT_ADD_TO_DICT) !== -1) {
-        element.className = element.className.replace(
-          ` ${SELECT_ADD_TO_DICT}`,
-          ""
-        );
-      }
-    }
-  }
-}
+document.addEventListener("unload", () => {
+  log.info("Stop observer change on HTML");
+  observer.disconnect();
+});
