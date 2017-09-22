@@ -20,11 +20,6 @@
 
 let defaultServerUrl = "https://languagetool.org/api/v2"; // keep in sync with defaultServerUrl in options.js
 
-// chrome.google.com: see http://stackoverflow.com/questions/11613371/
-// docs.google.com: Google Docs has a too complicated DOM (but its own add-on framework)
-// addons.mozilla.org: see http://stackoverflow.com/questions/42147966/
-let unsupportedSitesRegex = /^https?:\/\/(docs.google.com|chrome.google.com|addons.mozilla.org).*/;
-
 let thisExtensionUrl =
   "https://chrome.google.com/webstore/detail/languagetool/oldceeleldhonbafppcapldpdifcinji";
 
@@ -864,7 +859,7 @@ function doCheck(tabs, causeOfCheck, optionalTrackDetails) {
       renderStatus(chrome.i18n.getMessage("webstoreSiteNotSupported"));
       Tools.logOnServer("siteNotSupported on " + url, serverUrl);
       return;
-    } else if (url.match(unsupportedSitesRegex)) {
+    } else if (Tools.doNotSupportOnUrl(url)) {
       if (url.match(/docs\.google\.com/)) {
         renderStatus(
           chrome.i18n.getMessage("googleDocsNotSupported", googleDocsExtension)

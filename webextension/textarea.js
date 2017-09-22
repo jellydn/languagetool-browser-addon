@@ -27,6 +27,7 @@ const DISABLE_BTN_CLASS = "lt-disable-btn";
 const MARGIN_TO_CORNER = 8;
 const REMIND_BTN_SIZE = 16;
 let disableOnDomain = false;
+const activeElementHandler = ally.event.activeElement();
 
 /**
  * Check the element is display or hidden
@@ -268,23 +269,30 @@ function bindClickEventOnElement(currentElement) {
 }
 
 function allowToShowMarker(callback) {
-  Tools.getStorage().get(
-    {
-      disabledDomains: []
-    },
-    items => {
-      log.info("disabledDomains", items);
-      const currentUrl = window.location.href;
-      const { hostname } = new URL(currentUrl);
-      log.info("hostname", hostname);
-      if (items.disabledDomains.indexOf(hostname) !== -1) {
-        disableOnDomain = true;
-        removeAllButtons();
-      } else {
-        callback();
+  const currentUrl = window.location.href;
+  disableOnDomain = Tools.doNotSupportOnUrl(currentUrl);
+  if (!disableOnDomain) {
+    Tools.getStorage().get(
+      {
+        disabledDomains: []
+      },
+      items => {
+        log.info("disabledDomains", items);
+        const { hostname } = new URL(currentUrl);
+        log.info("hostname", hostname);
+        if (items.disabledDomains.indexOf(hostname) !== -1) {
+          disableOnDomain = true;
+          removeAllButtons();
+        } else {
+          callback();
+        }
       }
-    }
-  );
+    );
+  } else {
+    removeAllButtons();
+    callback();
+    activeElementHandler.disengage();
+  }
 }
 
 // detect on window resize, scroll
@@ -333,45 +341,41 @@ document.addEventListener(
   event => {
     log.info("active-element", event);
     const { focus: focusElement, blur: blurElement } = event.detail;
-    window.requestAnimationFrame(() => {
-      if (isHiddenElement(blurElement) && isEditorElement(blurElement)) {
-        removeAllButtons();
+    if (isHiddenElement(blurElement) && isEditorElement(blurElement)) {
+      removeAllButtons();
+    }
+    if (!disableOnDomain) {
+      // use timeout for adjust html after redering DOM
+      // try to reposition for some site which is rendering from JS (e.g: Upwork)
+      if (!renderTimeout) {
+        renderTimeout = setTimeout(() => {
+          log.warn(
+            "show marker on focus element by timeout",
+            focusElement,
+            blurElement
+          );
+          showMarkerOnEditor(focusElement);
+          bindClickEventOnElement(focusElement);
+          renderTimeout = null;
+        }, 0);
       }
-      if (!disableOnDomain) {
-        // use timeout for adjust html after redering DOM
-        // try to reposition for some site which is rendering from JS (e.g: Upwork)
-        if (!renderTimeout) {
-          renderTimeout = setTimeout(() => {
-            log.warn(
-              "show marker on focus element by timeout",
-              focusElement,
-              blurElement
-            );
-            showMarkerOnEditor(focusElement);
-            bindClickEventOnElement(focusElement);
-            renderTimeout = null;
-          }, 0);
-        }
 
-        if (!cleanUpTimeout) {
-          cleanUpTimeout = setTimeout(() => {
-            log.warn(
-              "clean marker on active element by timeout",
-              document.activeElement
-            );
-            if (
-              isHiddenElement(document.activeElement) ||
-              !isEditorElement(document.activeElement)
-            ) {
-              removeAllButtons();
-            }
-            cleanUpTimeout = null;
-          }, 1000);
-        }
+      if (!cleanUpTimeout) {
+        cleanUpTimeout = setTimeout(() => {
+          log.warn(
+            "clean marker on active element by timeout",
+            document.activeElement
+          );
+          if (
+            isHiddenElement(document.activeElement) ||
+            !isEditorElement(document.activeElement)
+          ) {
+            removeAllButtons();
+          }
+          cleanUpTimeout = null;
+        }, 1000);
       }
-    });
+    }
   },
   false
 );
-
-ally.event.activeElement();
