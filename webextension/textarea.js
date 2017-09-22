@@ -182,7 +182,7 @@ function remindLanguageToolButton(clickHandler, position) {
     ].parentElement.getElementsByTagName("table");
     const topPostion = offset(tables[0]).top
       ? offset(tables[0]).top + REMIND_BTN_SIZE
-      : offset(formElements[formElements.length - 1]).top + REMIND_BTN_SIZE;
+      : top + offsetHeight - REMIND_BTN_SIZE - MARGIN_TO_CORNER;
     btn.style.top = `${topPostion}px`;
   } else {
     btn.style.top = `${top +
@@ -216,7 +216,7 @@ function disableLanguageToolButton(clickHandler, position) {
     ].parentElement.getElementsByTagName("table");
     const topPostion = offset(tables[0]).top
       ? offset(tables[0]).top + REMIND_BTN_SIZE
-      : offset(formElements[formElements.length - 1]).top + REMIND_BTN_SIZE;
+      : top + offsetHeight - REMIND_BTN_SIZE - MARGIN_TO_CORNER;
     btn.style.top = `${topPostion}px`;
   } else {
     btn.style.top = `${top +
@@ -307,22 +307,9 @@ function bindClickEventOnElement(currentElement) {
         false
       );
       currentElement.setAttribute("lt-bind-click", true);
-      if (isGmail()) {
-        currentElement.addEventListener(
-          "scroll",
-          positionMarkerOnChangeSize,
-          false
-        );
-        currentElement.setAttribute("lt-bind-scroll", true);
-        currentElement.addEventListener(
-          "resize",
-          positionMarkerOnChangeSize,
-          false
-        );
-        currentElement.setAttribute("lt-bind-resize", true);
-      }
       // edge case for mail.google.com
       if (isGmail() && document.getElementById(":4")) {
+        // scroll element
         const scrollContainerOnGmail = document.getElementById(":4");
         if (!scrollContainerOnGmail.getAttribute("lt-bind-scroll")) {
           scrollContainerOnGmail.addEventListener(
