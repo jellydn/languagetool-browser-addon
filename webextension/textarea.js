@@ -29,6 +29,12 @@ const REMIND_BTN_SIZE = 16;
 let disableOnDomain = false;
 const activeElementHandler = ally.event.activeElement();
 
+function isGmail() {
+  const currentUrl = window.location.href;
+  const { hostname } = new URL(currentUrl);
+  return hostname === "mail.google.com";
+}
+
 /**
  * Check the element is display or hidden
  * @param {DOMElement} el
@@ -169,10 +175,21 @@ function remindLanguageToolButton(clickHandler, position) {
 
   // // style
   btn.style.position = "absolute";
-  btn.style.top = `${top +
-    offsetHeight -
-    REMIND_BTN_SIZE -
-    MARGIN_TO_CORNER}px`;
+  if (isGmail()) {
+    const formElements = document.getElementsByTagName("form");
+    const tables = formElements[
+      formElements.length - 1
+    ].parentElement.getElementsByTagName("table");
+    const topPostion = offset(tables[0]).top
+      ? offset(tables[0]).top + REMIND_BTN_SIZE
+      : offset(formElements[formElements.length - 1]).top + REMIND_BTN_SIZE;
+    btn.style.top = `${topPostion}px`;
+  } else {
+    btn.style.top = `${top +
+      offsetHeight -
+      REMIND_BTN_SIZE -
+      MARGIN_TO_CORNER}px`;
+  }
   btn.style.left = `${left +
     offsetWidth -
     REMIND_BTN_SIZE -
@@ -192,10 +209,21 @@ function disableLanguageToolButton(clickHandler, position) {
   );
   // style
   btn.style.position = "absolute";
-  btn.style.top = `${top +
-    offsetHeight -
-    REMIND_BTN_SIZE -
-    MARGIN_TO_CORNER}px`;
+  if (isGmail()) {
+    const formElements = document.getElementsByTagName("form");
+    const tables = formElements[
+      formElements.length - 1
+    ].parentElement.getElementsByTagName("table");
+    const topPostion = offset(tables[0]).top
+      ? offset(tables[0]).top + REMIND_BTN_SIZE
+      : offset(formElements[formElements.length - 1]).top + REMIND_BTN_SIZE;
+    btn.style.top = `${topPostion}px`;
+  } else {
+    btn.style.top = `${top +
+      offsetHeight -
+      REMIND_BTN_SIZE -
+      MARGIN_TO_CORNER}px`;
+  }
   btn.style.left = `${left +
     offsetWidth -
     (REMIND_BTN_SIZE + MARGIN_TO_CORNER) * 2}px`;
@@ -279,8 +307,22 @@ function bindClickEventOnElement(currentElement) {
         false
       );
       currentElement.setAttribute("lt-bind-click", true);
+      if (isGmail()) {
+        currentElement.addEventListener(
+          "scroll",
+          positionMarkerOnChangeSize,
+          false
+        );
+        currentElement.setAttribute("lt-bind-scroll", true);
+        currentElement.addEventListener(
+          "resize",
+          positionMarkerOnChangeSize,
+          false
+        );
+        currentElement.setAttribute("lt-bind-resize", true);
+      }
       // edge case for mail.google.com
-      if (document.getElementById(":4")) {
+      if (isGmail() && document.getElementById(":4")) {
         const scrollContainerOnGmail = document.getElementById(":4");
         if (!scrollContainerOnGmail.getAttribute("lt-bind-scroll")) {
           scrollContainerOnGmail.addEventListener(
@@ -296,7 +338,7 @@ function bindClickEventOnElement(currentElement) {
 
 function allowToShowMarker(callback) {
   const currentUrl = window.location.href;
-  disableOnDomain = Tools.doNotSupportOnUrl(currentUrl);
+  disableOnDomain = Tools.doNotShowMarkerOnUrl(currentUrl);
   if (!disableOnDomain) {
     Tools.getStorage().get(
       {
