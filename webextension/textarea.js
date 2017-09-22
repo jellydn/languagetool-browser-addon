@@ -252,6 +252,21 @@ function showMarkerOnEditor(focusElement) {
   }
 }
 
+// detect on window resize, scroll
+let ticking = false;
+function positionMarkerOnChangeSize() {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      removeAllButtons();
+      if (!disableOnDomain && isShowOnViewPort(document.activeElement)) {
+        showMarkerOnEditor(document.activeElement);
+      }
+      ticking = false;
+    });
+  }
+  ticking = true;
+}
+
 function bindClickEventOnElement(currentElement) {
   if (isEditorElement(currentElement)) {
     if (!currentElement.getAttribute("lt-bind-click")) {
@@ -264,6 +279,17 @@ function bindClickEventOnElement(currentElement) {
         false
       );
       currentElement.setAttribute("lt-bind-click", true);
+      // edge case for mail.google.com
+      if (document.getElementById(":4")) {
+        const scrollContainerOnGmail = document.getElementById(":4");
+        if (!scrollContainerOnGmail.getAttribute("lt-bind-scroll")) {
+          scrollContainerOnGmail.addEventListener(
+            "scroll",
+            positionMarkerOnChangeSize
+          );
+          scrollContainerOnGmail.setAttribute("lt-bind-scroll", true);
+        }
+      }
     }
   }
 }
@@ -293,22 +319,6 @@ function allowToShowMarker(callback) {
     callback();
     activeElementHandler.disengage();
   }
-}
-
-// detect on window resize, scroll
-let ticking = false;
-
-function positionMarkerOnChangeSize() {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      removeAllButtons();
-      if (!disableOnDomain && isShowOnViewPort(document.activeElement)) {
-        showMarkerOnEditor(document.activeElement);
-      }
-      ticking = false;
-    });
-  }
-  ticking = true;
 }
 
 window.addEventListener("resize", positionMarkerOnChangeSize);
