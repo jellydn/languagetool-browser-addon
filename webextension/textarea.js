@@ -26,6 +26,8 @@ const REMIND_BTN_CLASS = "lt-remind-btn";
 const DISABLE_BTN_CLASS = "lt-disable-btn";
 const MARGIN_TO_CORNER = 8;
 const REMIND_BTN_SIZE = 16;
+const CLEAN_TIME_OUT = 200;
+
 let disableOnDomain = false;
 const activeElementHandler = ally.event.activeElement();
 
@@ -52,6 +54,23 @@ function isHiddenElement(el) {
 function isShowOnViewPort(el) {
   const bounds = el.getBoundingClientRect();
   return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+
+/**
+ * Check the element is parent node
+ * @param {DOMElement} parent
+ * @param {DOMElement} child
+ * @return boolean
+ */
+function isDescendant(parent, child) {
+  let node = child.parentNode;
+  while (node !== null) {
+    if (node === parent) {
+      return true;
+    }
+    node = node.parentNode;
+  }
+  return false;
 }
 
 /**
@@ -164,7 +183,6 @@ function disableMenu(evt) {
 }
 
 /** DOM manupulate */
-
 function remindLanguageToolButton(clickHandler, position) {
   log.info("remindLanguageToolButton position", position);
   const { top, left, offsetHeight, offsetWidth } = position;
@@ -173,17 +191,28 @@ function remindLanguageToolButton(clickHandler, position) {
   btn.className = `${BTN_CLASS} ${REMIND_BTN_CLASS}`;
   btn.setAttribute("tooltip", chrome.i18n.getMessage("reminderIconTitle"));
 
-  // // style
+  // style
   btn.style.position = "absolute";
   if (isGmail()) {
-    const formElements = document.getElementsByTagName("form");
-    const tables = formElements[
-      formElements.length - 1
-    ].parentElement.getElementsByTagName("table");
-    const topPostion = offset(tables[0]).top
-      ? offset(tables[0]).top + REMIND_BTN_SIZE
-      : top + offsetHeight - REMIND_BTN_SIZE - MARGIN_TO_CORNER;
-    btn.style.top = `${topPostion}px`;
+    const tables = document.querySelectorAll("table#undefined");
+    const activeTable = Array.prototype.find.call(tables, table =>
+      isDescendant(table, document.activeElement)
+    );
+    // find parent of active table
+    const allTables = document.getElementsByTagName("table");
+    const gmaiComposeToolbarHeight = 155;
+    for (let counter = allTables.length - 1; counter > 0; counter -= 1) {
+      const parentTable = allTables[counter];
+      if (isDescendant(parentTable, activeTable)) {
+        log.warn("found parentTable", parentTable);
+        let topPostion = offset(parentTable).top;
+        if (topPostion < gmaiComposeToolbarHeight) {
+          topPostion = gmaiComposeToolbarHeight;
+        }
+        btn.style.top = `${topPostion}px`;
+        break;
+      }
+    }
   } else {
     btn.style.top = `${top +
       offsetHeight -
@@ -210,14 +239,25 @@ function disableLanguageToolButton(clickHandler, position) {
   // style
   btn.style.position = "absolute";
   if (isGmail()) {
-    const formElements = document.getElementsByTagName("form");
-    const tables = formElements[
-      formElements.length - 1
-    ].parentElement.getElementsByTagName("table");
-    const topPostion = offset(tables[0]).top
-      ? offset(tables[0]).top + REMIND_BTN_SIZE
-      : top + offsetHeight - REMIND_BTN_SIZE - MARGIN_TO_CORNER;
-    btn.style.top = `${topPostion}px`;
+    const tables = document.querySelectorAll("table#undefined");
+    const activeTable = Array.prototype.find.call(tables, table =>
+      isDescendant(table, document.activeElement)
+    );
+    // find parent of active table
+    const allTables = document.getElementsByTagName("table");
+    const gmaiComposeToolbarHeight = 155;
+    for (let counter = allTables.length - 1; counter > 0; counter -= 1) {
+      const parentTable = allTables[counter];
+      if (isDescendant(parentTable, activeTable)) {
+        log.warn("found parentTable", parentTable);
+        let topPostion = offset(parentTable).top;
+        if (topPostion < gmaiComposeToolbarHeight) {
+          topPostion = gmaiComposeToolbarHeight;
+        }
+        btn.style.top = `${topPostion}px`;
+        break;
+      }
+    }
   } else {
     btn.style.top = `${top +
       offsetHeight -
@@ -401,18 +441,18 @@ document.addEventListener(
 
       if (!cleanUpTimeout) {
         cleanUpTimeout = setTimeout(() => {
-          log.warn(
-            "clean marker on active element by timeout",
-            document.activeElement
-          );
           if (
             isHiddenElement(document.activeElement) ||
             !isEditorElement(document.activeElement)
           ) {
+            log.warn(
+              "clean marker on active element by timeout",
+              document.activeElement
+            );
             removeAllButtons();
           }
           cleanUpTimeout = null;
-        }, 1000);
+        }, CLEAN_TIME_OUT);
       }
     }
   },
