@@ -37,7 +37,7 @@ const BG_CHECK_TIMEOUT_MILLIS = 1000;
 
 let disableOnDomain = false;
 let autoCheckOnDomain = false;
-let autoCheck = true;
+let autoCheck = false;
 let totalErrorOnCheckText = -1; // -1 = not checking yet
 let lastCheckResult = { markupList: [], result: {}, total: -1, isProcess: false, success: true };
 const activeElementHandler = ally.event.activeElement();
@@ -130,6 +130,7 @@ function disableMenu(evt) {
 function manualAutoCheck(evt) {
   evt.preventDefault();
   autoCheck = false;
+  lastCheckResult = Object.assign({},lastCheckResult, { markupList: [], result: {}, total: -1, isProcess: false, success: true });
   Tools.getStorage().set({
     autoCheck
   });
@@ -140,13 +141,16 @@ function manualAutoCheck(evt) {
     } else {
       textAreaElement.focus();
     }
-    positionMarkerOnChangeSize(true);
+    positionMarkerOnChangeSize();
   }
 }
 
 function autoCheckMenu(evt) {
   evt.preventDefault();
   autoCheckOnDomain = !autoCheckOnDomain;
+  if (!autoCheckOnDomain) {
+    lastCheckResult = Object.assign({},lastCheckResult, { markupList: [], result: {}, total: -1, isProcess: false, success: true });
+  }
   const textAreaElement = activeElement();
   if (textAreaElement) {
     if (textAreaElement.setActive) {
@@ -166,7 +170,7 @@ function autoCheckMenu(evt) {
         Tools.track(window.location.href, "auto-check error", error.message);
       });
     } else {
-      positionMarkerOnChangeSize(true);
+      positionMarkerOnChangeSize();
     }
   }
 
@@ -322,8 +326,10 @@ function textAreaWrapper(textElement, btnElements) {
 
 function insertLanguageToolIcon(element) {
   const { offsetHeight, offsetWidth } = element;
+  const { top } = element.getBoundingClientRect();
+  const offsetHeightForLongText = window.innerHeight - top - 10;
   const position = Object.assign({}, offset(element), {
-    offsetHeight,
+    offsetHeight: offsetHeight > window.innerHeight && offsetHeightForLongText < offsetHeight ? offsetHeightForLongText : offsetHeight,
     offsetWidth
   });
   const btns = [
@@ -356,7 +362,9 @@ function showMarkerOnEditor(focusElement) {
 
 // detect on window resize, scroll
 let ticking = false;
-function positionMarkerOnChangeSize(forceRender = false) {
+let lastScrollPosition = 0;
+function positionMarkerOnChangeSize() {
+  lastScrollPosition = window.scrollY
   if (!ticking || forceRender) {
     window.requestAnimationFrame(() => {
       removeAllButtons();
@@ -365,8 +373,8 @@ function positionMarkerOnChangeSize(forceRender = false) {
       }
       ticking = false;
     });
+    ticking = true;
   }
-  ticking = true;
 }
 
 function showMatchedResultOnMarker(result) {
@@ -425,12 +433,12 @@ function showMatchedResultOnMarker(result) {
       }
       totalErrorOnCheckText = matchesCount;
       lastCheckResult = Object.assign({}, lastCheckResult, { total: matchesCount });
-      positionMarkerOnChangeSize(true);
+      positionMarkerOnChangeSize();
     });
   } else {
     totalErrorOnCheckText = 0;
     lastCheckResult = Object.assign({}, lastCheckResult, { total: 0, result: {}, markupList: [] });
-    positionMarkerOnChangeSize(true);
+    positionMarkerOnChangeSize();
   }
 }
 
@@ -439,8 +447,8 @@ function checkTextFromMarkup({ markupList, metaData }) {
     return Promise.resolve({ result: lastCheckResult.result });
   }
   lastCheckResult = Object.assign({}, lastCheckResult, { markupList, isProcess: true, isTyping: false });
-  positionMarkerOnChangeSize(true); // force render maker for show loading
-  if (!autoCheckOnDomain) {
+  positionMarkerOnChangeSize();
+  if (!isAutoCheckEnable()) {
     return Promise.resolve({ result: {} });
   }
   port.postMessage({
@@ -517,7 +525,7 @@ function observeEditorElement(element) {
 function bindClickEventOnElement(currentElement) {
   if (isEditorElement(currentElement)) {
     totalErrorOnCheckText = -1;
-    if (autoCheckOnDomain && !lastCheckResult.isProcess) {
+    if (isAutoCheckEnable() && !lastCheckResult.isProcess) {
       const { markupList, metaData } = getMarkupListFromElement(currentElement);
       if (!isSameObject(markupList, lastCheckResult.markupList)) {
         checkTextFromMarkup({ markupList, metaData }).then(result => {
@@ -533,7 +541,7 @@ function bindClickEventOnElement(currentElement) {
       }
     }
 
-    if (!currentElement.getAttribute("lt-auto-check") && autoCheckOnDomain) {
+    if (!currentElement.getAttribute("lt-auto-check") && isAutoCheckEnable()) {
         observeEditorElement(currentElement);
         currentElement.setAttribute("lt-auto-check", true);
     }
@@ -573,7 +581,7 @@ function allowToShowMarker(callback) {
         disabledDomains: [],
         autoCheckOnDomains: [],
         ignoreQuotedLines: true,
-        autoCheck: true,
+        autoCheck: autoCheck,
       },
       items => {
         const { hostname } = new URL(currentUrl);
